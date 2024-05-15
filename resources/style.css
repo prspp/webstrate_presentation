@@ -1,0 +1,52 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #upperWindow {
+            min-height: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            background-color: aqua;
+        }
+
+        .inputs input {
+            width: 100%;
+        }
+
+        #outline, #review {
+            flex-direction: column;
+            padding: 0 5px;
+            border: 1px solid black;
+        }
+
+        #outline {
+            width: 200px;
+            padding-left: 35px;
+        }
+
+        #review {
+            max-width: 250px;
+        }
+
+        #main {
+            flex-grow: 1;
+        }
+
+        #lowerWindow {
+            min-height: 150px;
+            background-color: red;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+    
