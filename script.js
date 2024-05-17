@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     const drawingModeIndicator = document.getElementById('drawingModeIndicator');
-    const changeBrushColorBtn = document.getElementById('changeBrushColorBtn');
+    const brushColorPicker = document.getElementById('brushColorPicker');
     const changeBrushThicknessBtn = document.getElementById('changeBrushThicknessBtn');
 
     let brushColor = '#000000'; // Default color
@@ -169,7 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    changeBrushColorBtn.addEventListener('click', changeBrushColor);
+    brushColorPicker.addEventListener('input', (event) => {
+        brushColor = event.target.value;
+    });
     changeBrushThicknessBtn.addEventListener('click', changeBrushThickness);
     toggleDrawingModeBtn.addEventListener('click', toggleDrawingMode);
 
