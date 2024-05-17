@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const container = doc.getElementById('container');
             const newContentZone = doc.createElement('div');
             const newCanvas = doc.createElement('canvas');
-            newCanvas.className = 'drawing-canvas';
-            newCanvas.width = 800;
-            newCanvas.height = 600;
-            newContentZone.className = 'content-zone';
             newContentZone.appendChild(newCanvas);
             container.appendChild(newContentZone);
+            newCanvas.className = 'drawing-canvas';
+            newContentZone.className = 'content-zone';
+            // newCanvas.width = newContentZone.offsetWidth;
+            // newCanvas.height = newContentZone.offsetHeight;
             newContentZone.addEventListener('mousedown', selectContentZone);
             setupCanvasEvents(newCanvas);
         };
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const drawingModeIndicator = document.getElementById('drawingModeIndicator');
     const brushColorPicker = document.getElementById('brushColorPicker');
-    const changeBrushThicknessBtn = document.getElementById('changeBrushThicknessBtn');
+    const brushThicknessSlider = document.getElementById('brushThicknessSlider');
 
     let brushColor = '#000000'; // Default color
     let brushThickness = 2; // Default thickness
@@ -172,7 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
     brushColorPicker.addEventListener('input', (event) => {
         brushColor = event.target.value;
     });
-    changeBrushThicknessBtn.addEventListener('click', changeBrushThickness);
+    brushThicknessSlider.addEventListener('input', (event) => {
+        brushThickness = event.target.value;
+    });
     toggleDrawingModeBtn.addEventListener('click', toggleDrawingMode);
 
 
