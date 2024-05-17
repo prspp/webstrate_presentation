@@ -21,7 +21,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     background: #f4f4f4;
-    padding: 10px;
+    padding: 20px;
     border-right: 1px solid #ddd;
 }
 
@@ -29,31 +29,37 @@ body {
     margin-bottom: 10px;
 }
 
-#slidesIframe {
+
+#contentIframe {
     flex-grow: 1;
     border: none;
 }
 
-.slides-container {
-    flex-grow: 1;
+.content-zone {
+    width: 800px;
+    height: 400px;
+    border: 2px solid #ccc;
+    position: relative;
+    margin: 20px auto;
     padding: 20px;
-    overflow-y: auto;
-    display: grid; /* Change to 'flex' if you want to stack slides vertically */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust as needed */
-    grid-gap: 20px; /* Adjust the gap between slides */
+    background-color: #f9f9f9;
 }
 
-
-.slide {
-    margin-top: 20px;
-    margin-above: 20px;
-    display: none;
-    min-height: 300px;
-    border: 1px dashed #ccc;
-    padding: 20px;
-    background: #fff;
+.text-box {
+    border: 2px solid #000;
+    position: absolute;
+    padding: 10px;
+    cursor: move;
+    background-color: #fff;
 }
 
-.slide.active {
-    display: block;
+.image-box {
+    position: absolute;
+    cursor: move;
+}
+
+.drawing-canvas {
+    display: flex;
+    justify-content: center;
+    z-index: 0;
 }
