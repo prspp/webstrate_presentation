@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.editor {
+    display: flex;
+    width: 90%;
+    height: 100vh;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: #f4f4f4;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+}
+
+.toolbar button {
+    margin-bottom: 10px;
+}
+
+#slidesIframe {
+    flex-grow: 1;
+    border: none;
+}
+
+.slides-container {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: grid; /* Change to 'flex' if you want to stack slides vertically */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust as needed */
+    grid-gap: 20px; /* Adjust the gap between slides */
+}
+
+
+.slide {
+    margin-top: 20px;
+    margin-above: 20px;
+    display: none;
+    min-height: 300px;
+    border: 1px dashed #ccc;
+    padding: 20px;
+    background: #fff;
+}
+
+.slide.active {
+    display: block;
+}
