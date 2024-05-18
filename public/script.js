@@ -38,8 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(newContentZone);
             newCanvas.className = 'drawing-canvas';
             newContentZone.className = 'content-zone';
-            // newCanvas.width = newContentZone.offsetWidth;
-            // newCanvas.height = newContentZone.offsetHeight;
+            newCanvas.width = newContentZone.offsetWidth;
+            newCanvas.height = newContentZone.offsetHeight;
+            console.log(newCanvas.width, newContentZone.offsetWidth)
             newContentZone.addEventListener('mousedown', selectContentZone);
             setupCanvasEvents(newCanvas);
         };
@@ -55,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
             textBox.contentEditable = true;
             textBox.style.zIndex = currentZIndex++;
             currentContentZone.appendChild(textBox);
+            textBox.style.fontSize = `${fontSize}px`; // Apply the current font size
+            textBox.focus()
             setupDragEvents(textBox);
         };
 
@@ -109,9 +112,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawingModeIndicator = document.getElementById('drawingModeIndicator');
     const brushColorPicker = document.getElementById('brushColorPicker');
     const brushThicknessSlider = document.getElementById('brushThicknessSlider');
+    const fontSizeInput = document.getElementById('fontSizeInput');
 
     let brushColor = '#000000'; // Default color
     let brushThickness = 2; // Default thickness
+    let fontSize = 16; // Default font size
+
+    fontSizeInput.addEventListener('input', (event) => {
+        fontSize = event.target.value;
+        if (currentContentZone) {
+            const element = getIframeDocument().activeElement;
+            if (element.classList.contains('text-box')) {
+                element.style.fontSize = `${fontSize}px`;
+            };
+        }
+    });
+
 
     const toggleDrawingMode = () => {
         if (!currentContentZone) return;
