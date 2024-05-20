@@ -1,34 +1,124 @@
 document.addEventListener("DOMContentLoaded", () => {
   const iframe = document.getElementById("contentIframe");
-  const getIframeDocument = () =>
-    iframe.contentDocument || iframe.contentWindow.document;
+  const getIframeDocument = (i) =>
+    i.contentDocument || i.contentWindow.document;
+
   const addContentZoneBtn = document.getElementById("addContentZoneBtn");
   const addTextBoxBtn = document.getElementById("addTextBoxBtn");
   const addImageBtn = document.getElementById("addImageBtn");
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn");
+  const drawingModeIndicator = document.getElementById(
+  "drawingModeIndicator",
+);
+  const brushColorPicker = document.getElementById("brushColorPicker");
+  const brushThicknessSlider = document.getElementById(
+    "brushThicknessSlider",
+  );
+  const fontSizeInput = document.getElementById("fontSizeInput");
+  const documentUrlInput = document.getElementById("documentUrlInput");
 
-  let currentZIndex = 1;
-  let isDrawing = false;
-  let isDrawingMode = false;
+  iframe.src = documentUrlInput.value || "content.html";
+
+  function debounce(callback, wait) {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () { callback.apply(this, args); }, wait);
+    };
+  }
+
+  documentUrlInput.addEventListener("keyup", debounce( (event) => {
+    iframe.src = event.target.value || "content.html";
+    // getIframeDocument(iframe).location.reload();
+    console.log("reload asked")
+  }), 1000);
+
 
   iframe.addEventListener("load", () => {
+    console.log("iframe load event")
+    let brushColor = "#000000"; // Default color
+    let brushThickness = 2; // Default thickness
+    let fontSize = 16; // Default font size
+    let webstrateUrl = "";
+
+    let currentZIndex = 1;
+    let isDrawing = false;
+    let isDrawingMode = false;
+
     let currentContentZone = null;
 
-    getIframeDocument().ondragstart = (e) => {
+    const getContainer = () => {
+      return getIframeDocument(iframe).getElementById("container");
+    }
+
+    const initContainer = () => {
+      if (getContainer() !== null)
+        return;
+      let doc = getIframeDocument(iframe);
+      const container = doc.createElement("div");
+      container.id = "container"
+      doc.body.appendChild(container);
+    }
+
+    const getMainCSSFile = () => {
+      return getIframeDocument(iframe).getElementById("mainCSSFile");
+    }
+
+    const initCSS = () => {
+      if (getMainCSSFile() !== null)
+        return;
+      let doc = getIframeDocument(iframe);
+      var fileref = doc.createElement("link");
+      fileref.id = "mainCSSFile"
+      fileref.rel = "stylesheet";
+      fileref.type = "text/css";
+      fileref.href = "/styles.css"; // no trailing slashs
+      doc.getElementsByTagName("head")[0].appendChild(fileref)
+    }
+
+
+    getIframeDocument(iframe).ondragstart = (e) => {
       if (e.target.nodeName.toUpperCase() == "IMG") {
         return false;
       }
     };
 
+    const initCurrentContentZone = () => {
+      const doc = getIframeDocument(iframe);
+      doc.querySelectorAll(".selected").forEach((e) => {e.classList.remove("selected")});
+      const czs = doc.querySelectorAll(".content-zone");
+      if (czs.length > 0) {
+        setCurrentContentZone(czs[0]);
+      } else {
+        initBlankContentZone();
+      }
+    }
+
+    const initExistingContentZones = () => {
+      getIframeDocument(iframe).querySelectorAll(".content-zone").forEach((zone) => {
+        zone.addEventListener("mousedown", selectContentZone);
+        zone
+          .querySelectorAll(".drawing-canvas")
+          .forEach((canvas) => setupCanvasEvents(canvas));
+      });
+    }
 
     const initBlankContentZone = () => {
         setCurrentContentZone(addContentZone());
     }
 
     const setCurrentContentZone = (zone) => {
+        // console.log("test")
+        // console.log(currentContentZone)
+        // currentContentZone;
+        // updating the old content zone if it is not null
         if (currentContentZone !== null) currentContentZone.classList.remove("selected");
+        
+        // actually updating the variable currentContentZone with the parameter of this function
         currentContentZone = zone;
-        currentContentZone.classList.add("selected");
+
+        // if the parameter passed was not null, then adds the .selected class to it
+        if (currentContentZone !== null) currentContentZone.classList.add("selected");
     }
     const selectContentZone = (event) => {
       if (event.target.classList.contains("content-zone")) {
@@ -41,8 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function resetContentZones() {
-      const container = getIframeDocument().getElementById("container");
-      container.innerHTML = "";
+      getIframeDocument(iframe).body.innerHTML = "";
+      initContainer();
       initBlankContentZone();
     }
 
@@ -52,8 +142,9 @@ document.addEventListener("DOMContentLoaded", () => {
     resetContentZonesBtn.addEventListener("click", resetContentZones);
 
     const addContentZone = () => {
-      const doc = getIframeDocument();
-      const container = doc.getElementById("container");
+      const doc = getIframeDocument(iframe);
+      // console.log(doc.location)
+      const container = getContainer();
       const newContentZone = doc.createElement("div");
       const newCanvas = doc.createElement("canvas");
       newContentZone.appendChild(newCanvas);
@@ -62,16 +153,14 @@ document.addEventListener("DOMContentLoaded", () => {
       newContentZone.className = "content-zone";
       newCanvas.width = newContentZone.offsetWidth;
       newCanvas.height = newContentZone.offsetHeight;
-      console.log(newCanvas.width, newContentZone.offsetWidth);
       newContentZone.addEventListener("mousedown", selectContentZone);
       setupCanvasEvents(newCanvas);
       return newContentZone;
     };
 
     const addTextBox = () => {
-      console.log(currentContentZone);
       if (!currentContentZone) return;
-      const doc = getIframeDocument();
+      const doc = getIframeDocument(iframe);
       const textBox = doc.createElement("div");
       textBox.className = "text-box";
       textBox.style.top = "50px";
@@ -88,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!currentContentZone) return;
       const imageUrl = prompt("Enter image URL:");
       if (imageUrl) {
-        const doc = getIframeDocument();
+        const doc = getIframeDocument(iframe);
         const imageBox = doc.createElement("img");
         imageBox.src = imageUrl;
         imageBox.className = "image-box";
@@ -129,43 +218,15 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         };
         const handleMouseUp = () => {
-          getIframeDocument().removeEventListener("mousemove", handleMouseMove);
-          getIframeDocument().removeEventListener("mouseup", handleMouseUp);
+          getIframeDocument(iframe).removeEventListener("mousemove", handleMouseMove);
+          getIframeDocument(iframe).removeEventListener("mouseup", handleMouseUp);
         };
-        getIframeDocument().addEventListener("mousemove", handleMouseMove);
-        getIframeDocument().addEventListener("mouseup", handleMouseUp);
+        getIframeDocument(iframe).addEventListener("mousemove", handleMouseMove);
+        getIframeDocument(iframe).addEventListener("mouseup", handleMouseUp);
       });
     };
 
-    const drawingModeIndicator = document.getElementById(
-      "drawingModeIndicator",
-    );
-    const brushColorPicker = document.getElementById("brushColorPicker");
-    const brushThicknessSlider = document.getElementById(
-      "brushThicknessSlider",
-    );
-    const fontSizeInput = document.getElementById("fontSizeInput");
-    const webstrateUrlInput = document.getElementById("webstrateUrlInput");
 
-    let brushColor = "#000000"; // Default color
-    let brushThickness = 2; // Default thickness
-    let fontSize = 16; // Default font size
-    let webstrateUrl = "";
-
-    fontSizeInput.addEventListener("input", (event) => {
-      fontSize = event.target.value;
-      if (currentContentZone) {
-        const element = getIframeDocument().activeElement;
-        if (element.classList.contains("text-box")) {
-          element.style.fontSize = `${fontSize}px`;
-        }
-      }
-    });
-
-    webstrateUrlInput.addEventListener("input", (event) => {
-      webstrateUrl = event.target.value;
-      iframe.src = webstrateUrl;
-    });
 
     const toggleDrawingMode = () => {
       if (!currentContentZone) return;
@@ -239,25 +300,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode);
 
-    iframe.addEventListener("load", () => {
-      const doc = getIframeDocument();
-      doc.querySelectorAll(".content-zone").forEach((zone) => {
-        zone.addEventListener("mousedown", selectContentZone);
-        zone
-          .querySelectorAll(".drawing-canvas")
-          .forEach((canvas) => setupCanvasEvents(canvas));
-      });
+    fontSizeInput.addEventListener("input", (event) => {
+      fontSize = event.target.value;
+      if (currentContentZone) {
+        const element = getIframeDocument(iframe).activeElement;
+        if (element.classList.contains("text-box")) {
+          element.style.fontSize = `${fontSize}px`;
+        }
+      }
     });
+
 
     addContentZoneBtn.addEventListener("click", addContentZone);
     addTextBoxBtn.addEventListener("click", addTextBox);
     addImageBtn.addEventListener("click", addImage);
     toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode);
 
+    const initIframe = async () => {
+        // Wait webstrate to load
+        await new Promise(r => setTimeout(r, 2000));
+        initCSS();
+        initContainer();
+        initCurrentContentZone();
+        initExistingContentZones();
+        console.log(getIframeDocument(iframe));
+        console.log(getIframeDocument(iframe).location);
+        console.log(getIframeDocument(iframe).body.innerHTML);
 
-    initBlankContentZone();
 
-    console.log(getIframeDocument());
+    }
+    initIframe();
 
   });
 });
