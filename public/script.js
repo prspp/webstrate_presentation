@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
 
+    const initBlankContentZone = () => {
+        setCurrentContentZone(addContentZone());
+    }
+
     const setCurrentContentZone = (zone) => {
         if (currentContentZone !== null) currentContentZone.classList.remove("selected");
         currentContentZone = zone;
@@ -39,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function resetContentZones() {
       const container = getIframeDocument().getElementById("container");
       container.innerHTML = "";
-      addContentZone(); // Add one default content zone back
+      initBlankContentZone();
     }
 
     const resetContentZonesBtn = document.getElementById(
@@ -251,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode);
 
 
-    setCurrentContentZone(addContentZone());
+    initBlankContentZone();
 
     console.log(getIframeDocument());
 
