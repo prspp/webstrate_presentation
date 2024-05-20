@@ -1,29 +1,25 @@
-<html __wid="4v3kJaa9"><head __wid="AzysVsb4">
-    <title __wid="nzhuEw5P">presentationTool</title>
-    <style id="style.css" __wid="rcABUjmG"></style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sketchup Tool</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body __wid="tv6z2PvK">
-    <div id="upperWindow" __wid="AiBLxCRi">
-        <div id="outline" __wid="jQpTaneM">
-            <h2 __wid="kmTNk7tL">Outline</h2>
-            <div id="presentationTitles" __wid="MSLP6pmZ">
-                <ol id="titles" __wid="Jwebu4Wf"><li __wid="aR9nMbLZ">first</li></ol>
-                <div __wid="dRx9yK5N" class="inputs">
-                    <input id="newTitle" type="text" placeholder="Title" __wid="RNqhL2bn"/>
-                    <button id="addTitle" __wid="ncQR2Uth">Add</button> <input id="newSubtitle" type="text" placeholder="Subtitle" __wid="ieSzDG94"/>
-                    <button id="addSubtitle" __wid="PLYx8Td2">Add</button>
-                </div>
-            </div>
-        </div>
-        <div id="main" __wid="u8HyFX7C" style="height: 600px;"><iframe src="/presentationTool-first" id="titleIframe" __wid="CPtKDAPa"></iframe></div>
-        <div id="review" __wid="jyEgmFpd">
-            <h2 __wid="nnKPuGKj">Audience review</h2>
-        </div>
-    </div>
-    <div id="lowerWindow" __wid="iqGdf34s">
-        <div id="personalNotes" __wid="DT5K6fgT" contenteditable="true"><div class="paragraph" contenteditable="true" __wid="KbgYqVnY"><p __wid="QNTJ7pzh">1. first</p></div></div>
-        <div id="question" hidden __wid="Gwxg8nsm"></div>
-    </div>
-    <script id="script.js" __wid="3yfCz4MM"></script>
+<body>
+    <div class="editor">
+        <div class="toolbar">
+            <button id="addContentZoneBtn">Add Content Zone</button>
+            <button id="addTextBoxBtn">Add Text Box</button>
+            <button id="addImageBtn">Add Image</button>
 
-</body></html>
+            <input type="color" id="brushColorPicker" value="#000000">
+            <input type="range" id="brushThicknessSlider" min="1" max="100" value="2">
+            <button id="toggleDrawingModeBtn">Toggle Drawing Mode</button>
+            <div id="drawingModeIndicator" style="visibility: hidden; color: white; background-color: red;">Drawing Mode Enabled</div>
+        </div>
+        <iframe id="contentIframe" src="content.html"></iframe>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
