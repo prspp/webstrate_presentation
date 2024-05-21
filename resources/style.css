@@ -17,6 +17,25 @@
             background-color: aqua;
         }
 
+        /* *** Editor *** */
+        #editor {
+            height: 60px;
+        }
+
+        /* *** Slides *** */
+        #slides p {
+            height: 200px;
+            width: 80%;
+            margin-left: 30px;
+            border: 1px solid black;
+        }
+
+        /* *** Main *** */
+        .slide {
+            background-color: white;
+            height: 100%;
+        }
+
         .inputs input {
             width: 100%;
         }
