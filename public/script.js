@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function debounce(callback, wait) {
     let timeout;
     return (...args) => {
+        console.log("wait", wait)
         clearTimeout(timeout);
         timeout = setTimeout(function () { callback.apply(this, args); }, wait);
     };
@@ -95,12 +96,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const initExistingContentZones = () => {
-      getIframeDocument(iframe).querySelectorAll(".content-zone").forEach((zone) => {
+      const doc = getIframeDocument(iframe);
+      doc.querySelectorAll(".content-zone").forEach((zone) => {
         zone.addEventListener("mousedown", selectContentZone);
-        zone
-          .querySelectorAll(".drawing-canvas")
-          .forEach((canvas) => setupCanvasEvents(canvas));
+        // zone
+        //   .querySelectorAll(".drawing-canvas")
+        //   .forEach((canvas) => setupCanvasEvents(canvas));
       });
+      doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
+        setupDragEvents(box);
+      });
+
     }
 
     const initBlankContentZone = () => {
@@ -191,10 +197,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const setupCanvasEvents = (canvas) => {
-      canvas.addEventListener("mousedown", startDrawing);
-      canvas.addEventListener("mousemove", draw);
-      canvas.addEventListener("mouseup", stopDrawing);
-      canvas.addEventListener("mouseleave", stopDrawing);
+      // canvas.addEventListener("mousedown", startDrawing);
+      // canvas.addEventListener("mousemove", draw);
+      // canvas.addEventListener("mouseup", stopDrawing);
+      // canvas.addEventListener("mouseleave", stopDrawing);
     };
 
     const setupDragEvents = (element) => {
@@ -325,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
         initExistingContentZones();
         console.log(getIframeDocument(iframe));
         console.log(getIframeDocument(iframe).location);
-        console.log(getIframeDocument(iframe).body.innerHTML);
+        // console.log(getIframeDocument(iframe).body.innerHTML);
 
 
     }
