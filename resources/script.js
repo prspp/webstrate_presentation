@@ -6,9 +6,73 @@ webstrate.on("loaded", function(webstrateId) {
     var styleTitle = document.getElementById("activateTitle");
     var styleSubtitle = document.getElementById("activateSubtitle");
     var activeSlideNote = slidesStructure.getElementsByClassName("active")[0];
-    var activeSlideInMain;
+    let currentZIndex = 1, fontSize=16, brushColor = "#000", brushThickness = 2;
+    var activeSlideInMain, isDrawing=false, isDrawingMode=false;
     var titleStyle = false;
     var styleEnabled;
+
+    // add text box
+    function addTextBox() {
+        if(!activeSlideInMain) return;
+        const textBox = document.createElement("div");
+        textBox.className = "text-box";
+        textBox.style.top = "50px";
+        textBox.style.left = "50px";
+        textBox.contentEditable = true;
+        textBox.style.zIndex = currentZIndex++;
+        activeSlideInMain.appendChild(textBox);
+        textBox.style.fontSize = `${fontSize}px`; // Apply the current font size
+        textBox.focus();
+        setupDragEvents(textBox);
+    }
+
+    // add image
+    function addImage() {
+        if (!activeSlideInMain) return;
+        const imageUrl = prompt("Enter image URL:");
+        if (imageUrl) {
+            const imageBox = doc.createElement("img");
+            imageBox.src = imageUrl;
+            imageBox.className = "image-box";
+            imageBox.style.top = "50px";
+            imageBox.style.left = "50px";
+            imageBox.style.width = "200px"; // Change width as desired
+            imageBox.style.zIndex = currentZIndex++;
+            activeSlideInMain.appendChild(imageBox);
+            setupDragEvents(imageBox);
+        }
+    }
+
+    // handle drag events
+    const setupDragEvents = (element) => {
+        element.addEventListener("mousedown", (event) => {
+            const handleMouseMove = (event) => {
+                const current_left = event.clientX - activeSlideInMain.getBoundingClientRect().left;
+                const current_top = event.clientY - activeSlideInMain.getBoundingClientRect().top;
+                const rec = element.getBoundingClientRect();
+                if (0 < current_left &&
+                    current_left + rec.width < activeSlideInMain.getBoundingClientRect().width &&
+                    0 < current_top && current_top + rec.height < activeSlideInMain.getBoundingClientRect().height
+                  ) 
+                {
+                    element.style.left = current_left + "px";
+                    element.style.top = current_top + "px";
+                    console.log("Satisfied");
+                }
+                else {
+                    console.log("Not satisfied");
+                }
+            };
+
+            const handleMouseUp = () => {
+                document.removeEventListener("mousemove", handleMouseMove);
+                document.removeEventListener("mouseup", handleMouseUp);
+            };
+
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
+        })
+    }
 
     // show the active slide
     function showActiveSlide() {
@@ -20,12 +84,14 @@ webstrate.on("loaded", function(webstrateId) {
 
         // among the children of main, display the appropriate div
         activeSlideInMain = document.querySelector("." + className + ".slide");
+        
         if(activeSlideInMain) {
             // set his attribute hidden to false
             activeSlideInMain.removeAttribute("hidden");
 
             // hide the other divs
             let children = document.getElementsByClassName("slide");
+            
             for(let i=0; i<children.length; i++) {
                 if(!children[i].className.includes(className)) {
                     children[i].setAttribute("hidden", "true");
@@ -50,6 +116,7 @@ webstrate.on("loaded", function(webstrateId) {
         let children = document.getElementsByClassName("slideNote");
         for(let i=0; i<children.length; i++) {
             // hide the other divs notes
+            console.log(children[i]);
             if(!classNames.includes(children[i].className[0])) {
                 children[i].setAttribute("hidden", "");
             }
@@ -91,7 +158,14 @@ webstrate.on("loaded", function(webstrateId) {
         // create the div in the slideshow + give it the necessary attributes
         var newSlideInSlideShow = document.createElement("div");
         newSlideInSlideShow.className = "slide-" + nbSlidesCreated.toString() + " slide";
-        newSlideInSlideShow.setAttribute("contenteditable", "");
+
+        // canvas in the div
+        const newCanvas = document.createElement("canvas");
+        newCanvas.className = "drawing-canvas";
+        newCanvas.width = newSlideInSlideShow.offsetWidth;
+        newCanvas.height = newSlideInSlideShow.offsetHeight;
+        newSlideInSlideShow.appendChild(newCanvas);
+        setupDragEvents(newCanvas);
 
         // add this div as a child
         slideShow.appendChild(newSlideInSlideShow);
@@ -150,11 +224,53 @@ webstrate.on("loaded", function(webstrateId) {
         titleStyle = !titleStyle;
     }
 
+    // drawing functions 
+    function startDrawing(event) {
+        if (!isDrawingMode) return;
+        isDrawing = true;
+        const canvas = event.target;
+        const ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.strokeStyle = brushColor;
+        ctx.lineWidth = brushThickness;
+        ctx.moveTo(event.offsetX, event.offsetY);
+    }
+
+    function draw(event) {
+        if (!isDrawing) return;
+        const canvas = event.target;
+        const ctx = canvas.getContext("2d");
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+    }
+
+    // toggle drawing mode
+    function toggleDrawingMode() {
+        if (!activeSlideInMain) return;
+        isDrawingMode = !isDrawingMode;
+        drawingModeIndicator.style.visibility = isDrawingMode
+            ? "visible"
+            : "hidden"; // Show/hide indicator
+        const canvas = activeSlideInMain.querySelector(".drawing-canvas");
+        canvas.style.zIndex = isDrawingMode ? currentZIndex++ : 0;
+        if (isDrawingMode) {
+            canvas.addEventListener("mousedown", startDrawing);
+            canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("mouseup", () => isDrawing = false);
+            canvas.addEventListener("mouseleave", () => isDrawing = false);
+        } else {
+            canvas.removeEventListener("mousedown", startDrawing);
+            canvas.removeEventListener("mousemove", draw);
+            canvas.removeEventListener("mouseup", () => isDrawing = false);
+            canvas.removeEventListener("mouseleave", () => isDrawing = false);
+        }
+    }
+
     // define the title's style of the slide
     function handleTitleType(styleClicked) {
         if(!titleStyle) {
             // remove the active class name if present
-            const parent = document.getElementById("editor");
+            const parent = document.getElementById("toolBar");
             const child = parent.getElementsByClassName("active");
             if(child.length > 0) {
                 child[0].removeAttribute("class");
@@ -210,15 +326,33 @@ webstrate.on("loaded", function(webstrateId) {
     }
 
     function init() {
-        // add the click listener to the very first slide note
-        slidesStructure.children[0].addEventListener("click", (event) => toggleSlideNoteState(event.target));
+        // add the click listener to the slide notes in the document
+        for(const child of slidesStructure.children) {
+            child.addEventListener("click", (event) => { toggleSlideNoteState(event.target) });
+        }
 
-        // add the click listener to the very first slide
-        const slides = document.querySelector("#slides");
-        slides.children[1].addEventListener("click", (event) => { 
-            toggleSlideShow(event.target);
-            showActiveSlide();
+        // add the drag events to the canvas in the document
+        document.querySelectorAll(".drawing-canvas").forEach(element => {
+            setupDragEvents(element);
         });
+
+        // do the same for the text boxes
+        document.querySelectorAll(".text-box").forEach(element => {
+            setupDragEvents(element);
+        });
+
+        
+        // add the click listener to the slides
+        const slides = document.querySelectorAll("#slides p");
+        for(const slide of slides) {
+            if(slide.id != "newSlide") {
+                console.log(slide);
+                slide.addEventListener("click", (event) => {
+                    toggleSlideShow(event.target);
+                    showActiveSlide();
+                });
+            }
+        }
 
         // handle the new slide creation event
         newBlock.addEventListener("click", () => {
@@ -230,7 +364,7 @@ webstrate.on("loaded", function(webstrateId) {
         });
 
         // check if a title/subtitle style is applied
-        const parent = document.getElementById("editor");
+        const parent = document.getElementById("toolBar");
         const child = parent.getElementsByClassName("active");
         if(child.length > 0) {
             titleStyle = true;
@@ -247,6 +381,26 @@ webstrate.on("loaded", function(webstrateId) {
             toggleTitleState();
             handleTitleType(event.target.id);
         });
+
+        // add listeners to buttons
+        document.getElementById("addTextBoxBtn").addEventListener("click", addTextBox);
+        document.getElementById("addImageBtn").addEventListener("click", addImage);
+        document.getElementById("fontSizeInput").addEventListener("input", (event) => {
+            fontSize = event.target.value;
+            if (activeSlideInMain) {
+              const element = document.activeElement;
+              if (element && element.classList.contains("text-box")) {
+                element.style.fontSize = `${fontSize}px`;
+              }
+            }
+        });
+        document.getElementById("brushColorPicker").addEventListener("click", (event) => {
+            brushColor = event.target.value;
+        });
+        document.getElementById("brushThicknessSlider").addEventListener("click", (event) => {
+            brushThickness = event.target.value;
+        });
+        document.getElementById("toggleDrawingModeBtn").addEventListener("click", toggleDrawingMode);
 
         showActiveSlide();
     }

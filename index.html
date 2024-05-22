@@ -3,38 +3,60 @@
     <style id="style.css" __wid="rcABUjmG"></style>
 </head>
 <body __wid="tv6z2PvK">
-    <div id="editor" __wid="yhBqamTx" style="height: 60px;">
-        <p __wid="fT3CCqbS">Editor</p>
-        <p id="activateTitle" __wid="wAbPWUJn" class="active">Title</p>
-        <p id="activateSubtitle" __wid="wkfDJ57u">Subtitle</p>
-    </div>
-    <div id="upperWindow" __wid="AiBLxCRi">
-        <div id="slides" __wid="jQpTaneM">
-            <h2 __wid="kmTNk7tL">Outline</h2>
-            <p class="slide-1" __wid="6HJukCFD"></p>
-            <p class="slide-2" __wid="fNnM87WH"></p><p class="slide-3" id="active" __wid="Gifnv285"></p><p id="newSlide" __wid="YtqWcxr3">Add</p>
+    <div id="container" __wid="svXqTwJ7">
+        <div __wid="yhBqamTx" id="toolBar" style="height: 40px;">
+            <p __wid="fT3CCqbS">Editor</p>
+            <p id="activateTitle" __wid="wAbPWUJn">Title</p>
+            <p id="activateSubtitle" __wid="wkfDJ57u">Subtitle</p>
+            <button id="resetContentZonesBtn" __wid="k7VXyQd2">Reset</button>
+            <button id="addTextBoxBtn" __wid="eUHVsUe5">Add Text Box</button>
+            <button id="addImageBtn" __wid="hi89W2BV">Add Image</button>
+            <input id="fontSizeInput" __wid="g9rDmCm7" type="number" min="8" max="72" value="16" placeholder="Font Size"/>
+            <input type="color" id="brushColorPicker" value="#000000" __wid="kaZesnrx"/>
+            <input type="range" id="brushThicknessSlider" value="2" __wid="4iYLG943" min="1" max="100"/>
+            <button id="toggleDrawingModeBtn" __wid="KKUHEYFD">Toggle Drawing Mode</button>
+            <div id="drawingModeIndicator" __wid="rT9Hnxg4">Drawing Mode Enabled</div>
         </div>
-        <div id="main" __wid="u8HyFX7C" style="height: 600px;">
-                <div class="slide-1 slide" contenteditable="true" __wid="rTSp9X9b" hidden="true"><br __wid="jzXRwgMU"/></div>
-        <ol __wid="6ECfLR3y"><li __wid="MJyNGYbw"><div class="slide-2 slide" contenteditable __wid="aYDYm9zF" hidden="true"></div></li><li __wid="BTijsnCJ"><div class="slide-3 slide" contenteditable __wid="zcepcTJY"></div></li></ol></div>
-        <div id="review" __wid="jyEgmFpd">
-            <h2 __wid="nnKPuGKj">Audience review</h2>
-        </div>
-    </div>
-    <div id="lowerWindow" __wid="iqGdf34s">
-        <div id="personalNotes" __wid="DT5K6fgT">
-            <div __wid="Be9TmUVa" id="notesSummary">
-                <p __wid="9WD5SNrg">My notes</p>
-                <div id="slidesStructure" __wid="w6VAqdpr">
-                    <p class="slide-1" __wid="HiTh3mzn">Slide 1</p>
-                <ol __wid="xKpBbzuH"><li __wid="c7H9nYYQ"><p class="slide-2" __wid="Mk5aTFfP">Slide 2</p></li><li __wid="TBs7PKKt"><p class="slide-3 active" __wid="CG67DdMy">Slide 3</p></li></ol></div>
+        <div id="upperWindow" __wid="AiBLxCRi">
+            <div id="outline" style="
+    margin-left: 0px; width: 5vw
+" __wid="bCW9sC9B">
+                <h2 __wid="L4kiyE5H">Outline</h2>
+                <p __wid="pUXLinFi">Point 1</p>
             </div>
-            <div __wid="WfPV3dDs" id="slidesNotes">
-                <h3 id="slideTitle" __wid="Nheb4fg5">Slide 2</h3>
-                <div __wid="sc9hbDyh" class="slide-1 slideNote" contenteditable="true"></div>
-            <div class="slide-2 slideNote" contenteditable __wid="ETrrtspG"></div><div class="slide-3 slideNote" contenteditable __wid="mZ6mvY4H"></div></div>
+            <div id="slides" __wid="jQpTaneM" style="
+    margin-left: 0px;
+">
+                <p class="slide-1" id="active" __wid="YQZmshvK"></p>
+                <p __wid="YtqWcxr3" id="newSlide"><span __wid="XggYY7pG" style="
+    margin-top: 80px;
+">Add</span></p>
+            </div>
+            <div id="main" __wid="u8HyFX7C">
+                    <div __wid="rTSp9X9b" class="slide-1 slide">
+                        La vie est belle
+                        <canvas class="drawing-canvas" __wid="QpuLgMUJ"></canvas>
+                    </div>
+            </div>
+            <div id="review" __wid="jyEgmFpd">
+                <h2 __wid="nnKPuGKj">Audience review</h2>
+            </div>
         </div>
-        <div id="question" hidden __wid="Gwxg8nsm"></div>
+        <div id="lowerWindow" __wid="iqGdf34s">
+            <div id="personalNotes" __wid="DT5K6fgT">
+                <div __wid="Be9TmUVa" id="notesSummary">
+                    <p __wid="9WD5SNrg">My notes</p>
+                    <div id="slidesStructure" __wid="w6VAqdpr">
+                        <p class="slide-1 active" __wid="HiTh3mzn">Slide 1</p>
+                    </div>
+                </div>
+                <div __wid="WfPV3dDs" id="slidesNotes">
+                    <h3 id="slideTitle" __wid="Nheb4fg5">Slide 0</h3>
+                    <div __wid="sc9hbDyh" class="slide-1 slideNote" contenteditable="true"></div>
+                </div>
+            </div>
+            <div id="question" hidden __wid="Gwxg8nsm"></div>
+        </div>
     </div>
     <script id="script.js" __wid="3yfCz4MM"></script>
 
