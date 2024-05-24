@@ -118,7 +118,7 @@
             width: 100%;
         }
 
-        .text-box {
+        .text-box, .title {
             position: absolute;
             padding: 10px;
             cursor: move;
@@ -136,6 +136,11 @@
             z-index: 0;
         }
 
+        .outlined {
+            background-color: #000;
+            color: #fff;
+        }
+
         /* *** Personal notes *** */
         #personalNotes {
             height: 150px;
@@ -145,6 +150,13 @@
             border-radius: 10px;
             margin-bottom: 10px;
             padding: 10px;
+        }
+
+        #notesSummary {
+            border-right: 1px solid black;
+            padding: 20px;
+            padding-top: 0px;
+            height: 100vh;
         }
 
         #slidesNotes {
