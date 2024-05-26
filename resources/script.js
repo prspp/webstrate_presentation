@@ -10,6 +10,8 @@ webstrate.on("loaded", function(webstrateId) {
     var activeSlideInMain, isDrawing=false, isDrawingMode=false;
     var titleStyle = false;
     var iframe = document.getElementById("main");
+    var currentDrawing = null, currentPath = null, path;
+    var offsetX, offsetY;
 
     // create list node
     function createListNode(outlineDiv, outline, nodeProperty) {
@@ -78,7 +80,6 @@ webstrate.on("loaded", function(webstrateId) {
         const titleBox = document.createElement("p");
         const nbTitles = document.getElementsByClassName("title").length;
         titleBox.classList.add("title");
-        titleBox.classList.add("outlined");
         titleBox.classList.add("title-" + nbTitles.toString());
         titleBox.style.top = "10px";
         titleBox.style.left = "50px";
@@ -88,16 +89,23 @@ webstrate.on("loaded", function(webstrateId) {
         titleBox.textContent = "Add title";
         titleBox.style.fontSize = "50px";
         titleBox.style.fontWeight = "bold";
+        titleBox.style.backgroundColor = "#000";
+        titleBox.style.color = "#fff";
         titleBox.addEventListener("focus", () => {
             titleBox.classList.remove("outlined");
+            titleBox.style.backgroundColor = "#fff";
+            titleBox.style.color = "#000";
         });
         titleBox.addEventListener("input", updateOutline);
         titleBox.addEventListener("paste", updateOutline);
         titleBox.addEventListener("cut", updateOutline);
         titleBox.addEventListener("delete", updateOutline);
+        titleBox.style.cursor = "grab";
+        titleBox.style.position = "absolute";
+        titleBox.draggable = true;
         activeSlideInMain.appendChild(titleBox);
         setupDragEvents(titleBox);
-        createElementInOutline(titleBox);
+        //createElementInOutline(titleBox);
     }
 
     // add text box
@@ -134,29 +142,32 @@ webstrate.on("loaded", function(webstrateId) {
 
     // handle drag events
     const setupDragEvents = (element) => {
-        element.addEventListener("mousedown", (event) => {
+        element.addEventListener("dragstart", (event) => {
             const handleMouseMove = (event) => {
-                const current_left = event.clientX - activeSlideInMain.getBoundingClientRect().left;
-                const current_top = event.clientY - activeSlideInMain.getBoundingClientRect().top;
-                const rec = element.getBoundingClientRect();
-                if (0 < current_left &&
-                    current_left + rec.width < activeSlideInMain.getBoundingClientRect().width &&
-                    0 < current_top && current_top + rec.height < activeSlideInMain.getBoundingClientRect().height
-                  ) 
-                {
-                    element.style.left = current_left + "px";
-                    element.style.top = current_top + "px";
-                }
-            };
+                const rect = event.target.getBoundingClientRect();
+                offsetX = event.clientX - rect.left;
+                offsetY = event.clientY - rect.top;
+                event.dataTransfer.setData("text/plain", null);
+            }
+        });
 
-            const handleMouseUp = () => {
-                document.removeEventListener("mousemove", handleMouseMove);
-                document.removeEventListener("mouseup", handleMouseUp);
-            };
+        activeSlideInMain.addEventListener("dragover", (event) => {
+            event.preventDefault();
+        });
 
-            document.addEventListener("mousemove", handleMouseMove);
-            document.addEventListener("mouseup", handleMouseUp);
-        })
+        activeSlideInMain.addEventListener("drop", (event) =>  {
+            event.preventDefault();
+            const rect = activeSlideMain.getBoundingClientRect();
+            const x = event.clientX - rect.left - offsetX;
+            const y = event.clientY - rect.top - offsetY;
+
+            // for the text to stay in the container
+            const maxX = activeSlideInMain.clientWidth - element.clientWidth;
+            const maxY = activeSlideInMain.clientHeight - element.clientHeight;
+
+            element.style.left = `$(Math.min(Math.max(0, x), maxX)}px`;
+            element.style.top = `$(Math.min(Math.max(0, y), maxY)}px`;
+        });
     }
 
     // show the active slide
@@ -310,42 +321,53 @@ webstrate.on("loaded", function(webstrateId) {
     // drawing functions 
     function startDrawing(event) {
         if (!isDrawingMode) return;
+        console.log("Im here");
         isDrawing = true;
-        const canvas = event.target;
-        const ctx = canvas.getContext("2d");
-        ctx.beginPath();
-        ctx.strokeStyle = brushColor;
-        ctx.lineWidth = brushThickness;
-        ctx.moveTo(event.offsetX, event.offsetY);
+        currentPath = "";
+        var innerDoc = iframe.contentWindow.document;
+        currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
+        currentDrawing.setAttribute("width", "100%");
+        currentDrawing.setAttribute("height", "100%");
+        currentDrawing.style.position = "absolute";
+
+        path = innerDoc.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", brushColor);
+        path.setAttribute("stroke-width", brushThickness.toString());
+        currentDrawing.appendChild(path);
+        activeSlideInMain.appendChild(currentDrawing);
+        const rec = activeSlideInMain.getBoundingClientRect();
+        const x = event.clientX - rec.left;
+        const y = event.clientY - rec.top;
+        currentPath += `M ${x},${y}`;
     }
 
     function draw(event) {
         if (!isDrawing) return;
-        const canvas = event.target;
-        const ctx = canvas.getContext("2d");
-        ctx.lineTo(event.offsetX, event.offsetY);
-        ctx.stroke();
+        console.log("Draw");
+        const rec = activeSlideInMain.getBoundingClientRect();
+        const x = event.clientX - rec.left;
+        const y = event.clientY - rec.top;
+        currentPath += `L ${x},${y} `;
+        path.setAttribute("d", currentPath);
     }
 
     // toggle drawing mode
     function toggleDrawingMode() {
         if (!activeSlideInMain) return;
         isDrawingMode = !isDrawingMode;
-        drawingModeIndicator.style.visibility = isDrawingMode
-            ? "visible"
-            : "hidden"; // Show/hide indicator
-        const canvas = activeSlideInMain.querySelector(".drawing-canvas");
-        canvas.style.zIndex = isDrawingMode ? currentZIndex++ : 0;
         if (isDrawingMode) {
-            canvas.addEventListener("mousedown", startDrawing);
-            canvas.addEventListener("mousemove", draw);
-            canvas.addEventListener("mouseup", () => isDrawing = false);
-            canvas.addEventListener("mouseleave", () => isDrawing = false);
+            console.log("Drawing : ", isDrawingMode);
+            activeSlideInMain.addEventListener("mousedown", startDrawing);
+            activeSlideInMain.addEventListener("mousemove", draw);
+            activeSlideInMain.addEventListener("mouseup", () => isDrawing = false);
+            activeSlideInMain.addEventListener("mouseleave", () => isDrawing = false);
         } else {
-            canvas.removeEventListener("mousedown", startDrawing);
-            canvas.removeEventListener("mousemove", draw);
-            canvas.removeEventListener("mouseup", () => isDrawing = false);
-            canvas.removeEventListener("mouseleave", () => isDrawing = false);
+            console.log("Drawing : ", isDrawingMode);
+            activeSlideInMain.removeEventListener("mousedown", startDrawing);
+            activeSlideInMain.removeEventListener("mousemove", draw);
+            activeSlideInMain.removeEventListener("mouseup", () => isDrawing = false);
+            activeSlideInMain.removeEventListener("mouseleave", () => isDrawing = false);
         }
     }
 
@@ -381,7 +403,7 @@ webstrate.on("loaded", function(webstrateId) {
               }
             }
         });
-        document.getElementById("brushColorPicker").addEventListener("click", (event) => {
+        document.getElementById("brushColorPicker").addEventListener("input", (event) => {
             brushColor = event.target.value;
         });
         document.getElementById("brushThicknessSlider").addEventListener("click", (event) => {
@@ -429,9 +451,10 @@ webstrate.on("loaded", function(webstrateId) {
             var div = innerDoc.createElement("div");
             div.classList.add("slide-1");
             div.classList.add("slide");
-            var canvas = innerDoc.createElement("canvas");
+            /*var canvas = innerDoc.createElement("canvas");
             canvas.className = "drawing-canvas";
-            div.appendChild(canvas);
+            div.appendChild(canvas);*/
+            div.style.height = "100vh";
             innerDoc.body.appendChild(div);
         }
         addListenerIframe(innerDoc);
