@@ -5,7 +5,7 @@ webstrate.on("loaded", function(webstrateId) {
     var newBlock = document.getElementById("newSlide");
     var styleTitle = document.getElementById("activateTitle");
     var styleSubtitle = document.getElementById("activateSubtitle");
-    var activeSlideNote = slidesStructure.getElementsByClassName("active")[0];
+    var activeSlideNote = slidesNotes.getElementsByClassName("active")[0];
     let currentZIndex = 1, fontSize=16, brushColor = "#000", brushThickness = 2;
     var activeSlideInMain, isDrawing=false, isDrawingMode=false;
     var titleStyle = false;
@@ -18,7 +18,23 @@ webstrate.on("loaded", function(webstrateId) {
         if(!outline) {
             outline = document.createElement("ol");
             outline.className = "listTitles";
-            outlineDiv.appendChild(outline);
+
+            /* to add */
+            /*if(outlineDiv.id == "slidesNotes") {
+                var currenParagraph = activeSlideNote.lastChild;
+                if(!currenParagraph.textContent.trim()) {
+                    activeSlideNote.insertAdjacentElement("afterbegin", outline);
+                }
+                else {
+                    activeSlideNote.appendChild(outline);
+                    var p = document.createElement("p");
+                    p.setAttribute("contenteditable", "");
+                    activeSlideNote.appendChild(p);
+                }
+            }
+            else {*/
+                outlineDiv.appendChild(outline);
+            //}
         }
 
         // add text content
@@ -33,6 +49,17 @@ webstrate.on("loaded", function(webstrateId) {
                 document.getElementById("active").removeAttribute("id");
                 slide.id = "active";
                 showActiveSlide();
+            });
+        }
+        else if(outlineDiv.id == "slidesStructure") {
+            console.log("Structure");
+            paragraph.addEventListener("click", (event) => {
+                const slideClass = event.target.classList[0];
+                const slide = document.getElementById("slidesNotes").getElementsByClassName(slideClass)[0];
+                activeSlideNote.classList.remove("active");
+                slide.classList.add("active");
+                activeSlideNote = slide;
+                showActiveSlideNotes();
             });
         }
         paragraph.textContent = nodeProperty.textContent;
@@ -52,10 +79,17 @@ webstrate.on("loaded", function(webstrateId) {
 
     // create the outline item in note
     function createElementInNote(textBox) {
-        slidesNotes.hidden = true;
-        var outline = slidesNotes.querySelector(".listTitles");
+        // in notes summary
+        slidesStructure.hidden = true;
+        var outline = slidesStructure.querySelector(".listTitles");
+        createListNode(slidesStructure, outline, textBox);
+        slidesStructure.removeAttribute("hidden");
+
+        // in notes
+        /*slidesNotes.hidden = true;
+        outline = slidesNotes.querySelector(".listTitles");
         createListNode(slidesNotes, outline, textBox);
-        slidesNotes.removeAttribute("hidden");
+        slidesNotes.removeAttribute("hidden");*/
     }
 
     // update outline
@@ -69,7 +103,7 @@ webstrate.on("loaded", function(webstrateId) {
 
     // update notes
     const updateNotes = (event, callingTitleClass) => {
-        var slidesDiv = document.getElementById("slidesNotes");
+        var slidesDiv = document.getElementById("slidesStructure");
         var paragraph = slidesDiv.querySelector(".listTitles").getElementsByClassName(callingTitleClass)[0];
         paragraph.innerHTML = event.target.innerHTML;
     }
@@ -77,13 +111,16 @@ webstrate.on("loaded", function(webstrateId) {
     // add title
     function addTextStyle() {
         if(!activeSlideInMain) return;
-        const titleBox = document.createElement("p");
-        const nbTitles = document.getElementsByClassName("title").length;
+        var innerDoc = iframe.contentWindow.document;
+        const titleBox = innerDoc.createElement("p");
+        const nbTitles = innerDoc.getElementsByClassName("title").length;
         titleBox.classList.add("title");
         titleBox.classList.add("title-" + nbTitles.toString());
+        titleBox.classList.add(activeSlideInMain.classList[0]);
         titleBox.style.top = "10px";
         titleBox.style.left = "50px";
         titleBox.style.width = "200px";
+        titleBox.style.margin = "0px";
         titleBox.setAttribute("contentEditable", "");
         titleBox.style.zIndex = currentZIndex ++;
         titleBox.textContent = "Add title";
@@ -91,6 +128,7 @@ webstrate.on("loaded", function(webstrateId) {
         titleBox.style.fontWeight = "bold";
         titleBox.style.backgroundColor = "#000";
         titleBox.style.color = "#fff";
+        titleBox.style.display = "inline-block";
         titleBox.addEventListener("focus", () => {
             titleBox.classList.remove("outlined");
             titleBox.style.backgroundColor = "#fff";
@@ -105,20 +143,24 @@ webstrate.on("loaded", function(webstrateId) {
         titleBox.draggable = true;
         activeSlideInMain.appendChild(titleBox);
         setupDragEvents(titleBox);
-        //createElementInOutline(titleBox);
+        createElementInOutline(titleBox);
     }
 
     // add text box
     function addTextBox() {
         if(!activeSlideInMain) return;
-        const textBox = document.createElement("div");
+        var innerDoc = iframe.contentWindow.document;
+        const textBox = innerDoc.createElement("div");
         textBox.className = "text-box";
         textBox.style.top = "50px";
         textBox.style.left = "50px";
+        textBox.style.width = "400px";
         textBox.contentEditable = true;
         textBox.style.zIndex = currentZIndex++;
         activeSlideInMain.appendChild(textBox);
         textBox.style.fontSize = `${fontSize}px`; // Apply the current font size
+        textBox.style.position = "absolute";
+        textBox.draggable = true;
         textBox.focus();
         setupDragEvents(textBox);
     }
@@ -142,33 +184,47 @@ webstrate.on("loaded", function(webstrateId) {
 
     // handle drag events
     const setupDragEvents = (element) => {
-        element.addEventListener("dragstart", (event) => {
-            const handleMouseMove = (event) => {
-                const rect = event.target.getBoundingClientRect();
-                offsetX = event.clientX - rect.left;
-                offsetY = event.clientY - rect.top;
-                event.dataTransfer.setData("text/plain", null);
-            }
-        });
-
-        activeSlideInMain.addEventListener("dragover", (event) => {
+        let offsetX, offsetY;
+    
+        const handleDragStart = (event) => {
+            const rect = element.getBoundingClientRect();
+            offsetX = event.clientX - rect.left;
+            offsetY = event.clientY - rect.top;
+            event.dataTransfer.setData("text/plain", event.target.innerText); // Required for Firefox
+            event.dataTransfer.setData("text/html", event.target.outerHTML);
+            event.dataTransfer.setData("text/uri-list",event.target.ownerDocument.location.href);
+            activeSlideInMain.addEventListener("dragover", handleDragOver);
+            activeSlideInMain.addEventListener("drop", handleDrop);
+        };
+    
+        const handleDragOver = (event) => {
             event.preventDefault();
-        });
-
-        activeSlideInMain.addEventListener("drop", (event) =>  {
+        };
+    
+        const handleDrop = (event) => {
             event.preventDefault();
-            const rect = activeSlideMain.getBoundingClientRect();
+            const rect = activeSlideInMain.getBoundingClientRect();
             const x = event.clientX - rect.left - offsetX;
             const y = event.clientY - rect.top - offsetY;
-
+    
             // for the text to stay in the container
             const maxX = activeSlideInMain.clientWidth - element.clientWidth;
             const maxY = activeSlideInMain.clientHeight - element.clientHeight;
-
-            element.style.left = `$(Math.min(Math.max(0, x), maxX)}px`;
-            element.style.top = `$(Math.min(Math.max(0, y), maxY)}px`;
+    
+            element.style.left = `${Math.min(Math.max(0, x), maxX)}px`;
+            element.style.top = `${Math.min(Math.max(0, y), maxY)}px`;
+            element.style.cursor = "grab";
+        };
+    
+        element.addEventListener("dragstart", handleDragStart);
+        activeSlideInMain.addEventListener("dragover", handleDragOver);
+        activeSlideInMain.addEventListener("drop", handleDrop);
+    
+        element.addEventListener("dragend", () => {
+            activeSlideInMain.removeEventListener("dragover", handleDragOver);
+            activeSlideInMain.removeEventListener("drop", handleDrop);
         });
-    }
+    };
 
     // show the active slide
     function showActiveSlide() {
@@ -180,7 +236,6 @@ webstrate.on("loaded", function(webstrateId) {
         var className = activeSlide.className;
 
         // among the children of main, display the appropriate div
-        console.log(slideShow);
         activeSlideInMain = slideShow.querySelector("." + className + ".slide");
         
         if(activeSlideInMain) {
@@ -204,6 +259,9 @@ webstrate.on("loaded", function(webstrateId) {
 
     // show active slide notes
     function showActiveSlideNotes() {
+        var className = activeSlideInMain.classList[0];
+        activeSlideNote = slidesNotes.getElementsByClassName(className)[0];
+        console.log(activeSlideNote);
         // get the element having the active class
         const classNames = activeSlideNote.className;
 
@@ -214,7 +272,7 @@ webstrate.on("loaded", function(webstrateId) {
         let children = document.getElementsByClassName("slideNote");
         for(let i=0; i<children.length; i++) {
             // hide the other divs notes
-            if(!classNames.includes(children[i].className[0])) {
+            if(!classNames.includes(children[i].classList[0])) {
                 children[i].setAttribute("hidden", "");
             }
             else {
@@ -254,48 +312,40 @@ webstrate.on("loaded", function(webstrateId) {
 
         // create the div in the slideshow + give it the necessary attributes
         var newSlideInSlideShow = document.createElement("div");
+        newSlideInSlideShow.style.height = "100vh";
         newSlideInSlideShow.className = "slide-" + nbSlidesCreated.toString() + " slide";
 
         // canvas in the div
-        const newCanvas = document.createElement("canvas");
+        /*const newCanvas = document.createElement("canvas");
         newCanvas.className = "drawing-canvas";
         newCanvas.width = newSlideInSlideShow.offsetWidth;
         newCanvas.height = newSlideInSlideShow.offsetHeight;
         newSlideInSlideShow.appendChild(newCanvas);
-        setupDragEvents(newCanvas);
+        setupDragEvents(newCanvas);*/
 
         // add this div as a child
         slideShow.appendChild(newSlideInSlideShow);
 
         // set it as the main slide
         activeSlideInMain = slideShow.lastChild;
-        console.log("Active : ", activeSlideInMain);
 
         /* ___ on the notes ___ */
 
         // remove class active to the current slide
-        slidesStructure.getElementsByClassName("active")[0].classList.remove("active");
+        slidesNotes.getElementsByClassName("active")[0].classList.remove("active");
 
-        let slideCreatedString = nbSlidesCreated.toString();
-
-        // create a new note
-        var newNoteInSummary = "<p class='slide-" + nbSlidesCreated.toString() + " active'>" + "Slide " + slideCreatedString + "</p>";
-        slidesStructure.insertAdjacentHTML("beforeend", newNoteInSummary);
+        var newSlideNote = document.createElement("div");
+        var paragraph = document.createElement("p");
+        paragraph.setAttribute("contenteditable", "");
+        newSlideNote.appendChild(paragraph);
+        newSlideNote.classList.add("slide-"+ nbSlidesCreated.toString());
+        newSlideNote.classList.add("slideNote");
+        newSlideNote.classList.add("active");
+        slidesNotes.appendChild(newSlideNote);
+        
 
         // set it as the main slide note
-        activeSlideNote = slidesStructure.lastChild;
-
-        // add the click listener to toggle the slide note state
-        slidesStructure.lastChild.addEventListener("click", (event) => {
-            toggleSlideNoteState(event.target);
-            showActiveSlideNotes();
-        });
-
-        // create notes
-        var newNotes = document.createElement("div");
-        newNotes.className = "slide-" + nbSlidesCreated.toString() + " slideNote";
-        newNotes.setAttribute("contenteditable", "");
-        slidesNotes.appendChild(newNotes);
+        activeSlideNote = slidesNotes.lastChild;
     }
 
     // show the selected slide
@@ -321,7 +371,6 @@ webstrate.on("loaded", function(webstrateId) {
     // drawing functions 
     function startDrawing(event) {
         if (!isDrawingMode) return;
-        console.log("Im here");
         isDrawing = true;
         currentPath = "";
         var innerDoc = iframe.contentWindow.document;
@@ -344,7 +393,6 @@ webstrate.on("loaded", function(webstrateId) {
 
     function draw(event) {
         if (!isDrawing) return;
-        console.log("Draw");
         const rec = activeSlideInMain.getBoundingClientRect();
         const x = event.clientX - rec.left;
         const y = event.clientY - rec.top;
@@ -357,13 +405,11 @@ webstrate.on("loaded", function(webstrateId) {
         if (!activeSlideInMain) return;
         isDrawingMode = !isDrawingMode;
         if (isDrawingMode) {
-            console.log("Drawing : ", isDrawingMode);
             activeSlideInMain.addEventListener("mousedown", startDrawing);
             activeSlideInMain.addEventListener("mousemove", draw);
             activeSlideInMain.addEventListener("mouseup", () => isDrawing = false);
             activeSlideInMain.addEventListener("mouseleave", () => isDrawing = false);
         } else {
-            console.log("Drawing : ", isDrawingMode);
             activeSlideInMain.removeEventListener("mousedown", startDrawing);
             activeSlideInMain.removeEventListener("mousemove", draw);
             activeSlideInMain.removeEventListener("mouseup", () => isDrawing = false);
@@ -413,7 +459,6 @@ webstrate.on("loaded", function(webstrateId) {
     }
 
     function init() {
-        console.log("Here first");
         // add the click listener to the slide notes in the document
         for(const child of slidesStructure.children) {
             child.addEventListener("click", (event) => { toggleSlideNoteState(event.target) });
@@ -451,16 +496,13 @@ webstrate.on("loaded", function(webstrateId) {
             var div = innerDoc.createElement("div");
             div.classList.add("slide-1");
             div.classList.add("slide");
-            /*var canvas = innerDoc.createElement("canvas");
-            canvas.className = "drawing-canvas";
-            div.appendChild(canvas);*/
             div.style.height = "100vh";
             innerDoc.body.appendChild(div);
         }
-        addListenerIframe(innerDoc);
-        addToolbarListeners();
         slideShow = innerDoc.body;
         showActiveSlide();
+        addListenerIframe(innerDoc);
+        addToolbarListeners();
     });
 
     init();
