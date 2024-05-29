@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
+setTimeout( () => {
+  console.log("Script loaded.")
   const iframe = document.getElementById("contentIframe");
   const getIframeDocument = (i) =>
     i.contentDocument || i.contentWindow.document;
@@ -16,8 +18,15 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const fontSizeInput = document.getElementById("fontSizeInput");
   const documentUrlInput = document.getElementById("documentUrlInput");
+  const loadButton = document.getElementById("loadButton");
+  const default_ws = "/frontpage";
 
-  iframe.src = documentUrlInput.value || "content.html";
+  if (documentUrlInput.value) {
+    iframe.src = documentUrlInput.value;
+  } else {
+    iframe.src = default_ws;
+    documentUrlInput.value = default_ws;
+  }
 
   function debounce(callback, wait) {
     let timeout;
@@ -28,11 +37,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  documentUrlInput.addEventListener("keyup", debounce( (event) => {
-    iframe.src = event.target.value || "content.html";
+  // documentUrlInput.addEventListener("keyup", debounce( (event) => {
+  //   iframe.src = event.target.value || default_ws;
+  //   // getIframeDocument(iframe).location.reload();
+  //   console.log("reload asked")
+  // }), 1000);
+
+  loadButton.addEventListener("click", (event) => {
+    iframe.src = documentUrlInput.value || default_ws;
     // getIframeDocument(iframe).location.reload();
     console.log("reload asked")
-  }), 1000);
+   })
 
 
   iframe.addEventListener("load", () => {
@@ -65,18 +80,27 @@ document.addEventListener("DOMContentLoaded", () => {
       return getIframeDocument(iframe).getElementById("mainCSSFile");
     }
 
+    // const initCSS = () => {
+    //   if (getMainCSSFile() !== null)
+    //     return;
+    //   let doc = getIframeDocument(iframe);
+    //   var fileref = doc.createElement("link");
+    //   fileref.id = "mainCSSFile"
+    //   fileref.rel = "stylesheet";
+    //   fileref.type = "text/css";
+    //   fileref.href = "/styles.css"; // no trailing slashs
+    //   doc.getElementsByTagName("head")[0].appendChild(fileref)
+    // }
+
     const initCSS = () => {
       if (getMainCSSFile() !== null)
         return;
       let doc = getIframeDocument(iframe);
-      var fileref = doc.createElement("link");
+      var fileref = doc.createElement("style");
       fileref.id = "mainCSSFile"
-      fileref.rel = "stylesheet";
-      fileref.type = "text/css";
-      fileref.href = "/styles.css"; // no trailing slashs
+      fileref.textContent = document.getElementById("styles.css").textContent;
       doc.getElementsByTagName("head")[0].appendChild(fileref)
     }
-
 
     getIframeDocument(iframe).ondragstart = (e) => {
       if (e.target.nodeName.toUpperCase() == "IMG") {
@@ -338,4 +362,4 @@ document.addEventListener("DOMContentLoaded", () => {
     initIframe();
 
   });
-});
+}, 1000);

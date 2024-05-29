@@ -38,8 +38,10 @@ input {
   margin-bottom: 5px;
 }
 
-.navbar {
-  width: 100%;
+.flex-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
 }
 
 #contentIframe {
