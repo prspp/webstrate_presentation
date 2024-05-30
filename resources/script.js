@@ -52,7 +52,6 @@ webstrate.on("loaded", function(webstrateId) {
             });
         }
         else if(outlineDiv.id == "slidesStructure") {
-            console.log("Structure");
             paragraph.addEventListener("click", (event) => {
                 const slideClass = event.target.classList[0];
                 const slide = document.getElementById("slidesNotes").getElementsByClassName(slideClass)[0];
@@ -182,6 +181,54 @@ webstrate.on("loaded", function(webstrateId) {
         }
     }
 
+    function updateSvgViewBox(svg, path) {
+        const bbox = path.getBBox();
+        svg.setAttribute("width", bbox.width);
+        svg.setAttribute("height", bbox.height);
+        svg.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+        svg.style.position = 'absolute';
+        svg.style.left = `${bbox.x}px`;
+        svg.style.top = `${bbox.y}px`;
+    }
+
+    const dragAndDropOnSvg = (element) => {
+        let offsetX, offsetY, isDragging;
+
+        const startDragging = (event) => {
+            isDragging= true;
+            const rect = element.getBoundingClientRect();
+            offsetX = event.clientX - rect.left;
+            offsetY = event.clientY - rect.top;
+            element.style.cursor = "grabbing";
+        }
+
+        const drag = (event) => {
+            if(!isDragging) return;
+            event.preventDefault();
+        }
+
+        const endDragging = (event) => {
+            isDragging = false;
+            const rect = activeSlideInMain.getBoundingClientRect();
+            const x = event.clientX - rect.left - offsetX;
+            const y = event.clientY - rect.top - offsetY;
+
+            const maxX = activeSlideInMain.clientWidth - element.clientWidth;
+            const maxY = activeSlideInMain.clientHeight - element.clientHeight;
+
+            const newX = `${Math.min(Math.max(0, x), maxX)}px`;
+            const newY = `${Math.min(Math.max(0, y), maxY)}px`;
+    
+            element.style.left = newX;
+            element.style.top = newY;
+        }
+
+        element.addEventListener("mousedown", startDragging);
+        element.addEventListener("mousemove", drag);
+        element.addEventListener("mouseup", endDragging);
+        element.addEventListener("mouseleave", endDragging);
+    }
+
     // handle drag events
     const setupDragEvents = (element) => {
         let offsetX, offsetY;
@@ -261,7 +308,6 @@ webstrate.on("loaded", function(webstrateId) {
     function showActiveSlideNotes() {
         var className = activeSlideInMain.classList[0];
         activeSlideNote = slidesNotes.getElementsByClassName(className)[0];
-        console.log(activeSlideNote);
         // get the element having the active class
         const classNames = activeSlideNote.className;
 
@@ -314,14 +360,6 @@ webstrate.on("loaded", function(webstrateId) {
         var newSlideInSlideShow = document.createElement("div");
         newSlideInSlideShow.style.height = "100vh";
         newSlideInSlideShow.className = "slide-" + nbSlidesCreated.toString() + " slide";
-
-        // canvas in the div
-        /*const newCanvas = document.createElement("canvas");
-        newCanvas.className = "drawing-canvas";
-        newCanvas.width = newSlideInSlideShow.offsetWidth;
-        newCanvas.height = newSlideInSlideShow.offsetHeight;
-        newSlideInSlideShow.appendChild(newCanvas);
-        setupDragEvents(newCanvas);*/
 
         // add this div as a child
         slideShow.appendChild(newSlideInSlideShow);
@@ -378,6 +416,8 @@ webstrate.on("loaded", function(webstrateId) {
         currentDrawing.setAttribute("width", "100%");
         currentDrawing.setAttribute("height", "100%");
         currentDrawing.style.position = "absolute";
+        currentDrawing.setAttribute("draggable", "true");
+        //setupDragEvents(currentDrawing);
 
         path = innerDoc.createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("fill", "none");
@@ -407,13 +447,31 @@ webstrate.on("loaded", function(webstrateId) {
         if (isDrawingMode) {
             activeSlideInMain.addEventListener("mousedown", startDrawing);
             activeSlideInMain.addEventListener("mousemove", draw);
-            activeSlideInMain.addEventListener("mouseup", () => isDrawing = false);
-            activeSlideInMain.addEventListener("mouseleave", () => isDrawing = false);
+            activeSlideInMain.addEventListener("mouseup", () =>  {
+                isDrawing = false;
+                var path = currentDrawing.getElementsByTagName("path")[0];
+                updateSvgViewBox(currentDrawing, path);
+                dragAndDropOnSvg(currentDrawing);
+            });
+            activeSlideInMain.addEventListener("mouseleave", () => { 
+                isDrawing = false;
+                var path = currentDrawing.getElementsByTagName("path")[0];
+                updateSvgViewBox(currentDrawing, path);
+                dragAndDropOnSvg(currentDrawing);
+            });
         } else {
             activeSlideInMain.removeEventListener("mousedown", startDrawing);
             activeSlideInMain.removeEventListener("mousemove", draw);
-            activeSlideInMain.removeEventListener("mouseup", () => isDrawing = false);
-            activeSlideInMain.removeEventListener("mouseleave", () => isDrawing = false);
+            activeSlideInMain.removeEventListener("mouseup", () => {
+                isDrawing = false;
+                var path = currentDrawing.getElementsByTagName("path")[0];
+                updateSvgViewBox(currentDrawing, path);
+            });
+            activeSlideInMain.removeEventListener("mouseleave", () => {
+                isDrawing = false;
+                var path = currentDrawing.getElementsByTagName("path")[0];
+                updateSvgViewBox(currentDrawing, path);
+            });
         }
     }
 
