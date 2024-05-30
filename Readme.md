@@ -3,6 +3,7 @@ In order to run the editor locally
 
 Then from the command line :
 git clone https://github.com/prspp/webstrate_presentation.git
+
 wfs --id=presentationTool --host=web:strate@localhost:7007 webstrate_presentation/ --insecure
 
 The last command will mount the folder in the file system and upload your local changes to the server
