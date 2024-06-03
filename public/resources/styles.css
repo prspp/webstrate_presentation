@@ -3,13 +3,10 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
 }
 
-.container, .container-section, .new-slide, .font-btn, .toolbar, .btn {
+.container, .container-section, .new-slide, .font-btn, .toolbar, .btn, .sidebar {
     border-radius: 10px;
 }
 
@@ -17,8 +14,21 @@ input {
   box-sizing: border-box;
 }
 
+.clickable-btn {
+  background-color: #ffa500;
+}
+
+.searchable-btn {
+    background-color: royalblue;
+}
+
+.indicator-btn {
+  color: white;
+  background-color: mediumvioletred;
+}
+
+
 .btn {
-    background-color: #ffa500;
     border: none;
     padding: 10px 20px;
     color: white;
@@ -91,13 +101,11 @@ input {
 }
 
 .content-box {
-    background-color: #fff;
     padding: 20px;
     margin: 10px;
-    margin-top: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 10px;
-    width: 100%;
+    width: calc(100% - 20px);
     height: 100%;
     box-sizing: border-box;
 }
@@ -125,10 +133,9 @@ p {
 }
 
 .content-zone {
-
   border: 2px solid #ccc;
   position: relative;
-  margin: 20px auto;
+/*  margin: 20px auto;*/
   /*    padding: 20px;*/
   background-color: #f9f9f9;
 }

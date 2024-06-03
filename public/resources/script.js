@@ -20,6 +20,7 @@ setTimeout( () => {
   const documentUrlInput = document.getElementById("documentUrlInput");
   const loadButton = document.getElementById("loadButton");
   const default_ws = "/frontpage";
+  let NContentZone = 0;
 
   if (documentUrlInput.value) {
     iframe.src = documentUrlInput.value;
@@ -64,16 +65,15 @@ setTimeout( () => {
     let currentContentZone = null;
 
     const getContainer = () => {
-      return getIframeDocument(iframe).getElementById("container");
+      return getIframeDocument(iframe).body;
     }
 
     const initContainer = () => {
       if (getContainer() !== null)
         return;
       let doc = getIframeDocument(iframe);
-      const container = doc.createElement("div");
-      container.id = "container"
-      doc.body.appendChild(container);
+      const container = doc.createElement("body");
+      doc.appendChild(container);
     }
 
     const getMainCSSFile = () => {
@@ -174,7 +174,6 @@ setTimeout( () => {
 
     const addContentZone = () => {
       const doc = getIframeDocument(iframe);
-      // console.log(doc.location)
       const container = getContainer();
       const newContentZone = doc.createElement("div");
       const newCanvas = doc.createElement("canvas");
@@ -182,6 +181,7 @@ setTimeout( () => {
       container.appendChild(newContentZone);
       newCanvas.className = "drawing-canvas";
       newContentZone.className = "content-zone";
+      newContentZone.id = NContentZone++;
       newCanvas.width = newContentZone.offsetWidth;
       newCanvas.height = newContentZone.offsetHeight;
       newContentZone.addEventListener("mousedown", selectContentZone);

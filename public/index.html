@@ -1,4 +1,4 @@
-<html lang="en" __wid="Q9dj4dVm"><head __wid="MsdvuyD6">
+<html __wid="Q9dj4dVm" lang="en"><head __wid="MsdvuyD6">
     <meta charset="UTF-8" __wid="WcDBT7pw"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" __wid="kWiHS9tj"/>
     <title __wid="g2DrexBC">Sketchup Tool</title>
@@ -9,16 +9,17 @@
 
     <div class="container flex-column bg-white" __wid="GxRxKayE">
         <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
-            <input type="text" id="documentUrlInput" class="btn" placeholder="Enter URL" __wid="ukrrDARq"/>
-            <button id="loadButton" class="btn" __wid="FypRC8PC">Load</button>
-            <button id="resetContentZonesBtn" class="btn" __wid="ERZ3knt8">Reset</button>
-            <button id="addContentZoneBtn" class="btn" __wid="maCcgVYG">Add Content Zone</button>
-            <button id="addTextBoxBtn" class="btn" __wid="ZpGtFjKa">Add Text Box</button>
-            <button id="addImageBtn" class="btn" __wid="Zc98bHUT">Add Image</button>
+            <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
+            <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">Load</button>
+            <button id="resetContentZonesBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset</button>
+            <button id="addContentZoneBtn" class="btn clickable-btn" __wid="maCcgVYG">Add Content Zone</button>
+            <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">Add Text Box</button>
+            <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">Add Image</button>
             <input type="number" id="fontSizeInput" min="8" max="72" value="16" placeholder="Font Size" class="font-buttons" __wid="mwD3AFy4"/>
             <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
             <input type="range" id="brushThicknessSlider" min="1" max="100" value="2" class="font-buttons" __wid="pNT6WywR"/>
-            <button id="toggleDrawingModeBtn" class="btn" __wid="fPfS6VMF">Toggle Drawing Mode</button>
+            <button id="toggleDrawingModeBtn" class="btn clickable-btn" __wid="fPfS6VMF">Toggle Drawing Mode</button>
+            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: visible;" class="btn indicator-btn">Drawing Mode Enabled</div>
         </div>
 
         <div class="flex-row" __wid="GayMuR8V" style="height: 100%;">
@@ -39,13 +40,13 @@
 
             <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
                 <div class="flex-center container-section bg-gray" __wid="KkJFYrV4">
-                    <div id="contentIframeContainer" class="slide content-box" __wid="63rbwCLp">
-                        <iframe id="contentIframe" src="/frontpage" __wid="ezYDf2iW"></iframe>
-                    </div>
-                </div>
+                    
+                <div id="contentIframeContainer" class="content-box bg-white" __wid="63rbwCLp">
+                        <iframe id="contentIframe" src="/frontpage" scrolling="yes" __wid="ezYDf2iW"></iframe>
+                    </div></div>
 
                 <div class="flex-row container-section bg-gray" __wid="RuW5ALa7">
-                    <div class="outline-locked content-box" __wid="MdJp4dju" contenteditable>
+                    <div class="content-box bg-white" __wid="MdJp4dju" contenteditable id="outline-locked">
                         <h3 __wid="KuHtewrD">Outline Locked</h3>
                         <ul __wid="uu4hjdre">
                             <li __wid="KETqPG4Q">Outline Title
@@ -58,11 +59,17 @@
                             <li __wid="2aP23Zik">Description</li></ul><ul __wid="myCHRWQm">
                         </ul>
                     </div>
-                    <div class="comments content-box" __wid="bXgg6vyT" contenteditable>
+                    <div class="content-box bg-white" __wid="bXgg6vyT" contenteditable id="comments">
                         <h3 __wid="nRKnuK9a">Comments</h3>
                         <p __wid="iFi82Zy5">Write any comments about the outline.</p>
                     </div>
                 </div>
+            </div>
+            <div class="sidebar bg-gray" __wid="iCjVqwRe">
+              <div class="content-box bg-white" __wid="bXgg6vyT" contenteditable id>
+                  <h3 __wid="nRKnuK9a">Questions from the audience</h3>
+                  <p __wid="iFi82Zy5">Write any comments about the outline.</p>
+              </div>
             </div>
         </div>
     </div>
