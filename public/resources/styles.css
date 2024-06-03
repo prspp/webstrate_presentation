@@ -6,7 +6,7 @@ body {
     height: 100vh;
 }
 
-.container, .container-section, .new-slide, .font-btn, .toolbar, .btn, .sidebar {
+.container, .container-section, .font-btn, .toolbar, .btn, .sidebar {
     border-radius: 10px;
 }
 
@@ -26,7 +26,6 @@ input {
   color: white;
   background-color: mediumvioletred;
 }
-
 
 .btn {
     border: none;
@@ -70,8 +69,6 @@ input {
     align-items: center;
 }
 
-
-
 .container-section {
     width: 100%;
 }
@@ -102,8 +99,8 @@ input {
     margin: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 10px;
-    width: calc(100% - 20px);
-    height: 100%;
+    width: calc(100% - 20px); /* calc is required to prevent the margin overflowing the parent */
+    height: calc(100% - 20px); 
     box-sizing: border-box;
 }
 
