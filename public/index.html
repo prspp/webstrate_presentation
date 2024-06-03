@@ -4,6 +4,7 @@
     <title __wid="g2DrexBC">Sketchup Tool</title>
     <script id="script.js" __wid="JZCZ2SRQ"></script>
     <style rel="stylesheet" __wid="CRn7fgC3" id="styles.css"></style>
+
 </head>
 <body class __wid="SJmSnCLa">
 
@@ -12,7 +13,6 @@
             <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
             <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">Load</button>
             <button id="resetContentZonesBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset</button>
-            <button id="addContentZoneBtn" class="btn clickable-btn" __wid="maCcgVYG">Add Content Zone</button>
             <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">Add Text Box</button>
             <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">Add Image</button>
             <input type="number" id="fontSizeInput" min="8" max="72" value="16" placeholder="Font Size" class="font-buttons" __wid="mwD3AFy4"/>
@@ -23,8 +23,8 @@
         </div>
 
         <div class="flex-row" __wid="GayMuR8V" style="height: 100%;">
-            <div class="sidebar bg-gray container-section" __wid="iCjVqwRe">
-                <div class="slide-preview" __wid="C5zpjFPj" contenteditable>
+            <div class="sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe">
+                <div class="content-box bg-white" __wid="C5zpjFPj" contenteditable>
                     <h3 __wid="HbPuqDZD">Outline of Slide 1</h3>
                     <ul __wid="6r9XPKYK">
                         <li __wid="5Bnurcpb">Bullet</li>
@@ -33,9 +33,11 @@
                     </ul>
                     <p __wid="nHZSAnCt">Description</p>
                 </div>
-                <div class="slide-preview" __wid="PfvSqmb2" contenteditable>
+                <div class="content-box bg-white" __wid="PfvSqmb2" contenteditable>
                     <h3 __wid="tFcYwS2K">Outline of Slide 2</h3><div __wid="7kbmDyX7">a<br __wid="SigBVVpU"/></div>
                 </div>
+                    <button id="addContentZoneBtn" class="btn clickable-btn" __wid="maCcgVYG">Add Content Zone</button>
+
             </div>
 
             <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
@@ -63,6 +65,7 @@
                         <h3 __wid="nRKnuK9a">Comments</h3>
                         <p __wid="iFi82Zy5">Write any comments about the outline.</p>
                     </div>
+
                 </div>
             </div>
             <div class="sidebar bg-gray" __wid="iCjVqwRe">

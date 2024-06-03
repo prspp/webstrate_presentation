@@ -61,12 +61,16 @@ input {
     height: 100vh;
 }
 
-.flex-center {
-    flex-grow: 1;
+.flex-center-horizontally {
     display: flex;
     justify-content: center;
+}
+.flex-center-vertically {
+    display: flex;
     align-items: center;
 }
+
+
 
 .container-section {
     width: 100%;
@@ -91,13 +95,6 @@ input {
     border-bottom: 1px solid #ccc;
     width: 100%;
     box-sizing: border-box;
-}
-
-.slide-preview {
-    background-color: #fefefe;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
 }
 
 .content-box {
