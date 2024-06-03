@@ -1,35 +1,70 @@
-<html lang="en" __wid="iAsikVy6"><head __wid="rR5QdyjZ">
-    <meta charset="UTF-8" __wid="CgcQqTC5"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" __wid="Abg4kGUU"/>
-    <title __wid="BVyDsVDF">Sketchup Tool</title>
-    <!-- <link rel="stylesheet" href="./resources/styles.css" __wid="MEQLPn72"/> -->
-    <!-- <script src="./resources/script.js" __wid="CEhPnJk7"></script> -->
+<html lang="en" __wid="Q9dj4dVm"><head __wid="MsdvuyD6">
+    <meta charset="UTF-8" __wid="WcDBT7pw"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" __wid="kWiHS9tj"/>
+    <title __wid="g2DrexBC">Sketchup Tool</title>
     <script id="script.js" __wid="JZCZ2SRQ"></script>
     <style rel="stylesheet" __wid="CRn7fgC3" id="styles.css"></style>
-  </head><body __wid="x6FAaCKx">
-    <div class="main" __wid="YHxSQ9mH">
-      <div class="flex-left" __wid="4q2XMXPc">
-         <input type="text" id="documentUrlInput" value __wid="YwrWeDnY"/>
-         <button __wid="iwxxuqsN" id="loadButton">Load</button>
-       </div>
-      <div class="editor" __wid="d4T4CHbt">
-        <div class="toolbar" __wid="bFngpzRa">
-          <button id="resetContentZonesBtn" __wid="Fb9GFgH2">Reset</button>
+</head>
+<body class __wid="SJmSnCLa">
 
-          <button id="addContentZoneBtn" __wid="n73vjF2J">Add Content Zone</button>
-          <button id="addTextBoxBtn" __wid="KkwxxhFS">Add Text Box</button>
-          <button id="addImageBtn" __wid="FEf3ixK9">Add Image</button>
-
-          <input type="number" id="fontSizeInput" min="8" max="72" value="16" placeholder="Font Size" __wid="Ntx9Ktft"/>
-
-          <input type="color" id="brushColorPicker" value="#000000" __wid="gUgEqSu8"/>
-          <input type="range" id="brushThicknessSlider" min="1" max="100" value="2" __wid="LBe337gg"/>
-          <button id="toggleDrawingModeBtn" __wid="F7UEPjgJ">Toggle Drawing Mode</button>
-          <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: visible;">Drawing Mode Enabled</div>
+    <div class="container flex-column bg-white" __wid="GxRxKayE">
+        <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
+            <input type="text" id="documentUrlInput" class="btn" placeholder="Enter URL" __wid="ukrrDARq"/>
+            <button id="loadButton" class="btn" __wid="FypRC8PC">Load</button>
+            <button id="resetContentZonesBtn" class="btn" __wid="ERZ3knt8">Reset</button>
+            <button id="addContentZoneBtn" class="btn" __wid="maCcgVYG">Add Content Zone</button>
+            <button id="addTextBoxBtn" class="btn" __wid="ZpGtFjKa">Add Text Box</button>
+            <button id="addImageBtn" class="btn" __wid="Zc98bHUT">Add Image</button>
+            <input type="number" id="fontSizeInput" min="8" max="72" value="16" placeholder="Font Size" class="font-buttons" __wid="mwD3AFy4"/>
+            <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
+            <input type="range" id="brushThicknessSlider" min="1" max="100" value="2" class="font-buttons" __wid="pNT6WywR"/>
+            <button id="toggleDrawingModeBtn" class="btn" __wid="fPfS6VMF">Toggle Drawing Mode</button>
         </div>
-        <iframe id="contentIframe" src="/frontpageb" __wid="NsQpUtfg"></iframe>
-      </div>
+
+        <div class="flex-row" __wid="GayMuR8V" style="height: 100%;">
+            <div class="sidebar bg-gray container-section" __wid="iCjVqwRe">
+                <div class="slide-preview" __wid="C5zpjFPj" contenteditable>
+                    <h3 __wid="HbPuqDZD">Outline of Slide 1</h3>
+                    <ul __wid="6r9XPKYK">
+                        <li __wid="5Bnurcpb">Bullet</li>
+                        <li __wid="TzgPQyWH">Bullet</li>
+                        <li __wid="xRSEhn8u">Bullet</li>
+                    </ul>
+                    <p __wid="nHZSAnCt">Description</p>
+                </div>
+                <div class="slide-preview" __wid="PfvSqmb2" contenteditable>
+                    <h3 __wid="tFcYwS2K">Outline of Slide 2</h3><div __wid="7kbmDyX7">a<br __wid="SigBVVpU"/></div>
+                </div>
+            </div>
+
+            <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
+                <div class="flex-center container-section bg-gray" __wid="KkJFYrV4">
+                    <div id="contentIframeContainer" class="slide content-box" __wid="63rbwCLp">
+                        <iframe id="contentIframe" src="/frontpage" __wid="ezYDf2iW"></iframe>
+                    </div>
+                </div>
+
+                <div class="flex-row container-section bg-gray" __wid="RuW5ALa7">
+                    <div class="outline-locked content-box" __wid="MdJp4dju" contenteditable>
+                        <h3 __wid="KuHtewrD">Outline Locked</h3>
+                        <ul __wid="uu4hjdre">
+                            <li __wid="KETqPG4Q">Outline Title
+                                <ul __wid="CGZVWkik">
+                                    <li __wid="XPgVzpAa">Bullet</li>
+                                    <li __wid="dQFMucRM">Bullet</li>
+                                    <li __wid="FzSVgAkw">Bullet</li>
+                                </ul>
+                            </li>
+                            <li __wid="2aP23Zik">Description</li></ul><ul __wid="myCHRWQm">
+                        </ul>
+                    </div>
+                    <div class="comments content-box" __wid="bXgg6vyT" contenteditable>
+                        <h3 __wid="nRKnuK9a">Comments</h3>
+                        <p __wid="iFi82Zy5">Write any comments about the outline.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  
 
 </body></html>

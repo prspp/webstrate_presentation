@@ -102,6 +102,7 @@ setTimeout( () => {
       doc.getElementsByTagName("head")[0].appendChild(fileref)
     }
 
+
     getIframeDocument(iframe).ondragstart = (e) => {
       if (e.target.nodeName.toUpperCase() == "IMG") {
         return false;
@@ -193,14 +194,12 @@ setTimeout( () => {
       const doc = getIframeDocument(iframe);
       const textBox = doc.createElement("div");
       textBox.className = "text-box";
-      textBox.style.top = "50px";
-      textBox.style.left = "50px";
       textBox.contentEditable = true;
       textBox.style.zIndex = currentZIndex++;
-      currentContentZone.appendChild(textBox);
       textBox.style.fontSize = `${fontSize}px`; // Apply the current font size
       textBox.focus();
       setupDragEvents(textBox);
+      currentContentZone.appendChild(textBox);
     };
 
     const addImage = () => {
@@ -211,12 +210,10 @@ setTimeout( () => {
         const imageBox = doc.createElement("img");
         imageBox.src = imageUrl;
         imageBox.className = "image-box";
-        imageBox.style.top = "50px";
-        imageBox.style.left = "50px";
         imageBox.style.width = "200px"; // Change width as desired
         imageBox.style.zIndex = currentZIndex++;
-        currentContentZone.appendChild(imageBox);
         setupDragEvents(imageBox);
+        currentContentZone.appendChild(imageBox);
       }
     };
 
