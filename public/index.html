@@ -21,12 +21,12 @@
             <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
             <input type="range" id="brushThicknessSlider" min="1" max="100" value="2" class="font-buttons" __wid="pNT6WywR"/>
             <button id="toggleDrawingModeBtn" class="btn clickable-btn" __wid="fPfS6VMF">Toggle Drawing Mode</button>
-            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: visible;" class="btn indicator-btn">Drawing Mode Enabled</div>
+            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">Drawing Mode Enabled</div>
         </div>
 
         <div class="flex-row" __wid="GayMuR8V" style="height: 100%;">
-            <div class="sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe">
-                <div class="content-box bg-white" __wid="C5zpjFPj" contenteditable>
+            <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe">
+                <div class="content-box ovscroll bg-white slide-preview" __wid="C5zpjFPj" contenteditable>
                     <h3 __wid="HbPuqDZD">Outline of Slide 1</h3>
                     <ul __wid="6r9XPKYK">
                         <li __wid="5Bnurcpb">Bullet</li>
@@ -35,7 +35,7 @@
                     </ul>
                     <p __wid="nHZSAnCt">Description</p>
                 </div>
-                <div class="content-box bg-white" __wid="PfvSqmb2" contenteditable>
+                <div class="content-box ovscroll bg-white slide-preview" __wid="PfvSqmb2" contenteditable>
                     <h3 __wid="tFcYwS2K">Outline of Slide 2</h3><div __wid="7kbmDyX7">a<br __wid="SigBVVpU"/></div>
                 </div>
                     <button id="addContentZoneBtn" class="btn clickable-btn" style="margin-bottom: 10px;" __wid="maCcgVYG">Add Content Zone</button>
@@ -43,14 +43,14 @@
             </div>
 
             <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
-                <div class="flex-center container-section bg-gray" __wid="KkJFYrV4">
+                <div class="flex-center container-section bg-gray" __wid="KkJFYrV4" style="padding: 100px;box-sizing: border-box;">
                     
                 <div id="contentIframeContainer" class="content-box bg-white" __wid="63rbwCLp">
                         <iframe id="contentIframe" src="/frontpage" scrolling="yes" __wid="ezYDf2iW"></iframe>
                     </div></div>
 
-                <div class="flex-row container-section bg-gray" __wid="RuW5ALa7">
-                    <div class="content-box bg-white" __wid="MdJp4dju" contenteditable id="outline-locked">
+                <div class="flex-row container-section bg-gray horizontal-sidebar" __wid="RuW5ALa7">
+                    <div class="content-box ovscroll bg-white" __wid="MdJp4dju" contenteditable id="outline-locked">
                         <h3 __wid="KuHtewrD">Outline Locked</h3>
                         <ul __wid="uu4hjdre">
                             <li __wid="KETqPG4Q">Outline Title
@@ -60,20 +60,22 @@
                                     <li __wid="FzSVgAkw">Bullet</li>
                                 </ul>
                             </li>
-                            <li __wid="2aP23Zik">Description</li></ul><ul __wid="myCHRWQm">
+                            <li __wid="2aP23Zik">Description</li></ul><div __wid="GtP4iLxV"><br __wid="QA39FSWg"/></div><div __wid="M7fTYMGw"><br __wid="UEyXRyLD"/></div><ul __wid="myCHRWQm">
                         </ul>
                     </div>
-                    <div class="content-box bg-white" __wid="bXgg6vyT" contenteditable id="comments">
+                    <div class="content-box ovscroll bg-white" __wid="bXgg6vyT" contenteditable id="comments">
                         <h3 __wid="nRKnuK9a">Comments</h3>
-                        <p __wid="iFi82Zy5">Write any comments about the outline.</p>
+                        <p __wid="iFi82Zy5">Write any comments about the outline.</p><p __wid="bhmht4rc"><br __wid="feQLBbYT"/></p><p __wid="9hvmagvS"><br __wid="PSMTu4VP"/></p><p __wid="MttzKgJ4"><br __wid="7RmTqqnk"/></p><p __wid="fE9bhWrP">.</p><p __wid="wWbNnA78">.<br __wid="2auycHug"/></p><p __wid="6QsMymjC"><br __wid="BqZ6K6nc"/></p><p __wid="beuQFWvE"><br __wid="aZaNBv8r"/></p><p __wid="mjeEMhTH"><br __wid="6LV8rHvc"/></p><p __wid="WtV4tWRS"><br __wid="VdJ7NL9x"/></p><p __wid="vvx3Lvhd"><br __wid="7xPebkGG"/></p>
                     </div>
-
                 </div>
             </div>
-            <div class="sidebar bg-gray" __wid="iCjVqwRe">
-              <div class="content-box bg-white" __wid="bXgg6vyT" contenteditable id>
-                  <h3 __wid="nRKnuK9a">Questions from the audience</h3>
-                  <p __wid="iFi82Zy5">Write any comments about the outline.</p>
+            <div class="vertical-sidebar bg-gray flex-column flex-center-vertically container" __wid="iCjVqwRe">
+              <div class="bg-white flex-row flex-center-horizontally" __wid="bXgg6vyT" style="width: fit-content;padding: 5px;border-radius: 10px;box-sizing: border-box;">
+                    <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">Review Notes</div>
+                    <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9">Questions</div>
+              </div>
+              <div class="content-box ovscroll bg-white" __wid="bXgg6vyT" contenteditable>
+                  <p __wid="iFi82Zy5">Lorem Ipsum</p>
               </div>
             </div>
         </div>

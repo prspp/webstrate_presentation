@@ -5,6 +5,13 @@ body {
     background-color: #f5f5f5;
     height: 100vh;
 }
+.bg-gray {
+    background-color: #e8e8e8;
+}
+
+.bg-white {
+    background-color: #fefefe;
+}
 
 .container, .container-section, .font-btn, .toolbar, .btn, .sidebar {
     border-radius: 10px;
@@ -12,6 +19,14 @@ body {
 
 input {
   box-sizing: border-box;
+}
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
 }
 
 .clickable-btn {
@@ -27,13 +42,10 @@ input {
   background-color: mediumvioletred;
 }
 
-.btn {
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    cursor: pointer;
-    margin-right: 10px;
+.alternative-btn {
+  color: black;
 }
+
 
 .font-btn {
     background-color: #fff;
@@ -54,6 +66,7 @@ input {
     gap: 10px;
 }
 
+
 .container {
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -71,18 +84,20 @@ input {
 
 .container-section {
     width: 100%;
+    height: 100%;
 }
 
-.bg-gray {
-    background-color: #e8e8e8;
+
+.horizontal-sidebar {
+    height: 25%;
 }
 
-.bg-white {
-    background-color: #fefefe;
-}
-
-.sidebar {
+.vertical-sidebar {
     width: 25%;
+}
+
+.ovscroll {
+    overflow: scroll;
 }
 
 .toolbar {
@@ -104,6 +119,10 @@ input {
     box-sizing: border-box;
 }
 
+.slide-preview {
+    height: fit-content;
+    min-height: 200px;
+}
 h3 {
     margin-top: 0;
 }
@@ -129,6 +148,8 @@ p {
 .content-zone {
   border: 2px solid #ccc;
   position: relative;
+  width: 100%;
+  height: 100%;
 /*  margin: 20px auto;*/
   /*    padding: 20px;*/
   background-color: #f9f9f9;

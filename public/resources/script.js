@@ -21,6 +21,7 @@ setTimeout( () => {
   const loadButton = document.getElementById("loadButton");
   const default_ws = "/frontpage";
   let NContentZone = 0;
+  var currentDrawing = null, currentPath = null, path;
 
   if (documentUrlInput.value) {
     iframe.src = documentUrlInput.value;
@@ -176,16 +177,18 @@ setTimeout( () => {
       const doc = getIframeDocument(iframe);
       const container = getContainer();
       const newContentZone = doc.createElement("div");
-      const newCanvas = doc.createElement("canvas");
-      newContentZone.appendChild(newCanvas);
       container.appendChild(newContentZone);
-      newCanvas.className = "drawing-canvas";
       newContentZone.className = "content-zone";
       newContentZone.id = NContentZone++;
-      newCanvas.width = newContentZone.offsetWidth;
-      newCanvas.height = newContentZone.offsetHeight;
       newContentZone.addEventListener("mousedown", selectContentZone);
-      setupCanvasEvents(newCanvas);
+
+      // const newCanvas = doc.createElement("canvas");
+      // newCanvas.className = "drawing-canvas";
+      // newContentZone.appendChild(newCanvas);
+      // newCanvas.width = newContentZone.offsetWidth;
+      // newCanvas.height = newContentZone.offsetHeight;
+      // setupCanvasEvents(newCanvas);
+
       return newContentZone;
     };
 
@@ -217,12 +220,12 @@ setTimeout( () => {
       }
     };
 
-    const setupCanvasEvents = (canvas) => {
-      // canvas.addEventListener("mousedown", startDrawing);
-      // canvas.addEventListener("mousemove", draw);
-      // canvas.addEventListener("mouseup", stopDrawing);
-      // canvas.addEventListener("mouseleave", stopDrawing);
-    };
+    // const setupCanvasEvents = (canvas) => {
+    //   canvas.addEventListener("mousedown", startDrawing);
+    //   canvas.addEventListener("mousemove", draw);
+    //   canvas.addEventListener("mouseup", stopDrawing);
+    //   canvas.addEventListener("mouseleave", stopDrawing);
+    // };
 
     const setupDragEvents = (element) => {
       element.addEventListener("mousedown", (event) => {
@@ -253,50 +256,77 @@ setTimeout( () => {
       });
     };
 
-
+    const toggleDrawingModeIndicator = (drawingMode) => {
+        drawingModeIndicator.style.visibility = drawingMode
+        ? "visible"
+        : "hidden"; // Show/hide indicator
+    }
 
     const toggleDrawingMode = () => {
       if (!currentContentZone) return;
       isDrawingMode = !isDrawingMode;
-      drawingModeIndicator.style.visibility = isDrawingMode
-        ? "visible"
-        : "hidden"; // Show/hide indicator
-      const canvas = currentContentZone.querySelector(".drawing-canvas");
-      canvas.style.zIndex = isDrawingMode ? currentZIndex++ : 0;
+      toggleDrawingModeIndicator(isDrawingMode)
+      // const canvas = currentContentZone.querySelector(".drawing-canvas");
+      // canvas.style.zIndex = isDrawingMode ? currentZIndex++ : 0;
       if (isDrawingMode) {
-        canvas.addEventListener("mousedown", startDrawing);
-        canvas.addEventListener("mousemove", draw);
-        canvas.addEventListener("mouseup", stopDrawing);
-        canvas.addEventListener("mouseleave", stopDrawing);
+        currentContentZone.addEventListener("mousedown", startDrawing);
+        currentContentZone.addEventListener("mousemove", draw);
+        currentContentZone.addEventListener("mouseup", stopDrawing);
+        currentContentZone.addEventListener("mouseleave", stopDrawing);
       } else {
-        canvas.removeEventListener("mousedown", startDrawing);
-        canvas.removeEventListener("mousemove", draw);
-        canvas.removeEventListener("mouseup", stopDrawing);
-        canvas.removeEventListener("mouseleave", stopDrawing);
+        currentContentZone.removeEventListener("mousedown", startDrawing);
+        currentContentZone.removeEventListener("mousemove", draw);
+        currentContentZone.removeEventListener("mouseup", stopDrawing);
+        currentContentZone.removeEventListener("mouseleave", stopDrawing);
       }
     };
 
     const startDrawing = (event) => {
       if (!isDrawingMode) return;
       isDrawing = true;
-      const canvas = event.target;
-      const ctx = canvas.getContext("2d");
-      ctx.beginPath();
-      ctx.strokeStyle = brushColor;
-      ctx.lineWidth = brushThickness;
-      ctx.moveTo(event.offsetX, event.offsetY);
+        currentPath = "";
+        var innerDoc = iframe.contentWindow.document;
+        currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
+        currentDrawing.setAttribute("width", "100%");
+        currentDrawing.setAttribute("height", "100%");
+        currentDrawing.style.position = "absolute";
+        currentDrawing.setAttribute("draggable", "true");
+        //setupDragEvents(currentDrawing);
+
+        path = innerDoc.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", brushColor);
+        path.setAttribute("stroke-width", brushThickness.toString());
+        currentDrawing.appendChild(path);
+        currentContentZone.appendChild(currentDrawing);
+        const rec = currentContentZone.getBoundingClientRect();
+        const x = event.clientX - rec.left;
+        const y = event.clientY - rec.top;
+        currentPath += `M ${x},${y}`;
     };
 
     const draw = (event) => {
       if (!isDrawing) return;
-      const canvas = event.target;
-      const ctx = canvas.getContext("2d");
-      ctx.lineTo(event.offsetX, event.offsetY);
-      ctx.stroke();
+        const rec = currentContentZone.getBoundingClientRect();
+        const x = event.clientX - rec.left;
+        const y = event.clientY - rec.top;
+        currentPath += `L ${x},${y} `;
+        path.setAttribute("d", currentPath);
     };
-
+    function updateSvgViewBox(svg, path) {
+        const bbox = path.getBBox();
+        svg.setAttribute("width", bbox.width);
+        svg.setAttribute("height", bbox.height);
+        svg.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+        svg.style.position = 'absolute';
+        svg.style.left = `${bbox.x}px`;
+        svg.style.top = `${bbox.y}px`;
+    }
     const stopDrawing = () => {
       isDrawing = false;
+      var path = currentDrawing.getElementsByTagName("path")[0];
+      setupDragEvents(path);
+      updateSvgViewBox(currentDrawing, path)
     };
 
     const changeBrushColor = () => {
@@ -346,6 +376,7 @@ setTimeout( () => {
     const initIframe = async () => {
         // Wait webstrate to load
         await new Promise(r => setTimeout(r, 2000));
+        toggleDrawingModeIndicator(isDrawingMode);
         initCSS();
         initContainer();
         initCurrentContentZone();
