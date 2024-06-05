@@ -22,34 +22,29 @@
             <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
             <input id="brushThicknessSlider" class="font-buttons" __wid="pNT6WywR" type="range" min="1" max="100" value="2"/>
             <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">Toggle Drawing Mode</button>
-            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: visible;" class="btn indicator-btn">Drawing Mode Enabled</div>
+            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">Drawing Mode Enabled</div>
         </div>
 
-        <div class="flex-row" __wid="GayMuR8V" style="height: 100%;">
-            <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe">
-                <div class="content-box ovscroll bg-white slide-preview" __wid="C5zpjFPj" contenteditable>
-                    <h3 __wid="HbPuqDZD">Outline of Slide 1</h3>
-                    <ul __wid="6r9XPKYK">
-                        <li __wid="5Bnurcpb">Bullet</li>
-                        <li __wid="TzgPQyWH">Bullet</li>
-                        <li __wid="xRSEhn8u">Bullet</li>
-                    </ul>
-                    <p __wid="nHZSAnCt">Description</p>
+        <div class="flex-row" __wid="GayMuR8V" style>
+            <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe" style="/*! padding: 10px; */">
+                <div class="content-box bg-white slide-preview-container" __wid="C5zpjFPj" contenteditable>
+                    <iframe src="/frontpage" scrolling="no" __wid="ezYDf2iW" id="p1" class="slide-preview"></iframe>
                 </div>
-                <div class="content-box ovscroll bg-white slide-preview" __wid="PfvSqmb2" contenteditable>
-                    <h3 __wid="tFcYwS2K">Outline of Slide 2</h3><div __wid="7kbmDyX7">a<br __wid="SigBVVpU"/></div>
+                <div class="content-box bg-white slide-preview-container" __wid="PfvSqmb2" contenteditable>
+                    <iframe __wid="ezYDf2iW" scrolling="no" id="p2" src="/frontpage" class="slide-preview"></iframe>
                 </div>
-                    <button id="addSlideBtn" class="btn clickable-btn" style="margin-bottom: 10px;" __wid="maCcgVYG">Add Slide</button>
-
+                <button id="addSlideBtn" class="btn clickable-btn" style="margin-bottom: 10px;" __wid="maCcgVYG">Add Slide</button>
             </div>
 
-            <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
-                <div class="flex-center container-section bg-gray" __wid="KkJFYrV4" style="padding: 100px;box-sizing: border-box;">
-                    
-                <div id="contentIframeContainer" class="content-box bg-white" __wid="63rbwCLp">
-                        <iframe id="contentIframe" src="/frontpage" scrolling="no" __wid="ezYDf2iW"></iframe>
-                    </div></div>
 
+            <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
+                <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4" style="/*! padding: 100px; */box-sizing: border-box;">
+                    
+                    <!-- <div id="contentIframeContainer" class="content-box bg-white slide-main-view" __wid="63rbwCLp"> -->
+                        <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpage" scrolling="no" __wid="ezYDf2iW" style="/*! zoom: 0.8; */transform: scale(0.8);/*! transform-origin: 0 0; */"></iframe>
+                    <!-- </div> -->
+                </div>
+<!--
                 <div class="flex-row container-section bg-gray horizontal-sidebar" __wid="RuW5ALa7">
                     <div class="content-box ovscroll bg-white" __wid="MdJp4dju" contenteditable id="outline-locked">
                         <h3 __wid="KuHtewrD">Outline Locked</h3>
@@ -70,6 +65,8 @@
                     </div>
                 </div>
             </div>
+-->
+        </div>
             <div class="vertical-sidebar bg-gray flex-column flex-center-vertically container" __wid="iCjVqwRe">
               <div class="bg-white flex-row flex-center-horizontally" __wid="bXgg6vyT" style="width: fit-content;padding: 5px;border-radius: 10px;box-sizing: border-box;">
                     <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">Review Notes</div>
@@ -79,7 +76,6 @@
                   <p __wid="iFi82Zy5">Lorem Ipsum</p>
               </div>
             </div>
-        </div>
     </div>
 
-</body></html>
+</div></body></html>
