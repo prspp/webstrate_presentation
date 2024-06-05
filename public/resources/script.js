@@ -199,7 +199,7 @@ setTimeout( () => {
       newCanvas.classList.add("drawing-canvas");
       newCanvas.setAttribute("width", "100%");
       newCanvas.setAttribute("height", "100%");
-      newCanvas.style.position = "absolute";
+      // newCanvas.style.position = "absolute";
       setupCanvasEvents(newCanvas);
 
       return newSlide;
