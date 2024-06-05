@@ -14,14 +14,15 @@
         <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
             <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
             <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">Load</button>
-            <button id="resetContentZonesBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset</button>
+            <button id="resetSlidesBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset All Slides</button>
+            <button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset All Drawings</button>
             <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">Add Text Box</button>
             <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">Add Image</button>
-            <input type="number" id="fontSizeInput" min="8" max="72" value="16" placeholder="Font Size" class="font-buttons" __wid="mwD3AFy4"/>
+            <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
             <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
-            <input type="range" id="brushThicknessSlider" min="1" max="100" value="2" class="font-buttons" __wid="pNT6WywR"/>
-            <button id="toggleDrawingModeBtn" class="btn clickable-btn" __wid="fPfS6VMF">Toggle Drawing Mode</button>
-            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">Drawing Mode Enabled</div>
+            <input id="brushThicknessSlider" class="font-buttons" __wid="pNT6WywR" type="range" min="1" max="100" value="2"/>
+            <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">Toggle Drawing Mode</button>
+            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: visible;" class="btn indicator-btn">Drawing Mode Enabled</div>
         </div>
 
         <div class="flex-row" __wid="GayMuR8V" style="height: 100%;">
@@ -38,7 +39,7 @@
                 <div class="content-box ovscroll bg-white slide-preview" __wid="PfvSqmb2" contenteditable>
                     <h3 __wid="tFcYwS2K">Outline of Slide 2</h3><div __wid="7kbmDyX7">a<br __wid="SigBVVpU"/></div>
                 </div>
-                    <button id="addContentZoneBtn" class="btn clickable-btn" style="margin-bottom: 10px;" __wid="maCcgVYG">Add Content Zone</button>
+                    <button id="addSlideBtn" class="btn clickable-btn" style="margin-bottom: 10px;" __wid="maCcgVYG">Add Slide</button>
 
             </div>
 
@@ -46,7 +47,7 @@
                 <div class="flex-center container-section bg-gray" __wid="KkJFYrV4" style="padding: 100px;box-sizing: border-box;">
                     
                 <div id="contentIframeContainer" class="content-box bg-white" __wid="63rbwCLp">
-                        <iframe id="contentIframe" src="/frontpage" scrolling="yes" __wid="ezYDf2iW"></iframe>
+                        <iframe id="contentIframe" src="/frontpage" scrolling="no" __wid="ezYDf2iW"></iframe>
                     </div></div>
 
                 <div class="flex-row container-section bg-gray horizontal-sidebar" __wid="RuW5ALa7">

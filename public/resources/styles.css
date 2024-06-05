@@ -29,6 +29,14 @@ input {
     margin-right: 10px;
 }
 
+.clickable-btn:hover {
+  filter: brightness(95%);
+}
+
+.clickable-btn:active {
+  filter: brightness(85%);
+}
+
 .clickable-btn {
   background-color: #ffa500;
 }

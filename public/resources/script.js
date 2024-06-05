@@ -5,7 +5,7 @@ setTimeout( () => {
   const getIframeDocument = (i) =>
     i.contentDocument || i.contentWindow.document;
 
-  const addContentZoneBtn = document.getElementById("addContentZoneBtn");
+  const addSlideBtn = document.getElementById("addSlideBtn");
   const addTextBoxBtn = document.getElementById("addTextBoxBtn");
   const addImageBtn = document.getElementById("addImageBtn");
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn");
@@ -20,7 +20,7 @@ setTimeout( () => {
   const documentUrlInput = document.getElementById("documentUrlInput");
   const loadButton = document.getElementById("loadButton");
   const default_ws = "/frontpage";
-  let NContentZone = 0;
+  let NSlide = 0;
   var currentDrawing = null, currentPath = null, path;
 
   if (documentUrlInput.value) {
@@ -63,7 +63,8 @@ setTimeout( () => {
     let isDrawing = false;
     let isDrawingMode = false;
 
-    let currentContentZone = null;
+    let currentSlide = null;
+    let currentDrawing = null;
 
     const getContainer = () => {
       return getIframeDocument(iframe).body;
@@ -110,24 +111,24 @@ setTimeout( () => {
       }
     };
 
-    const initCurrentContentZone = () => {
+    const initCurrentSlide = () => {
       const doc = getIframeDocument(iframe);
       doc.querySelectorAll(".selected").forEach((e) => {e.classList.remove("selected")});
       const czs = doc.querySelectorAll(".content-zone");
       if (czs.length > 0) {
-        setCurrentContentZone(czs[0]);
+        setCurrentSlide(czs[0]);
       } else {
-        initBlankContentZone();
+        initBlankSlide();
       }
     }
 
-    const initExistingContentZones = () => {
+    const initExistingSlides = () => {
       const doc = getIframeDocument(iframe);
       doc.querySelectorAll(".content-zone").forEach((zone) => {
-        zone.addEventListener("mousedown", selectContentZone);
-        // zone
-        //   .querySelectorAll(".drawing-canvas")
-        //   .forEach((canvas) => setupCanvasEvents(canvas));
+        zone.addEventListener("mousedown", selectSlide);
+        zone
+          .querySelectorAll(".drawing-canvas")
+          .forEach((canvas) => setupCanvasEvents(canvas));
       });
       doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
         setupDragEvents(box);
@@ -135,65 +136,77 @@ setTimeout( () => {
 
     }
 
-    const initBlankContentZone = () => {
-        setCurrentContentZone(addContentZone());
+    const initBlankSlide = () => {
+        setCurrentSlide(addSlide());
     }
 
-    const setCurrentContentZone = (zone) => {
-        // console.log("test")
-        // console.log(currentContentZone)
-        // currentContentZone;
+    const setCurrentSlide = (zone) => {
+        if (currentSlide === zone) return;
         // updating the old content zone if it is not null
-        if (currentContentZone !== null) currentContentZone.classList.remove("selected");
+        if (currentSlide !== null) currentSlide.classList.remove("selected");
         
-        // actually updating the variable currentContentZone with the parameter of this function
-        currentContentZone = zone;
+        // actually updating the variable currentSlide with the parameter of this function
+        currentSlide = zone;
+        currentDrawing = zone.querySelector(".drawing-canvas");
+        currentPath = "";
 
         // if the parameter passed was not null, then adds the .selected class to it
-        if (currentContentZone !== null) currentContentZone.classList.add("selected");
+        if (currentSlide !== null) currentSlide.classList.add("selected");
+
+
     }
-    const selectContentZone = (event) => {
+    const selectSlide = (event) => {
       if (event.target.classList.contains("content-zone")) {
-        setCurrentContentZone(event.target);
+        setCurrentSlide(event.target);
       } else if (
         event.target.parentElement.classList.contains("content-zone")
       ) {
-        setCurrentContentZone(event.target.parentElement);
+        setCurrentSlide(event.target.parentElement);
       }
     };
 
-    function resetContentZones() {
+    function resetSlides() {
       getIframeDocument(iframe).body.innerHTML = "";
       initContainer();
-      initBlankContentZone();
+      initBlankSlide();
     }
+    const resetSlidesBtn = document.getElementById("resetSlidesBtn",);
+    resetSlidesBtn.addEventListener("click", resetSlides);
 
-    const resetContentZonesBtn = document.getElementById(
-      "resetContentZonesBtn",
-    );
-    resetContentZonesBtn.addEventListener("click", resetContentZones);
+    function resetAllDrawings() {
+      getIframeDocument(iframe).body.querySelectorAll(".drawing-canvas").forEach(c => {
+        c.innerHTML = "";
+      })
+    }
+    const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn",);
+    resetAllDrawingsBtn.addEventListener("click", resetAllDrawings);
 
-    const addContentZone = () => {
+
+
+
+    const addSlide = () => {
       const doc = getIframeDocument(iframe);
       const container = getContainer();
-      const newContentZone = doc.createElement("div");
-      container.appendChild(newContentZone);
-      newContentZone.className = "content-zone";
-      newContentZone.id = NContentZone++;
-      newContentZone.addEventListener("mousedown", selectContentZone);
 
-      // const newCanvas = doc.createElement("canvas");
-      // newCanvas.className = "drawing-canvas";
-      // newContentZone.appendChild(newCanvas);
-      // newCanvas.width = newContentZone.offsetWidth;
-      // newCanvas.height = newContentZone.offsetHeight;
-      // setupCanvasEvents(newCanvas);
+      const newSlide = doc.createElement("div");
+      container.appendChild(newSlide);
+      newSlide.className = "content-zone";
+      newSlide.id = NSlide++;
+      newSlide.addEventListener("mousedown", selectSlide);
 
-      return newContentZone;
+      const newCanvas = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+      newSlide.appendChild(newCanvas);
+      newCanvas.classList.add("drawing-canvas");
+      newCanvas.setAttribute("width", "100%");
+      newCanvas.setAttribute("height", "100%");
+      newCanvas.style.position = "absolute";
+      setupCanvasEvents(newCanvas);
+
+      return newSlide;
     };
 
     const addTextBox = () => {
-      if (!currentContentZone) return;
+      if (!currentSlide) return;
       const doc = getIframeDocument(iframe);
       const textBox = doc.createElement("div");
       textBox.className = "text-box";
@@ -202,11 +215,11 @@ setTimeout( () => {
       textBox.style.fontSize = `${fontSize}px`; // Apply the current font size
       textBox.focus();
       setupDragEvents(textBox);
-      currentContentZone.appendChild(textBox);
+      currentSlide.appendChild(textBox);
     };
 
     const addImage = () => {
-      if (!currentContentZone) return;
+      if (!currentSlide) return;
       const imageUrl = prompt("Enter image URL:");
       if (imageUrl) {
         const doc = getIframeDocument(iframe);
@@ -216,32 +229,32 @@ setTimeout( () => {
         imageBox.style.width = "200px"; // Change width as desired
         imageBox.style.zIndex = currentZIndex++;
         setupDragEvents(imageBox);
-        currentContentZone.appendChild(imageBox);
+        currentSlide.appendChild(imageBox);
       }
     };
 
-    // const setupCanvasEvents = (canvas) => {
-    //   canvas.addEventListener("mousedown", startDrawing);
-    //   canvas.addEventListener("mousemove", draw);
-    //   canvas.addEventListener("mouseup", stopDrawing);
-    //   canvas.addEventListener("mouseleave", stopDrawing);
-    // };
+    const setupCanvasEvents = (canvas) => {
+      canvas.addEventListener("mousedown", startDrawing);
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", stopDrawing);
+      canvas.addEventListener("mouseleave", stopDrawing);
+    };
 
     const setupDragEvents = (element) => {
       element.addEventListener("mousedown", (event) => {
         const handleMouseMove = (event) => {
           const current_left =
-            event.clientX - currentContentZone.getBoundingClientRect().left;
+            event.clientX - currentSlide.getBoundingClientRect().left;
           const current_top =
-            event.clientY - currentContentZone.getBoundingClientRect().top;
+            event.clientY - currentSlide.getBoundingClientRect().top;
           const rec = element.getBoundingClientRect();
           if (
             0 < current_left &&
             current_left + rec.width <
-              currentContentZone.getBoundingClientRect().width &&
+              currentSlide.getBoundingClientRect().width &&
             0 < current_top &&
             current_top + rec.height <
-              currentContentZone.getBoundingClientRect().height
+              currentSlide.getBoundingClientRect().height
           ) {
             element.style.left = current_left + "px";
             element.style.top = current_top + "px";
@@ -263,21 +276,22 @@ setTimeout( () => {
     }
 
     const toggleDrawingMode = () => {
-      if (!currentContentZone) return;
+      if (!currentSlide) return;
       isDrawingMode = !isDrawingMode;
       toggleDrawingModeIndicator(isDrawingMode)
-      // const canvas = currentContentZone.querySelector(".drawing-canvas");
+      currentDrawing = currentSlide.querySelector(".drawing-canvas");
+      console.log(currentSlide)
       // canvas.style.zIndex = isDrawingMode ? currentZIndex++ : 0;
       if (isDrawingMode) {
-        currentContentZone.addEventListener("mousedown", startDrawing);
-        currentContentZone.addEventListener("mousemove", draw);
-        currentContentZone.addEventListener("mouseup", stopDrawing);
-        currentContentZone.addEventListener("mouseleave", stopDrawing);
+        currentDrawing.addEventListener("mousedown", startDrawing);
+        currentDrawing.addEventListener("mousemove", draw);
+        currentDrawing.addEventListener("mouseup", stopDrawing);
+        currentDrawing.addEventListener("mouseleave", stopDrawing);
       } else {
-        currentContentZone.removeEventListener("mousedown", startDrawing);
-        currentContentZone.removeEventListener("mousemove", draw);
-        currentContentZone.removeEventListener("mouseup", stopDrawing);
-        currentContentZone.removeEventListener("mouseleave", stopDrawing);
+        currentDrawing.removeEventListener("mousedown", startDrawing);
+        currentDrawing.removeEventListener("mousemove", draw);
+        currentDrawing.removeEventListener("mouseup", stopDrawing);
+        currentDrawing.removeEventListener("mouseleave", stopDrawing);
       }
     };
 
@@ -285,21 +299,20 @@ setTimeout( () => {
       if (!isDrawingMode) return;
       isDrawing = true;
         currentPath = "";
-        var innerDoc = iframe.contentWindow.document;
-        currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
-        currentDrawing.setAttribute("width", "100%");
-        currentDrawing.setAttribute("height", "100%");
-        currentDrawing.style.position = "absolute";
-        currentDrawing.setAttribute("draggable", "true");
-        //setupDragEvents(currentDrawing);
-
-        path = innerDoc.createElementNS("http://www.w3.org/2000/svg", "path");
+        // var innerDoc = iframe.contentWindow.document;
+        // currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
+        // currentDrawing.setAttribute("width", "100%");
+        // currentDrawing.setAttribute("height", "100%");
+        // currentDrawing.style.position = "absolute";
+        // currentDrawing.setAttribute("draggable", "true");
+        // setupDragEvents(currentDrawing);
+        console.log(currentDrawing)
+        path = getIframeDocument(iframe).createElementNS("http://www.w3.org/2000/svg", "path");
         path.setAttribute("fill", "none");
         path.setAttribute("stroke", brushColor);
         path.setAttribute("stroke-width", brushThickness.toString());
         currentDrawing.appendChild(path);
-        currentContentZone.appendChild(currentDrawing);
-        const rec = currentContentZone.getBoundingClientRect();
+        const rec = currentSlide.getBoundingClientRect();
         const x = event.clientX - rec.left;
         const y = event.clientY - rec.top;
         currentPath += `M ${x},${y}`;
@@ -307,7 +320,7 @@ setTimeout( () => {
 
     const draw = (event) => {
       if (!isDrawing) return;
-        const rec = currentContentZone.getBoundingClientRect();
+        const rec = currentSlide.getBoundingClientRect();
         const x = event.clientX - rec.left;
         const y = event.clientY - rec.top;
         currentPath += `L ${x},${y} `;
@@ -324,9 +337,9 @@ setTimeout( () => {
     }
     const stopDrawing = () => {
       isDrawing = false;
-      var path = currentDrawing.getElementsByTagName("path")[0];
-      setupDragEvents(path);
-      updateSvgViewBox(currentDrawing, path)
+      // var path = currentDrawing.getElementsByTagName("path")[0];
+      // setupDragEvents(path);
+      // updateSvgViewBox(currentDrawing, path)
     };
 
     const changeBrushColor = () => {
@@ -359,7 +372,7 @@ setTimeout( () => {
 
     fontSizeInput.addEventListener("input", (event) => {
       fontSize = event.target.value;
-      if (currentContentZone) {
+      if (currentSlide) {
         const element = getIframeDocument(iframe).activeElement;
         if (element.classList.contains("text-box")) {
           element.style.fontSize = `${fontSize}px`;
@@ -368,7 +381,7 @@ setTimeout( () => {
     });
 
 
-    addContentZoneBtn.addEventListener("click", addContentZone);
+    addSlideBtn.addEventListener("click", addSlide);
     addTextBoxBtn.addEventListener("click", addTextBox);
     addImageBtn.addEventListener("click", addImage);
     toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode);
@@ -379,8 +392,8 @@ setTimeout( () => {
         toggleDrawingModeIndicator(isDrawingMode);
         initCSS();
         initContainer();
-        initCurrentContentZone();
-        initExistingContentZones();
+        initCurrentSlide();
+        initExistingSlides();
         console.log(getIframeDocument(iframe));
         console.log(getIframeDocument(iframe).location);
         // console.log(getIframeDocument(iframe).body.innerHTML);
