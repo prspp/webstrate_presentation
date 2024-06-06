@@ -157,9 +157,7 @@ setTimeout(() => {
       const doc = getIframeDocument(currentSlideIframe)
       doc.querySelectorAll(".content-zone").forEach((zone) => {
         zone.addEventListener("mousedown", selectSlide)
-        // zone
-        //   .querySelectorAll(".drawing-canvas")
-        //   .forEach((canvas) => setupDrawEvents(canvas));
+        addPreviewSlide(zone.getAttribute("index"));
       })
       doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
         setupDragEvents(box)
@@ -224,20 +222,37 @@ setTimeout(() => {
     const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
     resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
-    const createSlidePreview = () => {
+    const scrollToSlide = (previewIframe, index) => {
+      const e = previewIframe.contentWindow.document.children[0];
+      const s = document.defaultView.getComputedStyle(e).height
+      const ss = Number(s.substring(0, s.length - 2))
+      e.scrollBy(0,index*ss) 
+    }
+
+    const createSlidePreview = (newIndex) => {
       const previewSlideContainer = document.createElement("div")
       previewSlideContainer.className = "bg-white slide-preview-container"
-      previewIframe = document.createElement("iframe")
+      const previewIframe = document.createElement("iframe")
       previewIframe.src = currentSlideIframe.src
       previewIframe.scrolling = "no"
       previewIframe.className = "slide-preview"
-      previewSlideContainer.prepend(previewIframe)
+      previewIframe.index = newIndex;
+      // previewIframe.addEventListener("load", async () => {
+      //   console.log(previewIframe, Number(newIndex), previewIframe.contentDocument.body)
+      //   await new Promise((r) => setTimeout(r, 1000))
+      //   scrollToSlide(previewIframe, newIndex);
+      // })
+      previewIframe.webstrate.on("transcluded", function(webstrateId, clientId, user) {
+        console.log(previewIframe, Number(newIndex), previewIframe.contentDocument.body)
+        scrollToSlide(previewIframe, newIndex);
+      })
+      previewSlideContainer.append(previewIframe)
       return previewSlideContainer
     }
 
-    const addPreviewSlide = () => {
-      const previewSlideContainer = createSlidePreview()
-      containerOfAllPreviews.prepend(previewSlideContainer)
+    const addPreviewSlide = (newIndex) => {
+      const previewSlideContainer = createSlidePreview(newIndex)
+      containerOfAllPreviews.append(previewSlideContainer)
     }
 
     const addSlide = () => {
@@ -247,7 +262,10 @@ setTimeout(() => {
       const newSlide = doc.createElement("div")
       container.appendChild(newSlide)
       newSlide.className = "content-zone"
-      newSlide.id = NSlide++
+      const newIndex = NSlide++;
+      newSlide.id = "slide-" + newIndex;
+      newSlide.setAttribute("index", newIndex);
+      console.log(newSlide.getAttribute("index"))
       newSlide.addEventListener("mousedown", selectSlide)
 
       const newCanvas = doc.createElementNS("http://www.w3.org/2000/svg", "svg")
@@ -255,9 +273,9 @@ setTimeout(() => {
       newCanvas.classList.add("drawing-canvas")
       newCanvas.setAttribute("width", "100%")
       newCanvas.setAttribute("height", "100%")
-      // newCanvas.style.position = "absolute";
-      // setupDrawEvents(newCanvas);
-      addPreviewSlide()
+
+      addPreviewSlide(newIndex)
+
       return newSlide
     }
 
