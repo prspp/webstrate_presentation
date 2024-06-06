@@ -126,9 +126,9 @@ setTimeout( () => {
       const doc = getIframeDocument(iframe);
       doc.querySelectorAll(".content-zone").forEach((zone) => {
         zone.addEventListener("mousedown", selectSlide);
-        zone
-          .querySelectorAll(".drawing-canvas")
-          .forEach((canvas) => setupCanvasEvents(canvas));
+        // zone
+        //   .querySelectorAll(".drawing-canvas")
+        //   .forEach((canvas) => setupCanvasEvents(canvas));
       });
       doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
         setupDragEvents(box);
@@ -200,7 +200,8 @@ setTimeout( () => {
       newCanvas.setAttribute("width", "100%");
       newCanvas.setAttribute("height", "100%");
       // newCanvas.style.position = "absolute";
-      setupCanvasEvents(newCanvas);
+      // setupCanvasEvents(newCanvas);
+
 
       return newSlide;
     };
@@ -213,6 +214,8 @@ setTimeout( () => {
       textBox.contentEditable = true;
       textBox.style.zIndex = currentZIndex++;
       textBox.style.fontSize = `${fontSize}px`; // Apply the current font size
+      textBox.style.left = "10px"
+      textBox.style.top = "10px"
       textBox.focus();
       setupDragEvents(textBox);
       currentSlide.appendChild(textBox);
