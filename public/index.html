@@ -7,37 +7,56 @@
 
     <link rel="stylesheet" href="./resources/styles.css" __wid="MEQLPn72"/>
     <script src="./resources/script.js" __wid="CEhPnJk7"></script>
-</head>
-<body class __wid="SJmSnCLa">
-
+  </head>
+  <body class __wid="SJmSnCLa">
     <div class="container flex-column bg-white" __wid="GxRxKayE">
-        <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
-            <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
-            <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">Load</button>
-            <button id="resetSlidesBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset All Slides</button>
-            <button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">Reset All Drawings</button>
-            <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">Add Text Box</button>
-            <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">Add Image</button>
-            <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
-            <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
-            <input id="brushThicknessSlider" class="font-buttons" __wid="pNT6WywR" type="range" min="1" max="100" value="2"/>
-            <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">Toggle Drawing Mode</button>
-            <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">Drawing Mode Enabled</div>
+      <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
+        <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
+        <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">
+          Load
+        </button>
+        <button id="resetSlidesBtn" class="btn clickable-btn" __wid="ERZ3knt8">
+          Reset All Slides
+        </button>
+        <button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">
+          Reset All Drawings
+        </button>
+        <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">
+          Add Text Box
+        </button>
+        <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">
+          Add Image
+        </button>
+        <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
+        <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
+        <input id="brushThicknessSlider" class="font-buttons" __wid="pNT6WywR" type="range" min="1" max="100" value="2"/>
+        <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">
+          Toggle Drawing Mode
+        </button>
+        <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: visible;" class="btn indicator-btn">
+          Drawing Mode Enabled
+        </div>
+      </div>
+
+      <div class="flex-row" __wid="GayMuR8V" style>
+        <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe" style="padding: 10px">
+          <transient id="containerOfAllPreviews" class="flex-center-vertically flex-column">
+          </transient>
+          <button class="btn clickable-btn" __wid="maCcgVYG" id="addSlideBtn" style="/*! margin-bottom: 10px; */">
+            Add Slide
+          </button>
         </div>
 
-        <div class="flex-row" __wid="GayMuR8V" style>
-            <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe" style="padding: 10px;" id="preview">
-
-                <button class="btn clickable-btn" __wid="maCcgVYG" id="addSlideBtn" style="/*! margin-bottom: 10px; */">Add Slide</button>
-            </div>
-
-            <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
-                <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4" style="/*! padding: 100px; */box-sizing: border-box;">
-                    <!-- <div id="contentIframeContainer" class="content-box bg-white slide-main-view" __wid="63rbwCLp"> -->
-                        <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpage" scrolling="no" __wid="ezYDf2iW" style="/*! zoom: 0.8; */transform: scale(0.8);/*! transform-origin: 0 0; */"></iframe>
-                    <!-- </div> -->
-                </div>
-<!--
+        <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
+          <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4" style="/*! padding: 100px; */ box-sizing: border-box">
+            <!-- <div id="contentIframeContainer" class="content-box bg-white slide-main-view" __wid="63rbwCLp"> -->
+            <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpage" scrolling="no" __wid="ezYDf2iW" style="
+                /*! zoom: 0.8; */
+                transform: scale(0.8); /*! transform-origin: 0 0; */
+              "></iframe>
+            <!-- </div> -->
+          </div>
+          <!--
                 <div class="flex-row container-section bg-gray horizontal-sidebar" __wid="RuW5ALa7">
                     <div class="content-box ovscroll bg-white" __wid="MdJp4dju" contenteditable id="outline-locked">
                         <h3 __wid="KuHtewrD">Outline Locked</h3>
@@ -60,15 +79,26 @@
             </div>
 -->
         </div>
-            <div class="vertical-sidebar bg-gray flex-column flex-center-vertically container" __wid="iCjVqwRe">
-              <div class="bg-white flex-row flex-center-horizontally" __wid="bXgg6vyT" style="width: fit-content;padding: 5px;border-radius: 10px;box-sizing: border-box;">
-                    <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">Review Notes</div>
-                    <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9">Questions</div>
-              </div>
-              <div class="content-box ovscroll bg-white" __wid="bXgg6vyT" contenteditable>
-                  <p __wid="iFi82Zy5">Lorem Ipsum</p>
-              </div>
+        <div class="vertical-sidebar bg-gray flex-column flex-center-vertically container" __wid="iCjVqwRe">
+          <div class="bg-white flex-row flex-center-horizontally" __wid="bXgg6vyT" style="
+              width: fit-content;
+              padding: 5px;
+              border-radius: 10px;
+              box-sizing: border-box;
+            ">
+            <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">
+              Review Notes
             </div>
+            <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9">
+              Questions
+            </div>
+          </div>
+          <div class="content-box ovscroll bg-white" __wid="bXgg6vyT" contenteditable>
+            <p __wid="iFi82Zy5">Lorem Ipsum</p>
+          </div>
+        </div>
+      </div>
     </div>
+  
 
-</div></body></html>
+</body></html>
