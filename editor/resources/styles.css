@@ -156,6 +156,7 @@ input {
 iframe {
   width: 100%;
   height: 100%;
+  border: none;
 }
 
 h3 {
@@ -172,12 +173,6 @@ ul {
 
 p {
   margin: 10px 0;
-}
-
-iframe {
-  width: 100%;
-  height: 100%;
-  /*    border: none;*/
 }
 
 .slide {

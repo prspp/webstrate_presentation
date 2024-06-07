@@ -17,6 +17,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const fontSizeInput = document.getElementById("fontSizeInput")
   const documentUrlInput = document.getElementById("documentUrlInput")
   const loadButton = document.getElementById("loadButton")
+  const questionIframe = document.getElementById("questionIframe");
+  const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
 
   const containerOfAllPreviews = document.getElementById(
     "containerOfAllPreviews"
