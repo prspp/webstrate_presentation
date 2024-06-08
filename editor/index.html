@@ -1,0 +1,102 @@
+<html __wid="Q9dj4dVm" lang="en"><!-- prettier-ignore --><head __wid="MsdvuyD6">
+    <meta __wid="WcDBT7pw" charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" __wid="kWiHS9tj"/>
+    <title __wid="g2DrexBC">Sketchup Tool</title>
+    <script id="script.js" __wid="JZCZ2SRQ"></script>
+    <style rel="stylesheet" __wid="CRn7fgC3" id="styles.css"></style>
+
+    <link rel="stylesheet" href="./resources/styles.css" __wid="MEQLPn72"/>
+    <script src="./resources/script.js" __wid="CEhPnJk7"></script>
+  </head>
+  <!-- prettier-ignore -->
+  <body class __wid="SJmSnCLa">
+    <div class="container flex-column bg-white" __wid="GxRxKayE">
+      <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
+        <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
+        <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">
+          Load
+        </button>
+        <button id="resetSlidesBtn" class="btn clickable-btn" __wid="ERZ3knt8">
+          Reset All Slides
+        </button>
+        <button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">
+          Reset All Drawings
+        </button>
+        <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">
+          Add Text Box
+        </button>
+        <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">
+          Add Image
+        </button>
+        <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
+        <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
+        <input id="brushThicknessSlider" class="font-buttons" __wid="pNT6WywR" type="range" min="1" max="100" value="2"/>
+        <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">
+          Toggle Drawing Mode
+        </button>
+        <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">
+          Drawing Mode Enabled
+        </div>
+      </div>
+
+      <div class="flex-row" __wid="GayMuR8V" style>
+        <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe" style="padding: 10px">
+          <transient class="flex-center-vertically flex-column" id="containerOfAllPreviews">
+          </transient>
+          <button id="addSlideBtn" class="btn clickable-btn" __wid="maCcgVYG" style="/*! margin-bottom: 10px; */">
+            Add Slide
+          </button>
+        </div>
+
+        <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
+          <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4" style="/*! padding: 100px; */ box-sizing: border-box">
+            <!-- <div id="contentIframeContainer" class="content-box bg-white slide-main-view" __wid="63rbwCLp"> -->
+            <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpage" scrolling="no" __wid="ezYDf2iW" style="
+                /*! zoom: 0.8; */
+                transform: scale(0.8); /*! transform-origin: 0 0; */
+              "></iframe>
+            <!-- </div> -->
+          </div>
+          <!--
+                <div class="flex-row container-section bg-gray horizontal-sidebar" __wid="RuW5ALa7">
+                    <div class="content-box ovscroll bg-white" __wid="MdJp4dju" contenteditable id="outline-locked">
+                        <h3 __wid="KuHtewrD">Outline Locked</h3>
+                        <ul __wid="uu4hjdre">
+                            <li __wid="KETqPG4Q">Outline Title
+                                <ul __wid="CGZVWkik">
+                                    <li __wid="XPgVzpAa">Bullet</li>
+                                    <li __wid="dQFMucRM">Bullet</li>
+                                    <li __wid="FzSVgAkw">Bullet</li>
+                                </ul>
+                            </li>
+                            <li __wid="2aP23Zik">Description</li></ul><div __wid="GtP4iLxV"><br __wid="QA39FSWg"/></div><div __wid="M7fTYMGw"><br __wid="UEyXRyLD"/></div><ul __wid="myCHRWQm">
+                        </ul>
+                    </div>
+                    <div class="content-box ovscroll bg-white" __wid="bXgg6vyT" contenteditable id="comments">
+                        <h3 __wid="nRKnuK9a">Comments</h3>
+                        <p __wid="iFi82Zy5">Write any comments about the outline.</p><p __wid="bhmht4rc"><br __wid="feQLBbYT"/></p><p __wid="9hvmagvS"><br __wid="PSMTu4VP"/></p><p __wid="MttzKgJ4"><br __wid="7RmTqqnk"/></p><p __wid="fE9bhWrP">.</p><p __wid="wWbNnA78">.<br __wid="2auycHug"/></p><p __wid="6QsMymjC"><br __wid="BqZ6K6nc"/></p><p __wid="beuQFWvE"><br __wid="aZaNBv8r"/></p><p __wid="mjeEMhTH"><br __wid="6LV8rHvc"/></p><p __wid="WtV4tWRS"><br __wid="VdJ7NL9x"/></p><p __wid="vvx3Lvhd"><br __wid="7xPebkGG"/></p>
+                    </div>
+                </div>
+            </div>
+-->
+        </div>
+        <div class="vertical-sidebar bg-gray flex-column flex-center-vertically container" __wid="iCjVqwRe">
+          <div class="bg-white flex-row flex-center-horizontally" __wid="bXgg6vyT" style="
+              width: fit-content;
+              padding: 5px;
+              border-radius: 10px;
+              box-sizing: border-box;
+            ">
+            <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">
+              Review Notes
+            </div>
+            <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9">
+              Questions
+            </div>
+          </div>
+          <iframe class="content-box ovscroll bg-white" __wid="bXgg6vyT" id="questionIframe" src="/questions"></iframe>
+        </div>
+      </div>
+    </div>
+
+</body></html>

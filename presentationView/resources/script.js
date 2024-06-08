@@ -1,4 +1,5 @@
 webstrate.on("loaded", function(webstrateId) {
+    console.log("there we go");
     var frame = document.getElementById("questionsFrame");
     frame.webstrate.on("transcluded", () => {
         var questionsDocument = frame.contentWindow.document;
@@ -7,19 +8,7 @@ webstrate.on("loaded", function(webstrateId) {
             const question = document.querySelector('input[name="question"]').value;
             document.querySelector("input[name='question']").value = "";
             if(question.trim() === "" || question == null) return;
-            container.insertAdjacentHTML("afterbegin", `<p>${question}</p>`);
-
-            // add click listener to the item
-            let child = container.firstChild;
-            child.addEventListener("click", () => {
-                var itemClass = child.className;
-                if(itemClass) {
-                    child.removeAttribute("class");
-                }
-                else {
-                    child.className = "selected";
-                }
-            });
+            container.insertAdjacentHTML("afterbegin", `<p class="selected">${question}</p>`);
         })
     });
 });
