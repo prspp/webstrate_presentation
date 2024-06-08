@@ -153,7 +153,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       // zone.addEventListener("mousedown", selectSlide)
       addPreviewSlide(zone.getAttribute("index"))
     })
-    doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
+    doc.querySelectorAll(".text-box, .image-box, .drawing-canvas").forEach((box) => {
       setupDragEvents(box)
     })
   }
@@ -300,12 +300,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     // console.log(newSlide.getAttribute("index"))
     // newSlide.addEventListener("mousedown", selectSlide)
 
-    const newCanvas = doc.createElementNS("http://www.w3.org/2000/svg", "svg")
-    newSlide.appendChild(newCanvas)
-    newCanvas.classList.add("drawing-canvas")
-    newCanvas.setAttribute("width", "100%")
-    newCanvas.setAttribute("height", "100%")
-
     addPreviewSlide(newIndex)
 
     return newIndex
@@ -383,17 +377,16 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   const setupDrawEvents = (drawingMode, slide) => {
-    const drawing = slide.querySelector(".drawing-canvas")
     if (drawingMode) {
-      drawing.addEventListener("mousedown", startDrawing)
-      drawing.addEventListener("mousemove", draw)
-      drawing.addEventListener("mouseup", stopDrawing)
-      drawing.addEventListener("mouseleave", stopDrawing)
+      currentSlide.addEventListener("mousedown", startDrawing)
+      currentSlide.addEventListener("mousemove", draw)
+      currentSlide.addEventListener("mouseup", stopDrawing)
+      currentSlide.addEventListener("mouseleave", stopDrawing)
     } else {
-      drawing.removeEventListener("mousedown", startDrawing)
-      drawing.removeEventListener("mousemove", draw)
-      drawing.removeEventListener("mouseup", stopDrawing)
-      drawing.removeEventListener("mouseleave", stopDrawing)
+      currentSlide.removeEventListener("mousedown", startDrawing)
+      currentSlide.removeEventListener("mousemove", draw)
+      currentSlide.removeEventListener("mouseup", stopDrawing)
+      currentSlide.removeEventListener("mouseleave", stopDrawing)
     }
   }
 
@@ -408,17 +401,15 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const startDrawing = (event) => {
     if (!isDrawingMode) return
+    console.log("Start drawing")
     isDrawing = true
     currentPath = ""
-    // var innerDoc = mainIframe.contentWindow.document;
-    // currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
-    // currentDrawing.setAttribute("width", "100%");
-    // currentDrawing.setAttribute("height", "100%");
-    // currentDrawing.style.position = "absolute";
-    // currentDrawing.setAttribute("draggable", "true");
-    // setupDragEvents(currentDrawing);
-    // console.log(currentDrawing)
-    path = getIframeDocument(mainIframe).createElementNS(
+    const doc = getIframeDocument(mainIframe);
+    currentDrawing = doc.createElementNS("http://www.w3.org/2000/svg", "svg")
+    currentDrawing.classList.add("drawing-canvas")
+    currentDrawing.setAttribute("width", "100%")
+    currentDrawing.setAttribute("height", "100%")
+    path = doc.createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
     )
@@ -426,6 +417,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     path.setAttribute("stroke", brushColor)
     path.setAttribute("stroke-width", brushThickness.toString())
     currentDrawing.appendChild(path)
+    currentSlide.appendChild(currentDrawing)
     const rec = currentSlide.getBoundingClientRect()
     const x = event.clientX - rec.left
     const y = event.clientY - rec.top
@@ -456,7 +448,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     isDrawing = false
     // var path = currentDrawing.getElementsByTagName("path")[0];
     // setupDragEvents(path);
-    // updateSvgViewBox(currentDrawing, path)
+    updateSvgViewBox(currentDrawing, path)
+    setupDragEvents(currentDrawing)
   }
 
   const changeBrushColor = () => {
