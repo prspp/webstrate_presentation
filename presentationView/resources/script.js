@@ -7,7 +7,19 @@ webstrate.on("loaded", function(webstrateId) {
             const question = document.querySelector('input[name="question"]').value;
             document.querySelector("input[name='question']").value = "";
             if(question.trim() === "" || question == null) return;
-            container.insertAdjacentHTML("afterbegin", `<div>${question}</div>`);
+            container.insertAdjacentHTML("afterbegin", `<p>${question}</p>`);
+
+            // add click listener to the item
+            let child = container.firstChild;
+            child.addEventListener("click", () => {
+                var itemClass = child.className;
+                if(itemClass) {
+                    child.removeAttribute("class");
+                }
+                else {
+                    child.className = "selected";
+                }
+            });
         })
     });
 });
