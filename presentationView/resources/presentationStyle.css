@@ -68,7 +68,7 @@ div#questions input {
     border-radius: 5px;
 }
 
-div#questions input[type=submit] {
+div#questions button {
     width: 60px;
     height: 30px;
     color: #fff;

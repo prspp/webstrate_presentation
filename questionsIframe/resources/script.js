@@ -6,7 +6,19 @@ document.getElementById("bin").addEventListener("click", () => {
     }
 });
 
-const ws = new WebSocket(`ws://localhost:7007/questions/`);
+var container = document.getElementById("container");
+
+container.webstrate.on('message', function(data) {
+    console.log("Hereooo");
+    if (data.type === 'question') {
+        const container = document.getElementById('container');
+        const newQuestion = document.createElement('div');
+        newQuestion.textContent = data.question;
+        container.appendChild(newQuestion);
+    }
+});
+
+/*const ws = new WebSocket(`ws://localhost:7007/questions/`);
 
 ws.onmessage = function(event) {
     const data = JSON.parse(event.data);
@@ -29,4 +41,4 @@ ws.onopen = function() {
 
 ws.onclose = function() {
     console.log('WebSocket connection closed');
-};
+};*/

@@ -1,22 +1,13 @@
-document.getElementById('userQuestion').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Prevent the default form submission
-    
-    const question = document.querySelector('input[name="question"]').value;
-    document.querySelector("input[name='question']").value = "";
-    if(question.trim() === "" || question == null) return;
-
-    try {
-        var send = await fetch("/questions/", {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ question })
-        });
-        var response = send.json();
-        console.log("Success : ", response);
-    }
-    catch(error){
-        console.error('Error:', error);
-    };
+webstrate.on("loaded", function(webstrateId) {
+    var frame = document.getElementById("questionsFrame");
+    frame.webstrate.on("transcluded", () => {
+        var questionsDocument = frame.contentWindow.document;
+        var container = questionsDocument.getElementById("container");
+        document.getElementById('send').addEventListener('click',() => {
+            const question = document.querySelector('input[name="question"]').value;
+            document.querySelector("input[name='question']").value = "";
+            if(question.trim() === "" || question == null) return;
+            container.insertAdjacentHTML("afterbegin", `<div>${question}</div>`);
+        })
+    });
 });
