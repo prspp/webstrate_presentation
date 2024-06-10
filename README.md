@@ -13,7 +13,6 @@ npm run build # Uses webpack to generate the client application code
 npm start # Starts the Webstrates server
 ```
 
-
 Webstrates requires MongoDB running, which you can get as simply as, in a dedicated terminal:
 
 ```
@@ -33,8 +32,6 @@ webstratesfs --id=editor --host=localhost:7007 --insecure
 ```
 webstratesfs --id=audience --host=localhost:7007 --insecure
 ```
-
-
 
 ### Static Debugging
 

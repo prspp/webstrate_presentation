@@ -175,8 +175,6 @@ p {
   margin: 10px 0;
 }
 
-
-
 .slide {
   border: 2px solid #ccc;
   width: 100%;
@@ -209,9 +207,8 @@ p {
   z-index: 0;
 }
 
-
 /* AUDIENCE */
- #questionBox {
+#questionBox {
   outline: 0px solid transparent;
   box-sizing: border-box;
 }
@@ -223,7 +220,3 @@ p {
 
 #questionBox {
 }
-
-
-
-
