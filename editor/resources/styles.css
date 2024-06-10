@@ -138,8 +138,6 @@ input {
 }
 
 .slide-preview-container {
-  /*    padding: 0px;*/
-  /*    height: fit-content;*/
   width: 400px; /* = 0.4*1000 */
   height: 240px; /* = 0.4*600 */
   /*  overflow: hidden;*/

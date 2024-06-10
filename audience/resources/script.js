@@ -8,12 +8,11 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const documentUrlInput = document.getElementById("documentUrlInput")
   const loadButton = document.getElementById("loadButton")
-  const questionBox = document.getElementById("questionBox");
-  const questionIframe = document.getElementById("questionIframe");
+  const questionBox = document.getElementById("questionBox")
+  const questionIframe = document.getElementById("questionIframe")
 
   // ### VALUES OF THE APPLICATION ###
-  let defaultWebstrateUrl,
-    webstrateUrl
+  let defaultWebstrateUrl, webstrateUrl
 
   webstrateUrl = ""
   defaultWebstrateUrl = "/frontpage"
@@ -31,17 +30,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   })
 
   questionBox.addEventListener("keypress", (event) => {
-      if (event.keyCode === 13) {
-          event.preventDefault(); // Ensure it is only this code that runs
-          let msg = questionBox.value;
-          questionBox.value = "";
+    if (event.keyCode === 13) {
+      event.preventDefault() // Ensure it is only this code that runs
+      let msg = questionBox.value
+      questionBox.value = ""
 
-          let doc = getIframeDocument(questionIframe);
-          let p = doc.createElement("p")
-          p.textContent = msg;
-          doc.body.append(p)
-      }
-  });
+      let doc = getIframeDocument(questionIframe)
+      let p = doc.createElement("p")
+      p.textContent = msg
+      doc.body.append(p)
+    }
+  })
 
   mainIframe.webstrate.on(
     "transcluded",

@@ -17,7 +17,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const fontSizeInput = document.getElementById("fontSizeInput")
   const documentUrlInput = document.getElementById("documentUrlInput")
   const loadButton = document.getElementById("loadButton")
-  const questionIframe = document.getElementById("questionIframe");
+  const questionIframe = document.getElementById("questionIframe")
   const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
   const addImageInput = document.getElementById("imageInput")
   const presentationButton = document.getElementById("present")
@@ -549,6 +549,11 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         element.style.fontSize = `${fontSize}px`
       }
     }
+  })
+
+  window.addEventListener("resize", () => {
+    [...document.getElementsByClassName("slide-preview")].forEach(previewIframe => { scrollToSlide(previewIframe, previewIframe.getAttribute("index")) })
+    // window.devicePixelRatio
   })
 
   addSlideBtn.addEventListener("click", addSlide)
