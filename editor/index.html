@@ -25,18 +25,21 @@
         <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">
           Add Text Box
         </button>
-        <button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">
+        <!--button id="addImageBtn" class="btn clickable-btn" __wid="Zc98bHUT">
           Add Image
-        </button>
+        </button-->
+        <label for="imageInput" __wid="3hykm2ni" class="btn clickable-btn">Add image</label>
+        <input type="file" id="imageInput" __wid="ia69yEyT" accept="image/*" name="imageInput" hidden/>
         <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
-        <input type="color" id="brushColorPicker" value="#000000" class="font-buttons" __wid="79tKfweA"/>
-        <input id="brushThicknessSlider" class="font-buttons" __wid="pNT6WywR" type="range" min="1" max="100" value="2"/>
+        <input id="brushColorPicker" class="font-buttons" __wid="79tKfweA" type="color" value="#000000"/>
+        <input id="brushThicknessSlider" __wid="pNT6WywR" class="font-buttons" type="range" min="1" max="100" value="2"/>
         <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">
           Toggle Drawing Mode
         </button>
         <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">
           Drawing Mode Enabled
         </div>
+        <button id="present" __wid="TpnLhakL">Present</button>
       </div>
 
       <div class="flex-row" __wid="GayMuR8V" style>
@@ -94,7 +97,7 @@
               Questions
             </div>
           </div>
-          <iframe class="content-box ovscroll bg-white" __wid="bXgg6vyT" id="questionIframe" src="/questions"></iframe>
+          <iframe class="content-box ovscroll bg-white" __wid="bXgg6vyT" id="questionIframe" src="/questionsIframe"></iframe>
         </div>
       </div>
     </div>

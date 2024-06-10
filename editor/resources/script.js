@@ -19,6 +19,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const loadButton = document.getElementById("loadButton")
   const questionIframe = document.getElementById("questionIframe");
   const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
+  const addImageInput = document.getElementById("imageInput")
+  const presentationButton = document.getElementById("present")
 
   const containerOfAllPreviews = document.getElementById(
     "containerOfAllPreviews"
@@ -94,9 +96,57 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     console.log("reload asked")
   })
 
+  presentationButton.addEventListener("click", ()=>{
+    window.open("http://localhost:7007/presentationView/", "_blank")
+  });
+
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
   }
+
+  const uploadImages = (files) => {
+    return new Promise((resolve, reject) => {
+      const file = files[0];
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+
+      const request = new XMLHttpRequest();
+      console.log("Location : ", window.location.pathname);
+      request.open("POST", window.location.pathname);
+      request.send(formData);
+      request.addEventListener("load", (e) => {
+        const asset = JSON.parse(request.responseText);
+        console.log("Response : ", request.responseText);
+        resolve(asset);
+      });
+    });
+  }
+
+  const addImages = (imgSrc) => {
+    if(!currentSlide) return;
+    const document = getIframeDocument(mainIframe);
+    var imageDiv = document.createElement("div");
+    imageDiv.style.left = "0px";
+    imageDiv.style.top = "0px";
+
+    const image = document.createElement("img");
+    image.setAttribute("src", imgSrc);
+    imageDiv.appendChild(image);
+    imageDiv.className = "image-box";
+    imageDiv.style.zIndex = currentZIndex ++;
+    image.style.width = "200px";
+    setupDragEvents(imageDiv);
+    currentSlide.appendChild(imageDiv);
+    addImageInput.value = "";
+  }
+
+  addImageInput.addEventListener("change", (event) => {
+    console.log("event %o", event);
+    (async() => {
+      let asset = await uploadImages(addImageInput.files);
+      addImages(`${window.location.pathname}${asset.v}/${asset.fileName}`);
+    })();
+  })
 
   const initContainer = () => {
     if (getContainer() !== null) return
@@ -194,6 +244,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
     currentPath = ""
 
+    // add an attribute to the visible slide + hide the others
+    let allSlides = doc.getElementsByClassName("slide");
+    currentSlide.removeAttribute("hidden")
+    for(let i=0; i<allSlides.length; i++) {
+      if(allSlides[i].id != "slide-" + newIndex) {
+        allSlides[i].setAttribute("hidden", "");
+      }
+    }
     scrollToSlide(mainIframe, newIndex)
     setupDrawEvents(isDrawingMode, currentSlide)
 
@@ -215,6 +273,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     containerOfAllPreviews
       .querySelectorAll(".slide-preview-container")
       .forEach((e) => {
+        console.log("Here");
         e.parentElement.removeChild(e)
       })
 
@@ -270,7 +329,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         //   previewIframe.contentDocument.body
         // )
         scrollToSlide(previewIframe, newIndex)
-
+        setCurrentState(newIndex)
         previewIframe.contentDocument.addEventListener("click", (event) => {
           setCurrentState(newIndex)
         })
@@ -297,6 +356,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     const newIndex = NSlide++
     newSlide.id = "slide-" + newIndex
     newSlide.setAttribute("index", newIndex)
+
+    // make it as current slide
     // console.log(newSlide.getAttribute("index"))
     // newSlide.addEventListener("mousedown", selectSlide)
 
@@ -492,7 +553,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
-  addImageBtn.addEventListener("click", addImage)
+  //addImageBtn.addEventListener("click", addImage)
   toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
 
   const initIframe = () => {
@@ -519,3 +580,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 // document.addEventListener("click", (event) => {
 //   console.log(event.target)
 // })
+
+/*
+ * TO-DO : change the behavior of slide preview
+ */
