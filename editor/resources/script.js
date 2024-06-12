@@ -20,7 +20,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const questionIframe = document.getElementById("questionIframe")
   const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
   const addImageInput = document.getElementById("imageInput")
-  const presentationButton = document.getElementById("present")
+  const presentBtn = document.getElementById("presentBtn")
 
   const containerOfAllPreviews = document.getElementById(
     "containerOfAllPreviews"
@@ -96,7 +96,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     console.log("reload asked")
   })
 
-  presentationButton.addEventListener("click", ()=>{
+  presentBtn.addEventListener("click", ()=>{
     window.open("http://localhost:7007/presentationView/", "_blank")
   });
 
