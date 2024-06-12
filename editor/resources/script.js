@@ -203,7 +203,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       // zone.addEventListener("mousedown", selectSlide)
       addPreviewSlide(zone.getAttribute("index"))
     })
-    doc.querySelectorAll(".text-box, .image-box, .drawing-canvas").forEach((box) => {
+    doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
       setupDragEvents(box)
     })
   }
@@ -244,14 +244,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
     currentPath = ""
 
-    // add an attribute to the visible slide + hide the others
-    // let allSlides = doc.getElementsByClassName("slide");
-    // currentSlide.removeAttribute("hidden")
-    // for(let i=0; i<allSlides.length; i++) {
-    //   if(allSlides[i].id != "slide-" + newIndex) {
-    //     allSlides[i].setAttribute("hidden", "");
-    //   }
-    // }
     scrollToSlide(mainIframe, newIndex)
     setupDrawEvents(isDrawingMode, currentSlide)
 
@@ -259,13 +251,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     if (currentPreview !== null) currentPreview.classList.add("selected")
   }
 
-  // const selectSlide = (event) => {
-  //   if (event.target.classList.contains("slide")) {
-  //     setCurrentState(event.target)
-  //   } else if (event.target.parentElement.classList.contains("slide")) {
-  //     setCurrentState(event.target.parentElement)
-  //   }
-  // }
 
   function resetSlides() {
     // DELETE
@@ -273,7 +258,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     containerOfAllPreviews
       .querySelectorAll(".slide-preview-container")
       .forEach((e) => {
-        console.log("Here");
         e.parentElement.removeChild(e)
       })
 
@@ -356,10 +340,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     const newIndex = NSlide++
     newSlide.id = "slide-" + newIndex
     newSlide.setAttribute("index", newIndex)
-
-    // make it as current slide
     // console.log(newSlide.getAttribute("index"))
     // newSlide.addEventListener("mousedown", selectSlide)
+
+    const newCanvas = doc.createElementNS("http://www.w3.org/2000/svg", "svg")
+    newSlide.appendChild(newCanvas)
+    newCanvas.classList.add("drawing-canvas")
+    newCanvas.setAttribute("width", "100%")
+    newCanvas.setAttribute("height", "100%")
 
     addPreviewSlide(newIndex)
 
@@ -414,6 +402,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
           element.style.left = current_left + "px"
           element.style.top = current_top + "px"
         }
+        console.log(current_left, current_right, rec)
       }
       const handleMouseUp = () => {
         getIframeDocument(mainIframe).removeEventListener(
@@ -438,16 +427,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   const setupDrawEvents = (drawingMode, slide) => {
+    const drawing = slide.querySelector(".drawing-canvas")
     if (drawingMode) {
-      currentSlide.addEventListener("mousedown", startDrawing)
-      currentSlide.addEventListener("mousemove", draw)
-      currentSlide.addEventListener("mouseup", stopDrawing)
-      currentSlide.addEventListener("mouseleave", stopDrawing)
+      drawing.addEventListener("mousedown", startDrawing)
+      drawing.addEventListener("mousemove", draw)
+      drawing.addEventListener("mouseup", stopDrawing)
+      drawing.addEventListener("mouseleave", stopDrawing)
     } else {
-      currentSlide.removeEventListener("mousedown", startDrawing)
-      currentSlide.removeEventListener("mousemove", draw)
-      currentSlide.removeEventListener("mouseup", stopDrawing)
-      currentSlide.removeEventListener("mouseleave", stopDrawing)
+      drawing.removeEventListener("mousedown", startDrawing)
+      drawing.removeEventListener("mousemove", draw)
+      drawing.removeEventListener("mouseup", stopDrawing)
+      drawing.removeEventListener("mouseleave", stopDrawing)
     }
   }
 
@@ -462,15 +452,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const startDrawing = (event) => {
     if (!isDrawingMode) return
-    console.log("Start drawing")
     isDrawing = true
     currentPath = ""
-    const doc = getIframeDocument(mainIframe);
-    currentDrawing = doc.createElementNS("http://www.w3.org/2000/svg", "svg")
-    currentDrawing.classList.add("drawing-canvas")
-    currentDrawing.setAttribute("width", "100%")
-    currentDrawing.setAttribute("height", "100%")
-    path = doc.createElementNS(
+    // var innerDoc = mainIframe.contentWindow.document;
+    // currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
+    // currentDrawing.setAttribute("width", "100%");
+    // currentDrawing.setAttribute("height", "100%");
+    // currentDrawing.style.position = "absolute";
+    // currentDrawing.setAttribute("draggable", "true");
+    // setupDragEvents(currentDrawing);
+    // console.log(currentDrawing)
+    path = getIframeDocument(mainIframe).createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
     )
@@ -478,7 +470,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     path.setAttribute("stroke", brushColor)
     path.setAttribute("stroke-width", brushThickness.toString())
     currentDrawing.appendChild(path)
-    currentSlide.appendChild(currentDrawing)
     const rec = currentSlide.getBoundingClientRect()
     const x = event.clientX - rec.left
     const y = event.clientY - rec.top
@@ -507,10 +498,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
   const stopDrawing = () => {
     isDrawing = false
-    // var path = currentDrawing.getElementsByTagName("path")[0];
-    // setupDragEvents(path);
-    updateSvgViewBox(currentDrawing, path)
-    setupDragEvents(currentDrawing)
   }
 
   const changeBrushColor = () => {
@@ -558,7 +545,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
-  //addImageBtn.addEventListener("click", addImage)
+  addImageBtn.addEventListener("click", addImage)
   toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
 
   const initIframe = () => {
@@ -585,7 +572,3 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 // document.addEventListener("click", (event) => {
 //   console.log(event.target)
 // })
-
-/*
- * TO-DO : change the behavior of slide preview
- */
