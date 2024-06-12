@@ -204,3 +204,34 @@ p {
   justify-content: center;
   z-index: 0;
 }
+
+#container {
+  height: 100vh;
+  background-color: #fff;
+  margin-top: 0px;
+  position: relative;
+}
+
+#container p {
+  background-color: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  height: 70px;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#container p.selected {
+  border: 2px solid #6366f1;
+}
+
+#container img {
+  float: right;
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+}

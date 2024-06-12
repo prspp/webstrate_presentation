@@ -17,7 +17,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const fontSizeInput = document.getElementById("fontSizeInput")
   const documentUrlInput = document.getElementById("documentUrlInput")
   const loadButton = document.getElementById("loadButton")
-  const questionIframe = document.getElementById("questionIframe")
+  const questionsIframe = document.getElementById("questionsIframe")
   const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
   const addImageInput = document.getElementById("imageInput")
   const presentationButton = document.getElementById("present")
@@ -163,7 +163,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   //   if (getMainCSSFile() !== null)
   //     return;
   //   let doc = getIframeDocument(mainIframe);
-  //   var fileref = doc.createElement("link");
+  //   var fileref = doc.createElement(link");
   //   fileref.id = "mainCSSFile"
   //   fileref.rel = "stylesheet";
   //   fileref.type = "text/css";
@@ -580,12 +580,90 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       initIframe()
     }
   )
+
+  function createContainerInQuestionsIframe(iframeDocument) {
+      var container = iframeDocument.createElement("div");
+      container.id = "container";
+      var img = iframeDocument.createElement("img");
+      img.src = `${window.location.pathname}delete.png`;
+      img.alt = "bin";
+      img.id = "bin";
+      container.appendChild(img);
+      iframeDocument.body.appendChild(container);
+  }
+
+  // observe for new questions in the question iframe
+  // to add click listener
+  function addClickToNewQuestions(iframeDocument) {
+    const observer = new MutationObserver(function(mutations_list) {
+      mutations_list.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(added_node) {
+              if(added_node.className == 'selected') {
+                  added_node.addEventListener("click", (event) => {
+                      var itemClass = event.target.className;
+                      if(itemClass) {
+                          event.target.removeAttribute("class");
+                      }
+                      else {
+                          event.target.className = "selected";
+                      }
+                  }); 
+                  observer.disconnect();
+              }
+          });
+      });
+    });
+    observer.observe(iframeDocument.querySelector("#container"), { subtree: false, childList: true });
+  }
+
+  function initClickListenerToExistingQuestion(iframeDocument) {
+    let paragraphs = iframeDocument.querySelectorAll("p");
+    paragraphs.forEach(paragraph => {
+      paragraph.addEventListener("click", () => {
+          if(paragraph.classList.contains("selected")) {
+              paragraph.classList.remove("selected");
+          }
+          else {
+              paragraph.classList.add("selected");
+          }
+      })
+    });
+  }
+
+  function initQuestionsIframeEvents(iframeDocument) {
+      // bin listener to delete questions
+      iframeDocument.getElementById("bin").addEventListener("click", () => {
+        var selected = iframeDocument.getElementsByClassName("selected");
+        if(selected.length != 0) {
+            item = selected[0];
+            item.remove();
+        }
+      });
+      initClickListenerToExistingQuestion(iframeDocument);
+      addClickToNewQuestions(iframeDocument)
+  }
+
+  function initquestionsIframeCSS() {
+    var doc = getIframeDocument(questionsIframe);
+    var cssFile = doc.querySelector("#mainCSSFile");
+    if(cssFile !== null) return;
+    var fileref = doc.createElement("style");
+    fileref.id = "mainCSSFile";
+    fileref.textContent = document.getElementById("styles.css").textContent;
+    doc.getElementsByTagName("head")[0].appendChild(fileref);
+  }
+
+  function initquestionsIframe(iframeDocument) {
+    var container = iframeDocument.querySelector("#container");
+    if(container !== null) return;
+    initquestionsIframeCSS();
+    createContainerInQuestionsIframe(iframeDocument);
+  }
+
+  questionsIframe.webstrate.on("transcluded", function (webstrateId, clientId, user) {
+      var iframeDocument = getIframeDocument(questionsIframe);
+      initquestionsIframe(iframeDocument);
+      initQuestionsIframeEvents(iframeDocument);
+    }
+  )
 })
-
-// document.addEventListener("click", (event) => {
-//   console.log(event.target)
-// })
-
-/*
- * TO-DO : change the behavior of slide preview
- */

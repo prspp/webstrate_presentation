@@ -1,5 +1,4 @@
 webstrate.on("loaded", function(webstrateId) {
-    console.log("there we go");
     var frame = document.getElementById("questionsFrame");
     frame.webstrate.on("transcluded", () => {
         var questionsDocument = frame.contentWindow.document;
