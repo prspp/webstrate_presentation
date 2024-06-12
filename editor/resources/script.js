@@ -245,13 +245,13 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     currentPath = ""
 
     // add an attribute to the visible slide + hide the others
-    let allSlides = doc.getElementsByClassName("slide");
-    currentSlide.removeAttribute("hidden")
-    for(let i=0; i<allSlides.length; i++) {
-      if(allSlides[i].id != "slide-" + newIndex) {
-        allSlides[i].setAttribute("hidden", "");
-      }
-    }
+    // let allSlides = doc.getElementsByClassName("slide");
+    // currentSlide.removeAttribute("hidden")
+    // for(let i=0; i<allSlides.length; i++) {
+    //   if(allSlides[i].id != "slide-" + newIndex) {
+    //     allSlides[i].setAttribute("hidden", "");
+    //   }
+    // }
     scrollToSlide(mainIframe, newIndex)
     setupDrawEvents(isDrawingMode, currentSlide)
 

@@ -33,6 +33,13 @@ webstratesfs --id=editor --host=localhost:7007 --insecure
 webstratesfs --id=audience --host=localhost:7007 --insecure
 ```
 
+
+**Options possible in the editor**
+- add a text, title
+- perform drag and drop on text and drawing
+- add notes, audience review
+
+
 ### Static Debugging
 
 Just open `./public/index.html` in a browser.
