@@ -8,7 +8,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const addSlideBtn = document.getElementById("addSlideBtn")
   const addTextBoxBtn = document.getElementById("addTextBoxBtn")
-  const addImageBtn = document.getElementById("addImageBtn")
+  const addImageFromUrlBtn = document.getElementById("addImageFromUrlBtn")
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
@@ -189,7 +189,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const initCurrentSlide = () => {
     const doc = getIframeDocument(mainIframe)
     const czs = doc.querySelectorAll(".slide")
-    console.log(czs)
+    // console.log(czs)
     if (czs.length > 0) {
       setCurrentState(0)
     } else {
@@ -545,7 +545,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
-  addImageBtn.addEventListener("click", addImage)
+  addImageFromUrlBtn.addEventListener("click", addImage)
   toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
 
   const initIframe = () => {
