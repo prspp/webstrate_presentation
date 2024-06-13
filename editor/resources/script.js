@@ -197,12 +197,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     }
   }
 
-  const initExistingSlides = () => {
+  const createPreviewsForExistingSlides = () => {
     const doc = getIframeDocument(mainIframe)
     doc.querySelectorAll(".slide").forEach((zone) => {
       // zone.addEventListener("mousedown", selectSlide)
+      // console.log(zone)
       addPreviewSlide(zone.getAttribute("index"))
     })
+  }
+
+  const initExistingSlides = () => {
+    const doc = getIframeDocument(mainIframe)
     doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
       setupDragEvents(box)
     })
@@ -227,7 +232,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   const setCurrentState = (newIndex) => {
-    // console.log(newIndex, currentSlideIndex)
+    console.log(newIndex, currentSlideIndex, currentPreview)
     if (currentSlideIndex === newIndex) return
 
     // updating the old content zone if it is not null
@@ -251,15 +256,22 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     if (currentPreview !== null) currentPreview.classList.add("selected")
   }
 
+  function deleteAllSlides() {
+    getIframeDocument(mainIframe).body.innerHTML = "";
+  }
 
-  function resetSlides() {
-    // DELETE
-    getIframeDocument(mainIframe).body.innerHTML = ""
+  function deleteAllPreviews() {
     containerOfAllPreviews
       .querySelectorAll(".slide-preview-container")
       .forEach((e) => {
         e.parentElement.removeChild(e)
       })
+  }
+
+  function resetSlides() {
+    // DELETE
+    deleteAllSlides();
+    deleteAllPreviews();
 
     // INIT
     initCurrentContentParameters()
@@ -362,10 +374,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     textBox.contentEditable = true
     textBox.style.zIndex = currentZIndex++
     textBox.style.fontSize = `${fontSize}px` // Apply the current font size
-    textBox.style.left = "10px"
-    textBox.style.top = "10px"
     textBox.focus()
     setupDragEvents(textBox)
+    console.log(currentSlide)
     currentSlide.appendChild(textBox)
   }
 
@@ -402,7 +413,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
           element.style.left = current_left + "px"
           element.style.top = current_top + "px"
         }
-        console.log(current_left, current_right, rec)
+        console.log(current_left, current_top, rec)
       }
       const handleMouseUp = () => {
         getIframeDocument(mainIframe).removeEventListener(
@@ -553,6 +564,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     toggleDrawingModeIndicator(isDrawingMode)
     initCSS()
     initContainer()
+    deleteAllPreviews()
+    initCurrentContentParameters()
+    createPreviewsForExistingSlides();
     initExistingSlides()
     initCurrentSlide()
     console.log(getIframeDocument(mainIframe))
