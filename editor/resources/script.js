@@ -551,6 +551,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   window.addEventListener("resize", () => {
     [...document.getElementsByClassName("slide-preview")].forEach(previewIframe => { scrollToSlide(previewIframe, previewIframe.getAttribute("index")) })
+
     // window.devicePixelRatio
   })
 
