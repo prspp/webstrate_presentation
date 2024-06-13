@@ -97,7 +97,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   })
 
   presentBtn.addEventListener("click", ()=>{
-    window.open("http://localhost:7007/presentationView/", "_blank")
+    window.open("http://localhost:7007/presenterView/", "_blank")
   });
 
   const getContainer = () => {
