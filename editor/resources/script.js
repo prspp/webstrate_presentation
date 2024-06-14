@@ -16,15 +16,21 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const brushThicknessSlider = document.getElementById("brushThicknessSlider")
   const fontSizeInput = document.getElementById("fontSizeInput")
   const documentUrlInput = document.getElementById("documentUrlInput")
-  const loadButton = document.getElementById("loadButton")
-  const questionsIframe = document.getElementById("questionsIframe")
+  const loadBtn = document.getElementById("loadBtn")
   const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
   const addImageInput = document.getElementById("imageInput")
   const presentBtn = document.getElementById("presentBtn")
 
-  const containerOfAllPreviews = document.getElementById(
-    "containerOfAllPreviews"
-  )
+  const previewPaneBtn = document.getElementById("previewPaneBtn")
+  const tocPaneBtn = document.getElementById("tocPaneBtn")
+  const previewPane = document.getElementById("previewPane")
+  const tocPane = document.getElementById("tocPane")
+
+
+  const reviewsPaneBtn = document.getElementById("reviewsPaneBtn")
+  const questionsPaneBtn = document.getElementById("questionsPaneBtn")
+  const reviewsPane = document.getElementById("reviewsPane")
+  const questionsIframe = document.getElementById("questionsIframe")
 
   // ### VALUES OF THE APPLICATION ###
   let defaultWebstrateUrl,
@@ -90,7 +96,67 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   //   console.log("reload asked")
   // }), 1000);
 
-  loadButton.addEventListener("click", (event) => {
+  previewPaneBtn.addEventListener("click", (event) => {
+    previewPaneBtn.classList.add("btn-active")
+    previewPane.classList.remove("display-none")
+    tocPaneBtn.classList.remove("btn-active")
+    tocPane.classList.add("display-none")
+  })
+
+  tocPaneBtn.addEventListener("click", (event) => {
+    previewPaneBtn.classList.remove("btn-active")
+    previewPane.classList.add("display-none")
+    tocPaneBtn.classList.add("btn-active")
+    tocPane.classList.remove("display-none")
+  })
+
+  previewPaneBtn.click()
+
+  reviewsPaneBtn.addEventListener("click", (event) => {
+    reviewsPaneBtn.classList.add("btn-active")
+    reviewsPane.classList.remove("display-none")
+    questionsPaneBtn.classList.remove("btn-active")
+    questionsIframe.classList.add("display-none")
+  })
+
+  questionsPaneBtn.addEventListener("click", (event) => {
+    reviewsPaneBtn.classList.remove("btn-active")
+    reviewsPane.classList.add("display-none")
+    questionsPaneBtn.classList.add("btn-active")
+    questionsIframe.classList.remove("display-none")
+  })
+
+  questionsPaneBtn.click()
+
+
+// Currently not working when wrapped in a function
+// const initBinaryBoard = (btn1, btn2, pane1, pane2) => {
+//   console.log("btn1")
+//     btn1.addEventListener("click", (event) => {
+//       btn1.classList.add("btn-active")
+//       pane1.classList.remove("display-none")
+//       btn2.classList.remove("btn-active")
+//       pane2.classList.add("display-none")
+//     })
+
+//     console.log("btn2")
+//     btn2.addEventListener("click", (event) => {
+//       btn1.classList.remove("btn-active")
+//       pane1.classList.add("display-none")
+//       btn2.classList.add("btn-active")
+//       pane2.classList.remove("display-none")
+//     })
+
+//     console.log("preclick")
+//     btn1.click()
+//     console.log("postclick")
+// }
+
+// initBinaryBoard(previewPaneBtn, previewPane, tocPaneBtn, tocPane)
+
+
+
+  loadBtn.addEventListener("click", (event) => {
     mainIframe.src = documentUrlInput.value || defaultWebstrateUrl
     // getIframeDocument(mainIframe).location.reload();
     console.log("reload asked")
@@ -245,7 +311,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     currentSlide = doc.querySelectorAll(".slide")[newIndex]
     currentSlideIndex = newIndex
     currentPreview =
-      containerOfAllPreviews.querySelectorAll(".slide-preview")[newIndex]
+      previewPane.querySelectorAll(".slide-preview")[newIndex]
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
     currentPath = ""
 
@@ -261,7 +327,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   function deleteAllPreviews() {
-    containerOfAllPreviews
+    previewPane
       .querySelectorAll(".slide-preview-container")
       .forEach((e) => {
         e.parentElement.removeChild(e)
@@ -339,7 +405,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const addPreviewSlide = (newIndex) => {
     const previewSlideContainer = createSlidePreview(newIndex)
-    containerOfAllPreviews.append(previewSlideContainer)
+    previewPane.append(previewSlideContainer)
   }
 
   const addSlide = () => {
@@ -572,7 +638,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     initCurrentSlide()
     console.log(getIframeDocument(mainIframe))
     console.log(getIframeDocument(mainIframe).location)
-    // console.log(getIframeDocument(mainIframe).body.innerHTML);
   }
 
   mainIframe.webstrate.on(
@@ -586,6 +651,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   function createContainerInQuestionsIframe(iframeDocument) {
       var container = iframeDocument.createElement("div");
       container.id = "container";
+      container.classList.add("some-padding")
+      container.classList.add("container-section")
       var img = iframeDocument.createElement("img");
       img.src = `${window.location.pathname}delete.png`;
       img.alt = "bin";
@@ -663,6 +730,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   questionsIframe.webstrate.on("transcluded", function (webstrateId, clientId, user) {
+      console.log("questionsIframe transcluded")
       var iframeDocument = getIframeDocument(questionsIframe);
       initquestionsIframe(iframeDocument);
       initQuestionsIframeEvents(iframeDocument);

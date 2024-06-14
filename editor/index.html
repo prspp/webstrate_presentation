@@ -4,16 +4,13 @@
     <title __wid="g2DrexBC">Sketchup Tool</title>
     <script id="script.js" __wid="JZCZ2SRQ"></script>
     <style rel="stylesheet" __wid="CRn7fgC3" id="styles.css"></style>
-
-    <link rel="stylesheet" href="./resources/styles.css" __wid="MEQLPn72"/>
-    <script src="./resources/script.js" __wid="CEhPnJk7"></script>
   </head>
   <!-- prettier-ignore -->
   <body class __wid="SJmSnCLa">
-    <div class="container flex-column bg-white" __wid="GxRxKayE">
+    <div class="some-padding flex-column bg-white" __wid="GxRxKayE">
       <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
         <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
-        <button id="loadButton" class="btn clickable-btn" __wid="FypRC8PC">
+        <button id="loadBtn" class="btn clickable-btn" __wid="FypRC8PC">
           Load
         </button>
         <button id="resetSlidesBtn" class="btn clickable-btn" __wid="ERZ3knt8">
@@ -28,7 +25,7 @@
         <button __wid="Zc98bHUT" class="btn clickable-btn" id="addImageFromUrlBtn">
           Add Image From URL
         </button>
-        <label __wid="3hykm2ni" class="btn clickable-btn" for="imageInput">Add image</label>
+        <label __wid="3hykm2ni" class="btn clickable-btn" for="imageInput">Add Image From Local</label>
         <input type="file" id="imageInput" __wid="ia69yEyT" accept="image/*" name="imageInput" hidden/>
         <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
         <input id="brushColorPicker" class="font-buttons" __wid="79tKfweA" type="color" value="#000000"/>
@@ -43,23 +40,28 @@
       </div>
 
       <div class="flex-row" __wid="GayMuR8V" style>
-        <div class="vertical-sidebar bg-gray container-section flex-center-vertically flex-column" __wid="iCjVqwRe" style="padding: 10px">
+        <div class="vertical-sidebar bg-gray container-section some-padding flex-center-vertically flex-column" __wid="iCjVqwRe">
           <div class="bg-white flex-row flex-center-horizontally switchbar" __wid="bXgg6vyT">
-            <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">
-              Thumbnails
+            <div class="bg-gray btn alternative-btn btn-active" __wid="QsyNbHvv" id="previewPaneBtn">
+              Preview Slides
             </div>
-            <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9">
+            <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9" id="tocPaneBtn">
               Table of Content
             </div>
           </div>
-          <transient class="flex-center-vertically flex-column" id="containerOfAllPreviews"></transient>
+          <transient class="flex-center-vertically flex-column" id="previewPane"></transient>
+          <div id="tocPane" class="container-section some-padding wh" __wid="NsAJvA6b">
+            <div class="bg-white container-section some-padding wh" contenteditable>
+              A
+            </div>
+          </div>
           <button id="addSlideBtn" class="btn clickable-btn" __wid="maCcgVYG" style="/*! margin-bottom: 10px; */">
             Add Slide
           </button>
         </div>
 
         <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
-          <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4" style="/*! padding: 100px; */ box-sizing: border-box">
+          <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4">
             <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpage" scrolling="no" __wid="ezYDf2iW" style="
                 /*! zoom: 0.8; */
                 transform: scale(0.8); /*! transform-origin: 0 0; */
@@ -88,21 +90,20 @@
             </div>
 -->
         </div>
-        <div class="vertical-sidebar bg-gray flex-column flex-center-vertically container" __wid="iCjVqwRe">
-          <div class="bg-white flex-row flex-center-horizontally" __wid="bXgg6vyT" style="
-              width: fit-content;
-              padding: 5px;
-              border-radius: 10px;
-              box-sizing: border-box;
-            ">
-            <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv">
+        <div class="vertical-sidebar bg-gray flex-column flex-center-vertically some-padding" __wid="iCjVqwRe">
+          <div class="bg-white flex-row flex-center-horizontally switchbar" __wid="bXgg6vyT">
+            <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv" id="reviewsPaneBtn">
               Review Notes
             </div>
-            <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9">
+            <div class="bg-gray btn alternative-btn btn-active" __wid="iKHtE3c9" id="questionsPaneBtn">
               Questions
             </div>
           </div>
-          <iframe __wid="FEzn7c5t" id="questionsIframe" src="/questionsIframe"></iframe>
+          <iframe __wid="FEzn7c5t" id="questionsIframe" src="/questionsIframe" class="flex-center-vertically"></iframe>
+          <div id="reviewsPane" class="container-section some-padding wh display-none" __wid="NsAJvA6b">
+            <div class="bg-white container-section some-padding wh" contenteditable __wid="HXSUtXUh">
+              AB</div>
+          </div>
         </div>
       </div>
     </div>

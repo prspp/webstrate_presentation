@@ -1,3 +1,5 @@
+
+
 html,
 body {
   font-family: Arial, sans-serif;
@@ -14,12 +16,12 @@ body {
   background-color: #fefefe;
 }
 
-.container,
 .container-section,
 .font-btn,
 .toolbar,
 .btn,
-.sidebar,
+.vertical-sidebar,
+.horizontal-sidebar,
 .switchbar {
   border-radius: 10px;
 }
@@ -68,6 +70,11 @@ input {
   cursor: pointer;
 }
 
+.btn-active {
+  filter: brightness(90%)
+}
+
+
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -80,10 +87,6 @@ input {
   gap: 10px;
 }
 
-.container {
-  padding: 10px;
-  /*    box-shadow: 0 0 10px rgba(0,0,0,0.1);*/
-}
 
 .flex-center-horizontally {
   display: flex;
@@ -94,9 +97,19 @@ input {
   align-items: center;
 }
 
+
+
 .container-section {
-  width: 100%;
-  height: 100%;
+  box-sizing: border-box;
+}
+
+.some-padding {
+  padding: 10px;
+}
+
+.wh {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
 }
 
 .horizontal-sidebar {
@@ -105,9 +118,10 @@ input {
 
 .vertical-sidebar {
   width: 25%;
+  min-width: 420px
 }
 
-.switchbar, #container {
+.switchbar {
   padding: 7px;
 }
 
@@ -191,6 +205,7 @@ p {
 
 .selected {
   border: 4px solid red;
+/*  box-sizing: border-box;*/
 }
 
 .text-box {
@@ -212,6 +227,14 @@ p {
   justify-content: center;
   z-index: 0;
 }
+
+
+.display-none {
+  display: none;
+}
+
+
+
 
 #container {
   height: 100vh;
