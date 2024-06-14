@@ -33,13 +33,18 @@ webstratesfs --id=editor --host=localhost:7007 --insecure
 webstratesfs --id=audience --host=localhost:7007 --insecure
 ```
 
-
 **Options possible in the editor**
 - add a text, title
 - perform drag and drop on text and drawing
 - add notes, audience review
 
-
-### Static Debugging
-
-Just open `./public/index.html` in a browser.
+### TODO
+* integrate Lisa's design
+* move review notes and toc notes into separated webstrates; but not the editor webstrates
+* add load button and bar in presentationView
+* when a slide change in the editor, make it changes in the presentation view
+* add the options to reset transcluded webstrates from the editor
+* add reset instructions in README
+* Correct build&run instructions in README
+* restructure the code in several files
+* run prettier when everything is dead finish

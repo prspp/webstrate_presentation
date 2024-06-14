@@ -96,11 +96,21 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   //   console.log("reload asked")
   // }), 1000);
 
+  function resizeAllPreviews() {
+    [...document.getElementsByClassName("slide-preview")].forEach(previewIframe => { scrollToSlide(previewIframe, previewIframe.getAttribute("index")) })
+  }
+
+  window.addEventListener("resize", () => {
+    resizeAllPreviews()
+    // window.devicePixelRatio
+  })
+
   previewPaneBtn.addEventListener("click", (event) => {
     previewPaneBtn.classList.add("btn-active")
     previewPane.classList.remove("display-none")
     tocPaneBtn.classList.remove("btn-active")
     tocPane.classList.add("display-none")
+    resizeAllPreviews();
   })
 
   tocPaneBtn.addEventListener("click", (event) => {
@@ -108,6 +118,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     previewPane.classList.add("display-none")
     tocPaneBtn.classList.add("btn-active")
     tocPane.classList.remove("display-none")
+    resizeAllPreviews();
   })
 
   previewPaneBtn.click()
@@ -615,11 +626,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     }
   })
 
-  window.addEventListener("resize", () => {
-    [...document.getElementsByClassName("slide-preview")].forEach(previewIframe => { scrollToSlide(previewIframe, previewIframe.getAttribute("index")) })
-
-    // window.devicePixelRatio
-  })
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
