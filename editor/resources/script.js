@@ -26,7 +26,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const previewPane = document.getElementById("previewPane")
   const tocPane = document.getElementById("tocPane")
 
-
   const reviewsPaneBtn = document.getElementById("reviewsPaneBtn")
   const questionsPaneBtn = document.getElementById("questionsPaneBtn")
   const reviewsPane = document.getElementById("reviewsPane")
@@ -97,7 +96,11 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   // }), 1000);
 
   function resizeAllPreviews() {
-    [...document.getElementsByClassName("slide-preview")].forEach(previewIframe => { scrollToSlide(previewIframe, previewIframe.getAttribute("index")) })
+    ;[...document.getElementsByClassName("slide-preview")].forEach(
+      (previewIframe) => {
+        scrollToSlide(previewIframe, previewIframe.getAttribute("index"))
+      }
+    )
   }
 
   window.addEventListener("resize", () => {
@@ -110,7 +113,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     previewPane.classList.remove("display-none")
     tocPaneBtn.classList.remove("btn-active")
     tocPane.classList.add("display-none")
-    resizeAllPreviews();
+    resizeAllPreviews()
   })
 
   tocPaneBtn.addEventListener("click", (event) => {
@@ -118,7 +121,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     previewPane.classList.add("display-none")
     tocPaneBtn.classList.add("btn-active")
     tocPane.classList.remove("display-none")
-    resizeAllPreviews();
+    resizeAllPreviews()
   })
 
   previewPaneBtn.click()
@@ -139,33 +142,30 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   questionsPaneBtn.click()
 
+  // Currently not working when wrapped in a function
+  // const initBinaryBoard = (btn1, btn2, pane1, pane2) => {
+  //   console.log("btn1")
+  //     btn1.addEventListener("click", (event) => {
+  //       btn1.classList.add("btn-active")
+  //       pane1.classList.remove("display-none")
+  //       btn2.classList.remove("btn-active")
+  //       pane2.classList.add("display-none")
+  //     })
 
-// Currently not working when wrapped in a function
-// const initBinaryBoard = (btn1, btn2, pane1, pane2) => {
-//   console.log("btn1")
-//     btn1.addEventListener("click", (event) => {
-//       btn1.classList.add("btn-active")
-//       pane1.classList.remove("display-none")
-//       btn2.classList.remove("btn-active")
-//       pane2.classList.add("display-none")
-//     })
+  //     console.log("btn2")
+  //     btn2.addEventListener("click", (event) => {
+  //       btn1.classList.remove("btn-active")
+  //       pane1.classList.add("display-none")
+  //       btn2.classList.add("btn-active")
+  //       pane2.classList.remove("display-none")
+  //     })
 
-//     console.log("btn2")
-//     btn2.addEventListener("click", (event) => {
-//       btn1.classList.remove("btn-active")
-//       pane1.classList.add("display-none")
-//       btn2.classList.add("btn-active")
-//       pane2.classList.remove("display-none")
-//     })
+  //     console.log("preclick")
+  //     btn1.click()
+  //     console.log("postclick")
+  // }
 
-//     console.log("preclick")
-//     btn1.click()
-//     console.log("postclick")
-// }
-
-// initBinaryBoard(previewPaneBtn, previewPane, tocPaneBtn, tocPane)
-
-
+  // initBinaryBoard(previewPaneBtn, previewPane, tocPaneBtn, tocPane)
 
   loadBtn.addEventListener("click", (event) => {
     mainIframe.src = documentUrlInput.value || defaultWebstrateUrl
@@ -173,9 +173,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     console.log("reload asked")
   })
 
-  presentBtn.addEventListener("click", ()=>{
+  presentBtn.addEventListener("click", () => {
     window.open("http://localhost:7007/presentationView/", "_blank")
-  });
+  })
 
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
@@ -183,46 +183,46 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const uploadImages = (files) => {
     return new Promise((resolve, reject) => {
-      const file = files[0];
-      const formData = new FormData();
-      formData.append("file", file, file.name);
+      const file = files[0]
+      const formData = new FormData()
+      formData.append("file", file, file.name)
 
-      const request = new XMLHttpRequest();
-      console.log("Location : ", window.location.pathname);
-      request.open("POST", window.location.pathname);
-      request.send(formData);
+      const request = new XMLHttpRequest()
+      console.log("Location : ", window.location.pathname)
+      request.open("POST", window.location.pathname)
+      request.send(formData)
       request.addEventListener("load", (e) => {
-        const asset = JSON.parse(request.responseText);
-        console.log("Response : ", request.responseText);
-        resolve(asset);
-      });
-    });
+        const asset = JSON.parse(request.responseText)
+        console.log("Response : ", request.responseText)
+        resolve(asset)
+      })
+    })
   }
 
   const addImages = (imgSrc) => {
-    if(!currentSlide) return;
-    const document = getIframeDocument(mainIframe);
-    var imageDiv = document.createElement("div");
-    imageDiv.style.left = "0px";
-    imageDiv.style.top = "0px";
+    if (!currentSlide) return
+    const document = getIframeDocument(mainIframe)
+    var imageDiv = document.createElement("div")
+    imageDiv.style.left = "0px"
+    imageDiv.style.top = "0px"
 
-    const image = document.createElement("img");
-    image.setAttribute("src", imgSrc);
-    imageDiv.appendChild(image);
-    imageDiv.className = "image-box";
-    imageDiv.style.zIndex = currentZIndex ++;
-    image.style.width = "200px";
-    setupDragEvents(imageDiv);
-    currentSlide.appendChild(imageDiv);
-    addImageInput.value = "";
+    const image = document.createElement("img")
+    image.setAttribute("src", imgSrc)
+    imageDiv.appendChild(image)
+    imageDiv.className = "image-box"
+    imageDiv.style.zIndex = currentZIndex++
+    image.style.width = "200px"
+    setupDragEvents(imageDiv)
+    currentSlide.appendChild(imageDiv)
+    addImageInput.value = ""
   }
 
   addImageInput.addEventListener("change", (event) => {
-    console.log("event %o", event);
-    (async() => {
-      let asset = await uploadImages(addImageInput.files);
-      addImages(`${window.location.pathname}${asset.v}/${asset.fileName}`);
-    })();
+    console.log("event %o", event)
+    ;(async () => {
+      let asset = await uploadImages(addImageInput.files)
+      addImages(`${window.location.pathname}${asset.v}/${asset.fileName}`)
+    })()
   })
 
   const initContainer = () => {
@@ -321,8 +321,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     NSlide = doc.querySelectorAll(".slide").length
     currentSlide = doc.querySelectorAll(".slide")[newIndex]
     currentSlideIndex = newIndex
-    currentPreview =
-      previewPane.querySelectorAll(".slide-preview")[newIndex]
+    currentPreview = previewPane.querySelectorAll(".slide-preview")[newIndex]
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
     currentPath = ""
 
@@ -334,21 +333,19 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   function deleteAllSlides() {
-    getIframeDocument(mainIframe).body.innerHTML = "";
+    getIframeDocument(mainIframe).body.innerHTML = ""
   }
 
   function deleteAllPreviews() {
-    previewPane
-      .querySelectorAll(".slide-preview-container")
-      .forEach((e) => {
-        e.parentElement.removeChild(e)
-      })
+    previewPane.querySelectorAll(".slide-preview-container").forEach((e) => {
+      e.parentElement.removeChild(e)
+    })
   }
 
   function resetSlides() {
     // DELETE
-    deleteAllSlides();
-    deleteAllPreviews();
+    deleteAllSlides()
+    deleteAllPreviews()
 
     // INIT
     initCurrentContentParameters()
@@ -626,7 +623,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     }
   })
 
-
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
   addImageFromUrlBtn.addEventListener("click", addImage)
@@ -639,7 +635,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     initContainer()
     deleteAllPreviews()
     initCurrentContentParameters()
-    createPreviewsForExistingSlides();
+    createPreviewsForExistingSlides()
     initExistingSlides()
     initCurrentSlide()
     console.log(getIframeDocument(mainIframe))
@@ -655,91 +651,94 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   )
 
   function createContainerInQuestionsIframe(iframeDocument) {
-      var container = iframeDocument.createElement("div");
-      container.id = "container";
-      container.classList.add("some-padding")
-      container.classList.add("container-section")
-      var img = iframeDocument.createElement("img");
-      img.src = `${window.location.pathname}delete.png`;
-      img.alt = "bin";
-      img.id = "bin";
-      container.appendChild(img);
-      iframeDocument.body.appendChild(container);
+    var container = iframeDocument.createElement("div")
+    container.id = "container"
+    container.classList.add("some-padding")
+    container.classList.add("container-section")
+    var img = iframeDocument.createElement("img")
+    img.src = `${window.location.pathname}delete.png`
+    img.alt = "bin"
+    img.id = "bin"
+    container.appendChild(img)
+    iframeDocument.body.appendChild(container)
   }
 
   // observe for new questions in the question iframe
   // to add click listener
   function addClickToNewQuestions(iframeDocument) {
-    const observer = new MutationObserver(function(mutations_list) {
-      mutations_list.forEach(function(mutation) {
-          mutation.addedNodes.forEach(function(added_node) {
-              if(added_node.className == 'selected') {
-                  added_node.addEventListener("click", (event) => {
-                      var itemClass = event.target.className;
-                      if(itemClass) {
-                          event.target.removeAttribute("class");
-                      }
-                      else {
-                          event.target.className = "selected";
-                      }
-                  }); 
-                  observer.disconnect();
+    const observer = new MutationObserver(function (mutations_list) {
+      mutations_list.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (added_node) {
+          if (added_node.className == "selected") {
+            added_node.addEventListener("click", (event) => {
+              var itemClass = event.target.className
+              if (itemClass) {
+                event.target.removeAttribute("class")
+              } else {
+                event.target.className = "selected"
               }
-          });
-      });
-    });
-    observer.observe(iframeDocument.querySelector("#container"), { subtree: false, childList: true });
+            })
+            observer.disconnect()
+          }
+        })
+      })
+    })
+    observer.observe(iframeDocument.querySelector("#container"), {
+      subtree: false,
+      childList: true,
+    })
   }
 
   function initClickListenerToExistingQuestion(iframeDocument) {
-    let paragraphs = iframeDocument.querySelectorAll("p");
-    paragraphs.forEach(paragraph => {
+    let paragraphs = iframeDocument.querySelectorAll("p")
+    paragraphs.forEach((paragraph) => {
       paragraph.addEventListener("click", () => {
-          if(paragraph.classList.contains("selected")) {
-              paragraph.classList.remove("selected");
-          }
-          else {
-              paragraph.classList.add("selected");
-          }
+        if (paragraph.classList.contains("selected")) {
+          paragraph.classList.remove("selected")
+        } else {
+          paragraph.classList.add("selected")
+        }
       })
-    });
+    })
   }
 
   function initQuestionsIframeEvents(iframeDocument) {
-      // bin listener to delete questions
-      iframeDocument.getElementById("bin").addEventListener("click", () => {
-        var selected = iframeDocument.getElementsByClassName("selected");
-        if(selected.length != 0) {
-            item = selected[0];
-            item.remove();
-        }
-      });
-      initClickListenerToExistingQuestion(iframeDocument);
-      addClickToNewQuestions(iframeDocument)
+    // bin listener to delete questions
+    iframeDocument.getElementById("bin").addEventListener("click", () => {
+      var selected = iframeDocument.getElementsByClassName("selected")
+      if (selected.length != 0) {
+        item = selected[0]
+        item.remove()
+      }
+    })
+    initClickListenerToExistingQuestion(iframeDocument)
+    addClickToNewQuestions(iframeDocument)
   }
 
   function initquestionsIframeCSS() {
-    var doc = getIframeDocument(questionsIframe);
-    var cssFile = doc.querySelector("#mainCSSFile");
-    if(cssFile !== null) return;
-    var fileref = doc.createElement("style");
-    fileref.id = "mainCSSFile";
-    fileref.textContent = document.getElementById("styles.css").textContent;
-    doc.getElementsByTagName("head")[0].appendChild(fileref);
+    var doc = getIframeDocument(questionsIframe)
+    var cssFile = doc.querySelector("#mainCSSFile")
+    if (cssFile !== null) return
+    var fileref = doc.createElement("style")
+    fileref.id = "mainCSSFile"
+    fileref.textContent = document.getElementById("styles.css").textContent
+    doc.getElementsByTagName("head")[0].appendChild(fileref)
   }
 
   function initquestionsIframe(iframeDocument) {
-    var container = iframeDocument.querySelector("#container");
-    if(container !== null) return;
-    initquestionsIframeCSS();
-    createContainerInQuestionsIframe(iframeDocument);
+    var container = iframeDocument.querySelector("#container")
+    if (container !== null) return
+    initquestionsIframeCSS()
+    createContainerInQuestionsIframe(iframeDocument)
   }
 
-  questionsIframe.webstrate.on("transcluded", function (webstrateId, clientId, user) {
+  questionsIframe.webstrate.on(
+    "transcluded",
+    function (webstrateId, clientId, user) {
       console.log("questionsIframe transcluded")
-      var iframeDocument = getIframeDocument(questionsIframe);
-      initquestionsIframe(iframeDocument);
-      initQuestionsIframeEvents(iframeDocument);
+      var iframeDocument = getIframeDocument(questionsIframe)
+      initquestionsIframe(iframeDocument)
+      initQuestionsIframeEvents(iframeDocument)
     }
   )
 })
