@@ -199,28 +199,43 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     })
   }
 
-  const addImages = (imgSrc) => {
-    if (!currentSlide) return
-    const document = getIframeDocument(mainIframe)
-    var imageDiv = document.createElement("div")
-    imageDiv.style.left = "0px"
-    imageDiv.style.top = "0px"
+const addImageFromLocal = (imgSrc) => {
+  if (!currentSlide) return;
+  const document = getIframeDocument(mainIframe);
+  
+  // Create the outer draggable div
+  const draggableDiv = document.createElement("div");
+  draggableDiv.className = "draggable";
+  draggableDiv.style.position = "absolute";
+  draggableDiv.style.left = "0px";
+  draggableDiv.style.top = "0px";
+  draggableDiv.style.zIndex = currentZIndex++;
 
-    const image = document.createElement("img")
-    image.setAttribute("src", imgSrc)
-    imageDiv.appendChild(image)
-    imageDiv.className = "image-box"
-    imageDiv.style.zIndex = currentZIndex++
-    image.style.width = "200px"
-    setupDragEvents(imageDiv)
-    currentSlide.appendChild(imageDiv)
-    addImageInput.value = ""
-  }
+  // Create and append the image
+  const image = document.createElement("img");
+  image.setAttribute("src", imgSrc);
+  image.style.width = "200px";
+  draggableDiv.appendChild(image);
+  
+  // Add resize handles
+  ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
+    const handle = document.createElement("div");
+    handle.className = `resize-handle ${pos}`;
+    draggableDiv.appendChild(handle);
+  });
+
+  // Setup drag and resize events
+  setupDragEvents(draggableDiv);
+
+  // Append to the current slide
+  currentSlide.appendChild(draggableDiv);
+  addImageInput.value = "";
+};
 
   addImageInput.addEventListener("change", (event) => {
     (async () => {
       let asset = await uploadImages(addImageInput.files)
-      addImages(`${window.location.pathname}${asset.v}/${asset.fileName}`)
+      addImageFromLocal(`${window.location.pathname}${asset.v}/${asset.fileName}`)
     })()
   })
 
@@ -235,7 +250,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     return getIframeDocument(mainIframe).getElementById("mainCSSFile")
   }
 
-
   const initCSS = () => {
     if (getMainCSSFile() !== null) return
     let doc = getIframeDocument(mainIframe)
@@ -244,7 +258,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     fileref.textContent = document.getElementById("styles.css").textContent
     doc.getElementsByTagName("head")[0].appendChild(fileref)
   }
-
 
   const initCurrentSlide = () => {
     const doc = getIframeDocument(mainIframe)
@@ -265,7 +278,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const initExistingSlides = () => {
     const doc = getIframeDocument(mainIframe)
-    doc.querySelectorAll(".text-box, .image-box").forEach((box) => {
+    doc.querySelectorAll(".draggable").forEach((box) => {
       setupDragEvents(box)
     })
   }
@@ -407,70 +420,203 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     return newIndex
   }
 
-  const addTextBox = () => {
-    if (!currentSlide) return
-    const doc = getIframeDocument(mainIframe)
-    const textBox = doc.createElement("div")
-    textBox.className = "text-box"
-    textBox.contentEditable = true
-    textBox.style.zIndex = currentZIndex++
-    textBox.style.fontSize = `${fontSize}px` // Apply the current font size
-    textBox.focus()
-    setupDragEvents(textBox)
-    currentSlide.appendChild(textBox)
-  }
+const addTextBox = () => {
+  if (!currentSlide) return;
+  const document = getIframeDocument(mainIframe);
+  
+  const draggableDiv = document.createElement("div");
+  draggableDiv.className = "draggable";
+  draggableDiv.style.position = "absolute";
+  draggableDiv.style.left = "0px";
+  draggableDiv.style.top = "0px";
+  draggableDiv.style.zIndex = currentZIndex++;
 
-  const addImage = () => {
-    if (!currentSlide) return
-    const imageUrl = prompt("Enter image URL:")
-    if (imageUrl) {
-      const doc = getIframeDocument(mainIframe)
-      const imageBox = doc.createElement("img")
-      imageBox.src = imageUrl
-      imageBox.className = "image-box"
-      imageBox.style.width = "200px" // Change width as desired
-      imageBox.style.zIndex = currentZIndex++
-      setupDragEvents(imageBox)
-      currentSlide.appendChild(imageBox)
+  const textBox = document.createElement("div");
+  textBox.className = "text-box";
+  textBox.contentEditable = true;
+  textBox.style.fontSize = `${fontSize}px`;
+  textBox.textContent = "Text";
+  draggableDiv.appendChild(textBox);
+
+  ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
+    const handle = document.createElement("div");
+    handle.className = `resize-handle ${pos}`;
+    draggableDiv.appendChild(handle);
+  });
+
+  setupDragEvents(draggableDiv);
+
+  currentSlide.appendChild(draggableDiv);
+};
+
+const addImageFromUrl = () => {
+  if (!currentSlide) return;
+  const imageUrl = prompt("Enter image URL:");
+  if (imageUrl) {
+    const document = getIframeDocument(mainIframe);
+    
+    const draggableDiv = document.createElement("div");
+    draggableDiv.className = "draggable";
+    draggableDiv.style.position = "absolute";
+    draggableDiv.style.left = "0px";
+    draggableDiv.style.top = "0px";
+    draggableDiv.style.zIndex = currentZIndex++;
+
+    const image = document.createElement("img");
+    image.setAttribute("src", imageUrl);
+    image.style.width = "200px";
+    draggableDiv.appendChild(image);
+
+    ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
+      const handle = document.createElement("div");
+      handle.className = `resize-handle ${pos}`;
+      draggableDiv.appendChild(handle);
+    });
+
+    setupDragEvents(draggableDiv);
+
+    currentSlide.appendChild(draggableDiv);
+  }
+};
+
+
+
+
+const setupDragEvents = (element) => {
+  const contentElement = element.querySelector("img, .text-box");
+
+  let isDragging = false;
+  let isResizing = false;
+  let resizeHandle = null;
+
+  const startDrag = (event) => {
+    event.preventDefault();
+    isDragging = true;
+    const rect = contentElement.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startLeft = rect.left;
+    const startTop = rect.top;
+
+    const handleMouseMove = (event) => {
+      const currentLeft = event.clientX - startX + startLeft;
+      const currentTop = event.clientY - startY + startTop;
+      newLeftStr = currentLeft + "px";
+      newTopStr = currentTop + "px";
+      // contentElement.style.left = newLeftStr
+      // contentElement.style.top = newTopStr
+      element.style.left = newLeftStr
+      element.style.top = newTopStr
+      // console.log(element.style.left, element.style.top);
+    };
+
+    const handleMouseUp = () => {
+      isDragging = false;
+      getIframeDocument(mainIframe).removeEventListener("mousemove", handleMouseMove);
+      getIframeDocument(mainIframe).removeEventListener("mouseup", handleMouseUp);
+    };
+
+    getIframeDocument(mainIframe).addEventListener("mousemove", handleMouseMove);
+    getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp);
+  };
+
+  const startResize = (event, handle) => {
+    event.preventDefault();
+    isResizing = true;
+    resizeHandle = handle;
+    const rect = contentElement.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startWidth = rect.width;
+    const startHeight = rect.height;
+    const startLeft = rect.left;
+    const startTop = rect.top;
+
+    const handleMouseMove = (event) => {
+      let newWidth, newHeight, newLeft, newTop;
+
+      if (resizeHandle.classList.contains("top-left")) {
+        newWidth = startWidth - (event.clientX - startX);
+        newHeight = startHeight - (event.clientY - startY);
+        newLeft = startLeft + (event.clientX - startX);
+        newTop = startTop + (event.clientY - startY);
+      } else if (resizeHandle.classList.contains("top-right")) {
+        newWidth = startWidth + (event.clientX - startX);
+        newHeight = startHeight - (event.clientY - startY);
+        newLeft = startLeft;
+        newTop = startTop + (event.clientY - startY);
+      } else if (resizeHandle.classList.contains("bottom-left")) {
+        newWidth = startWidth - (event.clientX - startX);
+        newHeight = startHeight + (event.clientY - startY);
+        newLeft = startLeft + (event.clientX - startX);
+        newTop = startTop;
+      } else if (resizeHandle.classList.contains("bottom-right")) {
+        newWidth = startWidth + (event.clientX - startX);
+        newHeight = startHeight + (event.clientY - startY);
+        newLeft = startLeft;
+        newTop = startTop;
+      }
+
+      element.style.width = newWidth + "px";
+      element.style.height = newHeight + "px";
+      if (newLeft !== undefined) element.style.left = newLeft + "px";
+      if (newTop !== undefined) element.yle.top = newTop + "px";
+    };
+
+    const handleMouseUp = () => {
+      isResizing = false;
+      resizeHandle = null;
+      getIframeDocument(mainIframe).removeEventListener("mousemove", handleMouseMove);
+      getIframeDocument(mainIframe).removeEventListener("mouseup", handleMouseUp);
+    };
+
+    getIframeDocument(mainIframe).addEventListener("mousemove", handleMouseMove);
+    getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleMouseDown = (event) => {
+    if (event.target.classList.contains("resize-handle")) {
+      startResize(event, event.target);
+    } else if (isOnBorder(event, contentElement) || (event.target.nodeName.toUpperCase() == "IMG")) {
+      startDrag(event);
+    } else if (event.target.classList.contains("text-box") && event.target.nodeName.toUpperCase() == "DIV") {
+      event.target.focus()
     }
-  }
+  };
 
-  const setupDragEvents = (element) => {
-    element.addEventListener("mousedown", (event) => {
-      const handleMouseMove = (event) => {
-        const current_left =
-          event.clientX - currentSlide.getBoundingClientRect().left
-        const current_top =
-          event.clientY - currentSlide.getBoundingClientRect().top
-        const rec = element.getBoundingClientRect()
-        if (
-          0 < current_left &&
-          current_left + rec.width <
-            currentSlide.getBoundingClientRect().width &&
-          0 < current_top &&
-          current_top + rec.height < currentSlide.getBoundingClientRect().height
-        ) {
-          element.style.left = current_left + "px"
-          element.style.top = current_top + "px"
-        }
-      }
-      const handleMouseUp = () => {
-        getIframeDocument(mainIframe).removeEventListener(
-          "mousemove",
-          handleMouseMove
-        )
-        getIframeDocument(mainIframe).removeEventListener(
-          "mouseup",
-          handleMouseUp
-        )
-      }
-      getIframeDocument(mainIframe).addEventListener(
-        "mousemove",
-        handleMouseMove
+  const isOnBorder = (event, contentElement) => {
+    const rect = contentElement.getBoundingClientRect();
+    const borderWidth = 5; // Adjust to your border width
+    return (
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom &&
+      (
+        event.clientX < rect.left + borderWidth ||
+        event.clientX > rect.right - borderWidth ||
+        event.clientY < rect.top + borderWidth ||
+        event.clientY > rect.bottom - borderWidth
       )
-      getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp)
-    })
-  }
+    );
+  };
+
+  const handleMouseMove = (event) => {
+    if (isOnBorder(event, contentElement)) {
+      contentElement.classList.add('draggable-border');
+    } else {
+      contentElement.classList.remove('draggable-border');
+    }
+  };
+
+  contentElement.addEventListener("mousedown", handleMouseDown);
+  contentElement.addEventListener("mousemove", handleMouseMove);
+  contentElement.addEventListener("mouseleave", () => {
+    contentElement.classList.remove('draggable-border');
+  });
+};
+
+
 
   const toggleDrawingModeIndicator = (drawingMode) => {
     drawingModeIndicator.style.visibility = drawingMode ? "visible" : "hidden" // Show/hide indicator
@@ -581,7 +727,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
-  addImageFromUrlBtn.addEventListener("click", addImage)
+  addImageFromUrlBtn.addEventListener("click", addImageFromUrl)
   toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
 
   const initIframe = () => {

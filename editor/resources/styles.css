@@ -203,17 +203,17 @@ p {
 }
 
 .text-box {
-  position: absolute;
+/*  position: absolute;*/
   padding: 10px;
-  cursor: move;
   background-color: #fff;
   left: 10px;
   top: 10px;
+  cursor: text;
 }
 
 .image-box {
-  position: absolute;
-  cursor: move;
+/*  position: absolute;*/
+  cursor: pointer;
 }
 
 .drawing-canvas {
@@ -254,4 +254,89 @@ p {
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+
+
+
+.draggable {
+  position: absolute;
+  border: 1px solid transparent;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
+
+.resize-handle::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+
+.top-left {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.top-right {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.bottom-left {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+
+.top-left::before {
+  border-width: 0 9px 9px 0;
+  border-color: transparent #000 #000 transparent;
+  top: -9px;
+  left: -9px;
+  cursor: nwse-resize;
+}
+
+.top-right::before {
+  border-width: 0 0 9px 9px;
+  border-color: transparent transparent #000 #000;
+  top: -9px;
+  right: -9px;
+  cursor: nesw-resize;
+}
+
+.bottom-left::before {
+  border-width: 9px 9px 0 0;
+  border-color: #000 transparent transparent #000;
+  bottom: -9px;
+  left: -9px;
+  cursor: nesw-resize;
+}
+
+.bottom-right::before {
+  border-width: 9px 0 0 9px;
+  border-color: #000 transparent transparent #000;
+  bottom: -9px;
+  right: -9px;
+  cursor: nwse-resize;
+}
+
+
+
+.draggable-border {
+  cursor: move;
 }
