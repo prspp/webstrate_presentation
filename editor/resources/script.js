@@ -199,6 +199,15 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     })
   }
 
+
+const addHandles = (draggableDiv) => {
+  ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
+    const handle = document.createElement("div");
+    handle.className = `resize-handle ${pos}`;
+    draggableDiv.appendChild(handle);
+  });
+}
+
 const addImageFromLocal = (imgSrc) => {
   if (!currentSlide) return;
   const document = getIframeDocument(mainIframe);
@@ -218,11 +227,7 @@ const addImageFromLocal = (imgSrc) => {
   draggableDiv.appendChild(image);
   
   // Add resize handles
-  ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
-    const handle = document.createElement("div");
-    handle.className = `resize-handle ${pos}`;
-    draggableDiv.appendChild(handle);
-  });
+  // addHandles(draggableDiv)
 
   // Setup drag and resize events
   setupDragEvents(draggableDiv);
@@ -438,11 +443,7 @@ const addTextBox = () => {
   textBox.textContent = "Text";
   draggableDiv.appendChild(textBox);
 
-  ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
-    const handle = document.createElement("div");
-    handle.className = `resize-handle ${pos}`;
-    draggableDiv.appendChild(handle);
-  });
+  // addHandles(draggableDiv);
 
   setupDragEvents(draggableDiv);
 
@@ -467,11 +468,7 @@ const addImageFromUrl = () => {
     image.style.width = "200px";
     draggableDiv.appendChild(image);
 
-    ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
-      const handle = document.createElement("div");
-      handle.className = `resize-handle ${pos}`;
-      draggableDiv.appendChild(handle);
-    });
+    // addHandles(draggableDiv);
 
     setupDragEvents(draggableDiv);
 
@@ -480,10 +477,9 @@ const addImageFromUrl = () => {
 };
 
 
-
-
 const setupDragEvents = (element) => {
   const contentElement = element.querySelector("img, .text-box");
+  // contentElement = element
 
   let isDragging = false;
   let isResizing = false;
@@ -560,7 +556,7 @@ const setupDragEvents = (element) => {
       element.style.width = newWidth + "px";
       element.style.height = newHeight + "px";
       if (newLeft !== undefined) element.style.left = newLeft + "px";
-      if (newTop !== undefined) element.yle.top = newTop + "px";
+      if (newTop !== undefined) element.style.top = newTop + "px";
     };
 
     const handleMouseUp = () => {
@@ -575,11 +571,15 @@ const setupDragEvents = (element) => {
   };
 
   const handleMouseDown = (event) => {
+    console.log(event.target)
     if (event.target.classList.contains("resize-handle")) {
-      startResize(event, event.target);
+      // console.log("resize")
+      // startResize(event, event.target);
     } else if (isOnBorder(event, contentElement) || (event.target.nodeName.toUpperCase() == "IMG")) {
+      console.log("drag")
       startDrag(event);
     } else if (event.target.classList.contains("text-box") && event.target.nodeName.toUpperCase() == "DIV") {
+      console.log("focus")
       event.target.focus()
     }
   };
