@@ -218,8 +218,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   addImageInput.addEventListener("change", (event) => {
-    console.log("event %o", event)
-    ;(async () => {
+    (async () => {
       let asset = await uploadImages(addImageInput.files)
       addImages(`${window.location.pathname}${asset.v}/${asset.fileName}`)
     })()
@@ -260,13 +259,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   getIframeDocument(mainIframe).ondragstart = (e) => {
     if (e.target.nodeName.toUpperCase() == "IMG") {
       return false
+    } else {
+      console.log("here")
     }
   }
 
   const initCurrentSlide = () => {
     const doc = getIframeDocument(mainIframe)
     const czs = doc.querySelectorAll(".slide")
-    // console.log(czs)
     if (czs.length > 0) {
       setCurrentState(0)
     } else {
@@ -277,8 +277,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const createPreviewsForExistingSlides = () => {
     const doc = getIframeDocument(mainIframe)
     doc.querySelectorAll(".slide").forEach((zone) => {
-      // zone.addEventListener("mousedown", selectSlide)
-      // console.log(zone)
       addPreviewSlide(zone.getAttribute("index"))
     })
   }
@@ -309,7 +307,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   const setCurrentState = (newIndex) => {
-    console.log(newIndex, currentSlideIndex, currentPreview)
     if (currentSlideIndex === newIndex) return
 
     // updating the old content zone if it is not null
@@ -385,19 +382,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     previewIframe.scrolling = "no"
     previewIframe.className = "slide-preview"
     previewIframe.setAttribute("index", newIndex)
-    // previewIframe.addEventListener("load", async () => {
-    //   console.log(previewIframe, Number(newIndex), previewIframe.contentDocument.body)
-    //   await new Promise((r) => setTimeout(r, 1000))
-    //   scrollToSlide(previewIframe, newIndex);
-    // })
     previewIframe.webstrate.on(
       "transcluded",
       function (webstrateId, clientId, user) {
-        // console.log(
-        //   previewIframe,
-        //   newIndex,
-        //   previewIframe.contentDocument.body
-        // )
         scrollToSlide(previewIframe, newIndex)
         setCurrentState(newIndex)
         previewIframe.contentDocument.addEventListener("click", (event) => {
@@ -426,8 +413,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     const newIndex = NSlide++
     newSlide.id = "slide-" + newIndex
     newSlide.setAttribute("index", newIndex)
-    // console.log(newSlide.getAttribute("index"))
-    // newSlide.addEventListener("mousedown", selectSlide)
 
     const newCanvas = doc.createElementNS("http://www.w3.org/2000/svg", "svg")
     newSlide.appendChild(newCanvas)
@@ -450,7 +435,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     textBox.style.fontSize = `${fontSize}px` // Apply the current font size
     textBox.focus()
     setupDragEvents(textBox)
-    console.log(currentSlide)
     currentSlide.appendChild(textBox)
   }
 
@@ -487,7 +471,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
           element.style.left = current_left + "px"
           element.style.top = current_top + "px"
         }
-        console.log(current_left, current_top, rec)
       }
       const handleMouseUp = () => {
         getIframeDocument(mainIframe).removeEventListener(
@@ -530,7 +513,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     if (!currentSlide) return
     isDrawingMode = !isDrawingMode
     toggleDrawingModeIndicator(isDrawingMode)
-    // canvas.style.zIndex = isDrawingMode ? currentZIndex++ : 0;
     setupDrawEvents(isDrawingMode, currentSlide)
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
   }
@@ -539,14 +521,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     if (!isDrawingMode) return
     isDrawing = true
     currentPath = ""
-    // var innerDoc = mainIframe.contentWindow.document;
-    // currentDrawing = innerDoc.createElementNS("http://www.w3.org/2000/svg", "svg");
-    // currentDrawing.setAttribute("width", "100%");
-    // currentDrawing.setAttribute("height", "100%");
-    // currentDrawing.style.position = "absolute";
-    // currentDrawing.setAttribute("draggable", "true");
-    // setupDragEvents(currentDrawing);
-    // console.log(currentDrawing)
     path = getIframeDocument(mainIframe).createElementNS(
       "http://www.w3.org/2000/svg",
       "path"
