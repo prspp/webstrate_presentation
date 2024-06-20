@@ -235,17 +235,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     return getIframeDocument(mainIframe).getElementById("mainCSSFile")
   }
 
-  // const initCSS = () => {
-  //   if (getMainCSSFile() !== null)
-  //     return;
-  //   let doc = getIframeDocument(mainIframe);
-  //   var fileref = doc.createElement(link");
-  //   fileref.id = "mainCSSFile"
-  //   fileref.rel = "stylesheet";
-  //   fileref.type = "text/css";
-  //   fileref.href = "/styles.css"; // no trailing slashs
-  //   doc.getElementsByTagName("head")[0].appendChild(fileref)
-  // }
 
   const initCSS = () => {
     if (getMainCSSFile() !== null) return
@@ -256,13 +245,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     doc.getElementsByTagName("head")[0].appendChild(fileref)
   }
 
-  getIframeDocument(mainIframe).ondragstart = (e) => {
-    if (e.target.nodeName.toUpperCase() == "IMG") {
-      return false
-    } else {
-      console.log("here")
-    }
-  }
 
   const initCurrentSlide = () => {
     const doc = getIframeDocument(mainIframe)
@@ -604,6 +586,12 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const initIframe = () => {
     // Wait webstrate to load
+    getIframeDocument(mainIframe).ondragstart = (e) => {
+      if (e.target.nodeName.toUpperCase() == "IMG") {
+        return false
+      } else {
+      }
+    }
     toggleDrawingModeIndicator(isDrawingMode)
     initCSS()
     initContainer()
