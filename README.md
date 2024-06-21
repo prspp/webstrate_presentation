@@ -56,7 +56,5 @@ done
 - add load button and bar in presentationView
 - when a slide change in the editor, make it changes in the presentation view
 - add the options to reset transcluded webstrates from the editor
-- add reset instructions in README
-- Correct build&run instructions in README
 - restructure the code in several files
 - run prettier when everything is dead finish

@@ -1,16 +1,35 @@
 webstrate.on("loaded", function (webstrateId) {
-  var frame = document.getElementById("questionsFrame")
+
+  const addQuestion = (document) => {
+    const question = document.querySelector('input[type="text"]').value
+    document.querySelector("input[type='text']").value = ""
+    if (question.trim() === "" || question == null) return
+    var questionDiv = document.querySelector("#questionDiv")
+    if (questionDiv == null) return
+    questionDiv.insertAdjacentHTML(
+      "afterend",
+      `<p contenteditable class="selected">${question}</p>`
+    )
+  }
+
+  const enterEventListener = (document) => {
+    document
+      .getElementById("questionInput")
+      .addEventListener("keypress", (e) => {
+        if (e.key == "Enter") {
+          addQuestion(document)
+        }
+      })
+  }
+
+  const frame = document.getElementById("questionsFrame")
   frame.webstrate.on("transcluded", () => {
     var questionsDocument = frame.contentWindow.document
     var container = questionsDocument.getElementById("questionDiv")
-    document.getElementById("send").addEventListener("click", () => {
-      const question = document.querySelector('input[name="question"]').value
-      document.querySelector("input[name='question']").value = ""
-      if (question.trim() === "" || question == null) return
-      container.insertAdjacentHTML(
-        "afterend",
-        `<p contenteditable class="selected">${question}</p>`
-      )
+    document.getElementById("sendBtn").addEventListener("click", () => {
+      addQuestion(document)
     })
+    enterEventListener(document)
   })
+
 })

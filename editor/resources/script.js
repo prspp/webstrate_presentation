@@ -849,7 +849,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     var question = iframeDocument.createElement("input")
     question.type = "text"
     question.placeholder = "Reformulate a question"
-    question.id = "questionPresentor"
+    question.id = "questionInput"
     var imgButton = iframeDocument.createElement("img")
     imgButton.src = `${window.location.pathname}button.png`
     imgButton.alt = "send button"
@@ -918,7 +918,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const enterEventListener = (iframeDocument) => {
     iframeDocument
-      .getElementById("questionPresentor")
+      .getElementById("questionInput")
       .addEventListener("keypress", (e) => {
         if (e.key == "Enter") {
           addQuestion(iframeDocument)
