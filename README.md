@@ -43,8 +43,6 @@ for i in frontpage editor audience presentationView questionsIframe; do
 done
 ```
 
-
-
 ### **Options possible in the editor**
 
 - add a text, title

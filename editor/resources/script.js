@@ -45,6 +45,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     isDrawing,
     isDrawingMode,
     currentSlide,
+    currentElement,
     currentPreview,
     currentSlideIndex
 
@@ -63,6 +64,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
     NSlide = 0
     currentSlide = null
+    currentElement = null
     currentSlideIndex = null
     currentPreview = null
     currentDrawing = null
@@ -199,48 +201,79 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     })
   }
 
+  const showHandles = (element) => {
+    if (element !== null)
+      element.querySelectorAll(".resize-handle").forEach((e) => {
+        e.removeAttribute("hidden")
+      })
+  }
 
-const addHandles = (draggableDiv) => {
-  ["top-left", "top-right", "bottom-left", "bottom-right"].forEach(pos => {
-    const handle = document.createElement("div");
-    handle.className = `resize-handle ${pos}`;
-    draggableDiv.appendChild(handle);
-  });
-}
+  const hideHandle = (element) => {
+    if (element !== null)
+      element.querySelectorAll(".resize-handle").forEach((e) => {
+        e.setAttribute("hidden", "")
+      })
+  }
 
-const addImageFromLocal = (imgSrc) => {
-  if (!currentSlide) return;
-  const document = getIframeDocument(mainIframe);
-  
-  // Create the outer draggable div
-  const draggableDiv = document.createElement("div");
-  draggableDiv.className = "draggable";
-  draggableDiv.style.position = "absolute";
-  draggableDiv.style.left = "0px";
-  draggableDiv.style.top = "0px";
-  draggableDiv.style.zIndex = currentZIndex++;
+  const hideAllHandles = () => {
+    hideHandle(getIframeDocument(mainIframe))
+  }
 
-  // Create and append the image
-  const image = document.createElement("img");
-  image.setAttribute("src", imgSrc);
-  image.style.width = "200px";
-  draggableDiv.appendChild(image);
-  
-  // Add resize handles
-  // addHandles(draggableDiv)
+  const resetHandles = () => {
+    if (currentElement !== null) {
+      if (event.target.parentElement === currentElement) {
+      } else {
+        hideHandle(currentElement)
+      }
+    } else {
+      hideAllHandles()
+    }
+  }
 
-  // Setup drag and resize events
-  setupDragEvents(draggableDiv);
+  const addHandles = (draggableDiv) => {
+    ;["top-left", "top-right", "bottom-left", "bottom-right"].forEach((pos) => {
+      const handle = document.createElement("div")
+      handle.className = `resize-handle ${pos}`
+      draggableDiv.appendChild(handle)
+    })
+    hideHandle(draggableDiv)
+  }
 
-  // Append to the current slide
-  currentSlide.appendChild(draggableDiv);
-  addImageInput.value = "";
-};
+  const addImageFromLocal = (imgSrc) => {
+    if (!currentSlide) return
+    const document = getIframeDocument(mainIframe)
+
+    // Create the outer draggable div
+    const draggableDiv = document.createElement("div")
+    draggableDiv.className = "draggable"
+    draggableDiv.style.position = "absolute"
+    draggableDiv.style.left = "0px"
+    draggableDiv.style.top = "0px"
+    draggableDiv.style.zIndex = currentZIndex++
+
+    // Create and append the image
+    const image = document.createElement("img")
+    image.setAttribute("src", imgSrc)
+    image.style.width = "200px"
+    draggableDiv.appendChild(image)
+
+    // Add resize handles
+    addHandles(draggableDiv)
+
+    // Setup drag and resize events
+    setupDragEvents(draggableDiv)
+
+    // Append to the current slide
+    currentSlide.appendChild(draggableDiv)
+    addImageInput.value = ""
+  }
 
   addImageInput.addEventListener("change", (event) => {
-    (async () => {
+    ;(async () => {
       let asset = await uploadImages(addImageInput.files)
-      addImageFromLocal(`${window.location.pathname}${asset.v}/${asset.fileName}`)
+      addImageFromLocal(
+        `${window.location.pathname}${asset.v}/${asset.fileName}`
+      )
     })()
   })
 
@@ -308,6 +341,7 @@ const addImageFromLocal = (imgSrc) => {
 
   const setCurrentState = (newIndex) => {
     if (currentSlideIndex === newIndex) return
+    hideAllHandles()
 
     // updating the old content zone if it is not null
     if (currentPreview !== null) currentPreview.classList.remove("selected")
@@ -317,6 +351,7 @@ const addImageFromLocal = (imgSrc) => {
     const doc = getIframeDocument(mainIframe)
     NSlide = doc.querySelectorAll(".slide").length
     currentSlide = doc.querySelectorAll(".slide")[newIndex]
+    currentElement = null
     currentSlideIndex = newIndex
     currentPreview = previewPane.querySelectorAll(".slide-preview")[newIndex]
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
@@ -425,198 +460,239 @@ const addImageFromLocal = (imgSrc) => {
     return newIndex
   }
 
-const addTextBox = () => {
-  if (!currentSlide) return;
-  const document = getIframeDocument(mainIframe);
-  
-  const draggableDiv = document.createElement("div");
-  draggableDiv.className = "draggable";
-  draggableDiv.style.position = "absolute";
-  draggableDiv.style.left = "0px";
-  draggableDiv.style.top = "0px";
-  draggableDiv.style.zIndex = currentZIndex++;
+  const addTextBox = () => {
+    if (!currentSlide) return
+    const document = getIframeDocument(mainIframe)
 
-  const textBox = document.createElement("div");
-  textBox.className = "text-box";
-  textBox.contentEditable = true;
-  textBox.style.fontSize = `${fontSize}px`;
-  textBox.textContent = "Text";
-  draggableDiv.appendChild(textBox);
+    const draggableDiv = document.createElement("div")
+    draggableDiv.className = "draggable"
+    draggableDiv.style.position = "absolute"
+    draggableDiv.style.left = "0px"
+    draggableDiv.style.top = "0px"
+    draggableDiv.style.zIndex = currentZIndex++
 
-  // addHandles(draggableDiv);
+    const textBox = document.createElement("div")
+    textBox.className = "text-box"
+    textBox.contentEditable = true
+    textBox.style.fontSize = `${fontSize}px`
+    textBox.textContent = "Text"
+    draggableDiv.appendChild(textBox)
 
-  setupDragEvents(draggableDiv);
+    addHandles(draggableDiv)
 
-  currentSlide.appendChild(draggableDiv);
-};
+    setupDragEvents(draggableDiv)
 
-const addImageFromUrl = () => {
-  if (!currentSlide) return;
-  const imageUrl = prompt("Enter image URL:");
-  if (imageUrl) {
-    const document = getIframeDocument(mainIframe);
-    
-    const draggableDiv = document.createElement("div");
-    draggableDiv.className = "draggable";
-    draggableDiv.style.position = "absolute";
-    draggableDiv.style.left = "0px";
-    draggableDiv.style.top = "0px";
-    draggableDiv.style.zIndex = currentZIndex++;
-
-    const image = document.createElement("img");
-    image.setAttribute("src", imageUrl);
-    image.style.width = "200px";
-    draggableDiv.appendChild(image);
-
-    // addHandles(draggableDiv);
-
-    setupDragEvents(draggableDiv);
-
-    currentSlide.appendChild(draggableDiv);
+    currentSlide.appendChild(draggableDiv)
   }
-};
 
+  const addImageFromUrl = () => {
+    if (!currentSlide) return
+    const imageUrl = prompt("Enter image URL:")
+    if (imageUrl) {
+      const document = getIframeDocument(mainIframe)
 
-const setupDragEvents = (element) => {
-  const contentElement = element.querySelector("img, .text-box");
-  // contentElement = element
+      const draggableDiv = document.createElement("div")
+      draggableDiv.className = "draggable"
+      draggableDiv.style.position = "absolute"
+      draggableDiv.style.left = "0px"
+      draggableDiv.style.top = "0px"
+      draggableDiv.style.zIndex = currentZIndex++
 
-  let isDragging = false;
-  let isResizing = false;
-  let resizeHandle = null;
+      const image = document.createElement("img")
+      image.setAttribute("src", imageUrl)
+      image.style.width = "200px"
+      draggableDiv.appendChild(image)
 
-  const startDrag = (event) => {
-    event.preventDefault();
-    isDragging = true;
-    const rect = contentElement.getBoundingClientRect();
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const startLeft = rect.left;
-    const startTop = rect.top;
+      addHandles(draggableDiv)
 
-    const handleMouseMove = (event) => {
-      const currentLeft = event.clientX - startX + startLeft;
-      const currentTop = event.clientY - startY + startTop;
-      newLeftStr = currentLeft + "px";
-      newTopStr = currentTop + "px";
-      // contentElement.style.left = newLeftStr
-      // contentElement.style.top = newTopStr
-      element.style.left = newLeftStr
-      element.style.top = newTopStr
-      // console.log(element.style.left, element.style.top);
-    };
+      setupDragEvents(draggableDiv)
 
-    const handleMouseUp = () => {
-      isDragging = false;
-      getIframeDocument(mainIframe).removeEventListener("mousemove", handleMouseMove);
-      getIframeDocument(mainIframe).removeEventListener("mouseup", handleMouseUp);
-    };
-
-    getIframeDocument(mainIframe).addEventListener("mousemove", handleMouseMove);
-    getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp);
-  };
-
-  const startResize = (event, handle) => {
-    event.preventDefault();
-    isResizing = true;
-    resizeHandle = handle;
-    const rect = contentElement.getBoundingClientRect();
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const startWidth = rect.width;
-    const startHeight = rect.height;
-    const startLeft = rect.left;
-    const startTop = rect.top;
-
-    const handleMouseMove = (event) => {
-      let newWidth, newHeight, newLeft, newTop;
-
-      if (resizeHandle.classList.contains("top-left")) {
-        newWidth = startWidth - (event.clientX - startX);
-        newHeight = startHeight - (event.clientY - startY);
-        newLeft = startLeft + (event.clientX - startX);
-        newTop = startTop + (event.clientY - startY);
-      } else if (resizeHandle.classList.contains("top-right")) {
-        newWidth = startWidth + (event.clientX - startX);
-        newHeight = startHeight - (event.clientY - startY);
-        newLeft = startLeft;
-        newTop = startTop + (event.clientY - startY);
-      } else if (resizeHandle.classList.contains("bottom-left")) {
-        newWidth = startWidth - (event.clientX - startX);
-        newHeight = startHeight + (event.clientY - startY);
-        newLeft = startLeft + (event.clientX - startX);
-        newTop = startTop;
-      } else if (resizeHandle.classList.contains("bottom-right")) {
-        newWidth = startWidth + (event.clientX - startX);
-        newHeight = startHeight + (event.clientY - startY);
-        newLeft = startLeft;
-        newTop = startTop;
-      }
-
-      element.style.width = newWidth + "px";
-      element.style.height = newHeight + "px";
-      if (newLeft !== undefined) element.style.left = newLeft + "px";
-      if (newTop !== undefined) element.style.top = newTop + "px";
-    };
-
-    const handleMouseUp = () => {
-      isResizing = false;
-      resizeHandle = null;
-      getIframeDocument(mainIframe).removeEventListener("mousemove", handleMouseMove);
-      getIframeDocument(mainIframe).removeEventListener("mouseup", handleMouseUp);
-    };
-
-    getIframeDocument(mainIframe).addEventListener("mousemove", handleMouseMove);
-    getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp);
-  };
-
-  const handleMouseDown = (event) => {
-    console.log(event.target)
-    if (event.target.classList.contains("resize-handle")) {
-      // console.log("resize")
-      // startResize(event, event.target);
-    } else if (isOnBorder(event, contentElement) || (event.target.nodeName.toUpperCase() == "IMG")) {
-      console.log("drag")
-      startDrag(event);
-    } else if (event.target.classList.contains("text-box") && event.target.nodeName.toUpperCase() == "DIV") {
-      console.log("focus")
-      event.target.focus()
+      currentSlide.appendChild(draggableDiv)
     }
-  };
+  }
 
   const isOnBorder = (event, contentElement) => {
-    const rect = contentElement.getBoundingClientRect();
-    const borderWidth = 5; // Adjust to your border width
+    const rect = contentElement.getBoundingClientRect()
+    const borderWidth = 5 // Adjust to your border width
     return (
       event.clientX >= rect.left &&
       event.clientX <= rect.right &&
       event.clientY >= rect.top &&
       event.clientY <= rect.bottom &&
-      (
-        event.clientX < rect.left + borderWidth ||
+      (event.clientX < rect.left + borderWidth ||
         event.clientX > rect.right - borderWidth ||
         event.clientY < rect.top + borderWidth ||
-        event.clientY > rect.bottom - borderWidth
+        event.clientY > rect.bottom - borderWidth)
+    )
+  }
+
+  const setupDragEvents = (element) => {
+    const contentElement = element.querySelector("img, .text-box")
+    // contentElement = element
+
+    let isDragging = false
+    let isResizing = false
+    let resizeHandle = null
+
+    const startDrag = (event) => {
+      event.preventDefault()
+      isDragging = true
+      const rect = contentElement.getBoundingClientRect()
+      const startX = event.clientX
+      const startY = event.clientY
+      const startLeft = rect.left
+      const startTop = rect.top
+
+      const handleMouseMove = (event) => {
+        const currentLeft = event.clientX - startX + startLeft
+        const currentTop = event.clientY - startY + startTop
+        newLeftStr = currentLeft + "px"
+        newTopStr = currentTop + "px"
+        // contentElement.style.left = newLeftStr
+        // contentElement.style.top = newTopStr
+        element.style.left = newLeftStr
+        element.style.top = newTopStr
+      }
+
+      const handleMouseUp = () => {
+        isDragging = false
+        // currentElement = null;
+        getIframeDocument(mainIframe).removeEventListener(
+          "mousemove",
+          handleMouseMove
+        )
+        getIframeDocument(mainIframe).removeEventListener(
+          "mouseup",
+          handleMouseUp
+        )
+        document.querySelectorAll(".resize-handle").forEach((e) => {
+          e.setAttribute("hidden", "")
+        })
+      }
+
+      getIframeDocument(mainIframe).addEventListener(
+        "mousemove",
+        handleMouseMove
       )
-    );
-  };
-
-  const handleMouseMove = (event) => {
-    if (isOnBorder(event, contentElement)) {
-      contentElement.classList.add('draggable-border');
-    } else {
-      contentElement.classList.remove('draggable-border');
+      getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp)
     }
-  };
 
-  contentElement.addEventListener("mousedown", handleMouseDown);
-  contentElement.addEventListener("mousemove", handleMouseMove);
-  contentElement.addEventListener("mouseleave", () => {
-    contentElement.classList.remove('draggable-border');
-  });
-};
+    const startResize = (event, handle) => {
+      event.preventDefault()
+      isResizing = true
+      resizeHandle = handle
+      const rect = contentElement.getBoundingClientRect()
+      const startX = event.clientX
+      const startY = event.clientY
+      const startWidth = rect.width
+      const startHeight = rect.height
+      const startLeft = rect.left
+      const startTop = rect.top
 
+      const handleMouseMove = (event) => {
+        let newWidth, newHeight, newLeft, newTop
 
+        if (resizeHandle.classList.contains("top-left")) {
+          newWidth = startWidth - (event.clientX - startX)
+          newHeight = startHeight - (event.clientY - startY)
+          newLeft = startLeft + (event.clientX - startX)
+          newTop = startTop + (event.clientY - startY)
+        } else if (resizeHandle.classList.contains("top-right")) {
+          newWidth = startWidth + (event.clientX - startX)
+          newHeight = startHeight - (event.clientY - startY)
+          newLeft = startLeft
+          newTop = startTop + (event.clientY - startY)
+        } else if (resizeHandle.classList.contains("bottom-left")) {
+          newWidth = startWidth - (event.clientX - startX)
+          newHeight = startHeight + (event.clientY - startY)
+          newLeft = startLeft + (event.clientX - startX)
+          newTop = startTop
+        } else if (resizeHandle.classList.contains("bottom-right")) {
+          newWidth = startWidth + (event.clientX - startX)
+          newHeight = startHeight + (event.clientY - startY)
+          newLeft = startLeft
+          newTop = startTop
+        }
+
+        newWidthStr = newWidth + "px"
+        newHeightStr = newHeight + "px"
+        contentElement.style.width = newWidthStr
+        contentElement.style.height = newHeightStr
+        element.style.width = newWidthStr
+        element.style.height = newHeightStr
+
+        if (newLeft !== undefined) element.style.left = newLeft + "px"
+        if (newTop !== undefined) element.style.top = newTop + "px"
+      }
+
+      const handleMouseUp = () => {
+        isResizing = false
+        resizeHandle = null
+        // currentElement = null;
+        getIframeDocument(mainIframe).removeEventListener(
+          "mousemove",
+          handleMouseMove
+        )
+        getIframeDocument(mainIframe).removeEventListener(
+          "mouseup",
+          handleMouseUp
+        )
+        document.querySelectorAll(".resize-handle").forEach((e) => {
+          e.setAttribute("hidden", "")
+        })
+      }
+
+      getIframeDocument(mainIframe).addEventListener(
+        "mousemove",
+        handleMouseMove
+      )
+      getIframeDocument(mainIframe).addEventListener("mouseup", handleMouseUp)
+    }
+
+    const handleMouseDown = (event) => {
+      console.log("down", event.target, currentElement)
+      if (currentElement !== event.target.parentElement) {
+        console.log("hide")
+        hideHandle(currentElement)
+      }
+      currentElement = element
+      showHandles(element)
+      if (event.target.classList.contains("resize-handle")) {
+        console.log("resize")
+        startResize(event, event.target)
+      } else if (
+        isOnBorder(event, contentElement) ||
+        event.target.nodeName.toUpperCase() == "IMG"
+      ) {
+        console.log("drag")
+        startDrag(event)
+      } else if (
+        event.target.classList.contains("text-box") &&
+        event.target.nodeName.toUpperCase() == "DIV"
+      ) {
+        console.log("focus")
+        event.target.focus()
+      } else {
+        console.log(event.target)
+      }
+    }
+
+    const handleMouseMove = (event) => {
+      if (isOnBorder(event, contentElement)) {
+        contentElement.classList.add("draggable-border")
+      } else {
+        contentElement.classList.remove("draggable-border")
+      }
+    }
+
+    contentElement.addEventListener("mousedown", handleMouseDown)
+    contentElement.addEventListener("mousemove", handleMouseMove)
+    contentElement.addEventListener("mouseleave", () => {
+      contentElement.classList.remove("draggable-border")
+    })
+    element.addEventListener("mousedown", handleMouseDown)
+    element.addEventListener("mousemove", handleMouseMove)
+  }
 
   const toggleDrawingModeIndicator = (drawingMode) => {
     drawingModeIndicator.style.visibility = drawingMode ? "visible" : "hidden" // Show/hide indicator
@@ -732,12 +808,17 @@ const setupDragEvents = (element) => {
 
   const initIframe = () => {
     // Wait webstrate to load
-    getIframeDocument(mainIframe).ondragstart = (e) => {
+    const doc = getIframeDocument(mainIframe)
+    doc.ondragstart = (e) => {
       if (e.target.nodeName.toUpperCase() == "IMG") {
         return false
       } else {
       }
     }
+    doc.addEventListener("mouseup", (event) => {
+      resetHandles()
+    })
+
     toggleDrawingModeIndicator(isDrawingMode)
     initCSS()
     initContainer()
@@ -828,7 +909,7 @@ const setupDragEvents = (element) => {
     iframeDocument.querySelector("input[type='text']").value = ""
     if (question.trim() === "" || question == null) return
     var questionDiv = iframeDocument.querySelector("#questionDiv")
-    if(questionDiv == null) return
+    if (questionDiv == null) return
     questionDiv.insertAdjacentHTML(
       "afterend",
       `<p contenteditable class="selected">${question}</p>`
@@ -836,11 +917,13 @@ const setupDragEvents = (element) => {
   }
 
   const enterEventListener = (iframeDocument) => {
-    iframeDocument.getElementById("questionPresentor").addEventListener("keypress", (e) => {
-      if(e.key == 'Enter') {
+    iframeDocument
+      .getElementById("questionPresentor")
+      .addEventListener("keypress", (e) => {
+        if (e.key == "Enter") {
           addQuestion(iframeDocument)
-      }
-    })
+        }
+      })
   }
 
   function initQuestionsIframeEvents(iframeDocument) {
@@ -854,9 +937,9 @@ const setupDragEvents = (element) => {
     })
 
     // question adding handling
-    iframeDocument.getElementById("send").addEventListener("click", ()=>{
+    iframeDocument.getElementById("send").addEventListener("click", () => {
       addQuestion(iframeDocument)
-    });
+    })
     enterEventListener(iframeDocument)
 
     // other events
