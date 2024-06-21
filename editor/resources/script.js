@@ -401,10 +401,15 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
   resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
+
+  const getComputedProp = (e, prop) => {
+    const s = document.defaultView.getComputedStyle(e)[prop]
+    const ss = Number(s.substring(0, s.length - 2))
+    return ss
+  }
   const scrollToSlide = (iframe, index) => {
     const e = iframe.contentWindow.document.children[0]
-    const s = document.defaultView.getComputedStyle(e).height
-    const ss = Number(s.substring(0, s.length - 2))
+    const ss = getComputedProp(e, "height")
     e.scrollTo(0, index * ss)
   }
 
@@ -544,8 +549,13 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       const startTop = rect.top
 
       const handleMouseMove = (event) => {
+        const doc_height = getComputedProp(mainIframe, "height")
+        const doc_width = getComputedProp(mainIframe, "width")
         const currentLeft = event.clientX - startX + startLeft
         const currentTop = event.clientY - startY + startTop
+        console.log(doc_width, doc_height, currentLeft, currentTop)
+        if (currentLeft < 0 || currentLeft > doc_width || currentTop < 0 || currentTop > doc_height)
+          return
         newLeftStr = currentLeft + "px"
         newTopStr = currentTop + "px"
         // contentElement.style.left = newLeftStr
