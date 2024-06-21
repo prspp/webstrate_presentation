@@ -202,6 +202,15 @@ p {
   /*  box-sizing: border-box;*/
 }
 
+#container input {
+   height: 30px;
+   width: 300px;
+   word-wrap: break-word;
+   padding: 5px;
+   border: 1px solid #e0e0e0;
+   border-radius: 5px;
+}
+
 .text-box {
 /*  position: absolute;*/
   padding: 10px;
@@ -245,6 +254,10 @@ p {
   box-sizing: border-box;
 }
 
+#container p:first-of-type {
+  margin-top: 40px;
+}
+
 #container p.selected {
   border: 2px solid #6366f1;
 }
@@ -256,6 +269,20 @@ p {
   right: 10px;
 }
 
+#questionDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  position: absolute;
+   top: 10px;
+}
+
+#questionDiv img {
+  width: 32px;
+  position: relative;
+  margin-left: 30px;
+  bottom: 0px;
+}
 
 
 .draggable {

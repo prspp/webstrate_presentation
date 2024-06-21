@@ -763,10 +763,23 @@ const setupDragEvents = (element) => {
     container.id = "container"
     container.classList.add("some-padding")
     container.classList.add("container-section")
+    var questionDiv = iframeDocument.createElement("div")
+    questionDiv.id = "questionDiv"
+    var question = iframeDocument.createElement("input")
+    question.type = "text"
+    question.placeholder = "Reformulate a question"
+    question.id = "questionPresentor"
+    var imgButton = iframeDocument.createElement("img")
+    imgButton.src = `${window.location.pathname}button.png`
+    imgButton.alt = "send button"
+    imgButton.id = "send"
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
     img.alt = "bin"
     img.id = "bin"
+    questionDiv.appendChild(question)
+    questionDiv.appendChild(imgButton)
+    container.appendChild(questionDiv)
     container.appendChild(img)
     iframeDocument.body.appendChild(container)
   }
@@ -810,6 +823,26 @@ const setupDragEvents = (element) => {
     })
   }
 
+  const addQuestion = (iframeDocument) => {
+    const question = iframeDocument.querySelector('input[type="text"]').value
+    iframeDocument.querySelector("input[type='text']").value = ""
+    if (question.trim() === "" || question == null) return
+    var questionDiv = iframeDocument.querySelector("#questionDiv")
+    if(questionDiv == null) return
+    questionDiv.insertAdjacentHTML(
+      "afterend",
+      `<p contenteditable class="selected">${question}</p>`
+    )
+  }
+
+  const enterEventListener = (iframeDocument) => {
+    iframeDocument.getElementById("questionPresentor").addEventListener("keypress", (e) => {
+      if(e.key == 'Enter') {
+          addQuestion(iframeDocument)
+      }
+    })
+  }
+
   function initQuestionsIframeEvents(iframeDocument) {
     // bin listener to delete questions
     iframeDocument.getElementById("bin").addEventListener("click", () => {
@@ -819,6 +852,14 @@ const setupDragEvents = (element) => {
         item.remove()
       }
     })
+
+    // question adding handling
+    iframeDocument.getElementById("send").addEventListener("click", ()=>{
+      addQuestion(iframeDocument)
+    });
+    enterEventListener(iframeDocument)
+
+    // other events
     initClickListenerToExistingQuestion(iframeDocument)
     addClickToNewQuestions(iframeDocument)
   }
