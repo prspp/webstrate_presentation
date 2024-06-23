@@ -864,19 +864,16 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     question.type = "text"
     question.placeholder = "Reformulate a question"
     question.id = "questionInput"
-    var imgButton = iframeDocument.createElement("img")
-    imgButton.src = `${window.location.pathname}button.png`
-    imgButton.alt = "send button"
-    imgButton.id = "send"
     var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
-    sendQuestionsToReviewBtn.innerText = "Send to review"
+    sendQuestionsToReviewBtn.innerText = "Upload"
+    sendQuestionsToReviewBtn.title = "upload to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
+    sendQuestionsToReviewBtn.className = "clickable-btn"
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
     img.alt = "bin"
     img.id = "bin"
     questionDiv.appendChild(question)
-    questionDiv.appendChild(imgButton)
     questionDiv.appendChild(sendQuestionsToReviewBtn)
     container.appendChild(questionDiv)
     container.appendChild(img)
@@ -928,10 +925,11 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     if (question.trim() === "" || question == null) return
     var questionDiv = iframeDocument.querySelector("#questionDiv")
     if (questionDiv == null) return
-    questionDiv.insertAdjacentHTML(
-      "afterend",
-      `<p contenteditable class="selected">${question}</p>`
-    )
+    var questionParagraph = iframeDocument.createElement("p")
+    questionParagraph.setAttribute("contenteditable", "")
+    questionParagraph.className = "selected"
+    questionParagraph.innerText = question
+    questionDiv.insertAdjacentElement("afterend", questionParagraph)
   }
 
   const enterEventListener = (iframeDocument) => {
@@ -954,9 +952,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     })
 
     // question adding handling
-    iframeDocument.getElementById("send").addEventListener("click", () => {
-      addQuestion(iframeDocument)
-    })
     enterEventListener(iframeDocument)
 
     // question curation event
