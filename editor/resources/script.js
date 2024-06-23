@@ -868,12 +868,16 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     imgButton.src = `${window.location.pathname}button.png`
     imgButton.alt = "send button"
     imgButton.id = "send"
+    var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
+    sendQuestionsToReviewBtn.innerText = "Send to review"
+    sendQuestionsToReviewBtn.id = "sendToReview"
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
     img.alt = "bin"
     img.id = "bin"
     questionDiv.appendChild(question)
     questionDiv.appendChild(imgButton)
+    questionDiv.appendChild(sendQuestionsToReviewBtn)
     container.appendChild(questionDiv)
     container.appendChild(img)
     iframeDocument.body.appendChild(container)
@@ -955,9 +959,30 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     })
     enterEventListener(iframeDocument)
 
+    // question curation event
+    iframeDocument.getElementById("sendToReview").addEventListener("click", () => {
+      addQuestionsToReview(iframeDocument)
+    })
+
     // other events
     initClickListenerToExistingQuestion(iframeDocument)
     addClickToNewQuestions(iframeDocument)
+  }
+
+  function addQuestionsToReview(iframeDocument) {
+      const questionsCollection = iframeDocument.querySelectorAll("p")
+      let divParent = document.createElement("div")
+      let title = document.createElement("h3")
+      title.innerText = "Class questions"
+      divParent.appendChild(title)
+      let listElement = document.createElement("ul")
+      questionsCollection.forEach((question) => {
+        let listItem = document.createElement("li")
+        listItem.innerText = question.innerText
+        listElement.append(listItem)
+      })
+      divParent.append(listElement)
+      document.getElementById("reviewsPane").getElementsByClassName("container-section")[0].appendChild(divParent)
   }
 
   function initquestionsIframeCSS() {
