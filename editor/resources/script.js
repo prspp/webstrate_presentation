@@ -31,6 +31,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const questionsPaneBtn = document.getElementById("questionsPaneBtn")
   const reviewsPane = document.getElementById("reviewsPane")
   const questionsIframe = document.getElementById("questionsIframe")
+  const reviewsIframe = document.getElementById("reviewsIframe")
 
   // ### VALUES OF THE APPLICATION ###
   let defaultWebstrateUrl,
@@ -131,14 +132,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   reviewsPaneBtn.addEventListener("click", (event) => {
     reviewsPaneBtn.classList.add("btn-active")
-    reviewsPane.classList.remove("display-none")
+    reviewsIframe.classList.remove("display-none")
     questionsPaneBtn.classList.remove("btn-active")
     questionsIframe.classList.add("display-none")
   })
 
   questionsPaneBtn.addEventListener("click", (event) => {
     reviewsPaneBtn.classList.remove("btn-active")
-    reviewsPane.classList.add("display-none")
+    reviewsIframe.classList.add("display-none")
     questionsPaneBtn.classList.add("btn-active")
     questionsIframe.classList.remove("display-none")
   })
@@ -977,7 +978,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         listElement.append(listItem)
       })
       divParent.append(listElement)
-      document.getElementById("reviewsPane").getElementsByClassName("container-section")[0].appendChild(divParent)
+      let doc = getIframeDocument(reviewsIframe)
+      doc.querySelector(".container-section.bg-white").appendChild(divParent)
   }
 
   function initquestionsIframeCSS() {
@@ -1004,6 +1006,48 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       var iframeDocument = getIframeDocument(questionsIframe)
       initquestionsIframe(iframeDocument)
       initQuestionsIframeEvents(iframeDocument)
+    }
+  )
+
+  function initReviewsIframeCSS() {
+      var doc = getIframeDocument(reviewsIframe)
+      var cssFile = doc.querySelector("#mainCSSFile")
+      if(cssFile !== null) return
+      var fileref = doc.createElement("style")
+      fileref.id = "mainCSSFile"
+      fileref.textContent = document.getElementById("styles.css").textContent
+      doc.getElementsByTagName("head")[0].appendChild(fileref)
+  }
+
+  function createContainerInReviewsIframe(reviewsIframe) {
+      var container = reviewsIframe.createElement("div")
+      container.id = "reviewsPane"
+      container.classList.add("container-section")
+      container.classList.add("some-padding")
+      container.classList.add("wh")
+      var divWriter = reviewsIframe.createElement("div")
+      divWriter.classList.add("bg-white")
+      divWriter.classList.add("container-section")
+      divWriter.classList.add("some-padding")
+      divWriter.classList.add("wh")
+      divWriter.setAttribute("contenteditable", "")
+      container.appendChild(divWriter)
+      reviewsIframe.body.appendChild(container)
+  }
+
+  function initReviewsIframe(reviewsIframeDocument) {
+      var container = reviewsIframeDocument.querySelector("#reviewsPane")
+      if (container !== null) return 
+      initReviewsIframeCSS()
+      createContainerInReviewsIframe(reviewsIframeDocument)
+  }
+
+  reviewsIframe.webstrate.on(
+    "transcluded",
+    function (webstrateId, clientId, user) {
+      console.log("reviewsIframe transcluded")
+      var reviewsIframeDocument = getIframeDocument(reviewsIframe)
+      initReviewsIframe(reviewsIframeDocument)
     }
   )
 })
