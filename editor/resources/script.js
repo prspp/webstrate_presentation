@@ -8,7 +8,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const addSlideBtn = document.getElementById("addSlideBtn")
   const addTextBoxBtn = document.getElementById("addTextBoxBtn")
-  const addImageFromUrlBtn = document.getElementById("addImageFromUrlBtn")
+  //const addImageFromUrlBtn = document.getElementById("addImageFromUrlBtn")
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
@@ -19,7 +19,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const loadBtn = document.getElementById("loadBtn")
   const clearQuestionsBtn = document.getElementById("clearQuestionsBtn")
   const addImageInput = document.getElementById("imageInput")
-  const presentBtn = document.getElementById("presentBtn")
+  const addImageIcon = document.getElementById("addImageIcon")
+  //const presentBtn = document.getElementById("presentBtn")
 
   const previewPaneBtn = document.getElementById("previewPaneBtn")
   const tocPaneBtn = document.getElementById("tocPaneBtn")
@@ -175,9 +176,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     console.log("reload asked")
   })
 
-  presentBtn.addEventListener("click", () => {
+  /*presentBtn.addEventListener("click", () => {
     window.open("http://localhost:7007/presentationView/", "_blank")
-  })
+  })*/
 
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
@@ -267,6 +268,11 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     currentSlide.appendChild(draggableDiv)
     addImageInput.value = ""
   }
+
+  addImageIcon.addEventListener("click", () => {
+    console.log("Here")
+    addImageInput.click()
+  })
 
   addImageInput.addEventListener("change", (event) => {
     ;(async () => {
@@ -398,8 +404,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       })
   }
 
-  const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
-  resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
+  /*const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
+  resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)*/
 
 
   const getComputedProp = (e, prop) => {
@@ -704,10 +710,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     element.addEventListener("mousemove", handleMouseMove)
   }
 
-  const toggleDrawingModeIndicator = (drawingMode) => {
-    drawingModeIndicator.style.visibility = drawingMode ? "visible" : "hidden" // Show/hide indicator
-  }
-
   const setupDrawEvents = (drawingMode, slide) => {
     const drawing = slide.querySelector(".drawing-canvas")
     if (drawingMode) {
@@ -726,7 +728,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingMode = () => {
     if (!currentSlide) return
     isDrawingMode = !isDrawingMode
-    toggleDrawingModeIndicator(isDrawingMode)
+    alert(isDrawingMode)
     setupDrawEvents(isDrawingMode, currentSlide)
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
   }
@@ -799,7 +801,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   brushThicknessSlider.addEventListener("input", (event) => {
     brushThickness = event.target.value
   })
-  toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
+  //toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
 
   fontSizeInput.addEventListener("input", (event) => {
     fontSize = event.target.value
@@ -813,8 +815,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
-  addImageFromUrlBtn.addEventListener("click", addImageFromUrl)
-  toggleDrawingModeBtn.addEventListener("click", toggleDrawingMode)
+  //addImageFromUrlBtn.addEventListener("click", addImageFromUrl)
+  toggleDrawingModeBtn.addEventListener("change", toggleDrawingMode)
 
   const initIframe = () => {
     // Wait webstrate to load
@@ -829,7 +831,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       resetHandles()
     })
 
-    toggleDrawingModeIndicator(isDrawingMode)
     initCSS()
     initContainer()
     deleteAllPreviews()
@@ -837,6 +838,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     createPreviewsForExistingSlides()
     initExistingSlides()
     initCurrentSlide()
+    document.getElementById("brushColorIcon").addEventListener("click", () => {
+      document.getElementById("brushColorPicker").click()
+    })
     console.log(getIframeDocument(mainIframe))
     console.log(getIframeDocument(mainIframe).location)
   }
@@ -939,10 +943,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   function initQuestionsIframeEvents(iframeDocument) {
     // bin listener to delete questions
     iframeDocument.getElementById("bin").addEventListener("click", () => {
-      var selected = iframeDocument.getElementsByClassName("selected")
-      if (selected.length != 0) {
-        item = selected[0]
-        item.remove()
+      var selectedQuestions = iframeDocument.querySelectorAll(".selected")
+      for(question of selectedQuestions) {
+        question.remove()
       }
     })
 

@@ -1,43 +1,50 @@
-<html __wid="Q9dj4dVm" lang="en">
-  <!-- prettier-ignore --><head __wid="MsdvuyD6">
+<html __wid="Q9dj4dVm" lang="en"><!-- prettier-ignore --><head __wid="MsdvuyD6">
     <meta __wid="WcDBT7pw" charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" __wid="kWiHS9tj"/>
     <title __wid="g2DrexBC">Sketchup Tool</title>
     <script id="script.js" __wid="JZCZ2SRQ"></script>
     <style rel="stylesheet" __wid="CRn7fgC3" id="styles.css"></style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" __wid="hCC7jnFE"/>
   </head>
   <!-- prettier-ignore -->
   <body class __wid="SJmSnCLa">
     <div class="some-padding flex-column bg-white" __wid="GxRxKayE">
       <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
-        <input type="text" id="documentUrlInput" class="btn searchable-btn" placeholder="Enter URL" __wid="ukrrDARq"/>
-        <button id="loadBtn" class="btn clickable-btn" __wid="FypRC8PC">
-          Load
+        <div class="icon-button" __wid="XRuSbMUV"> <i class="fa-solid fa-magnifying-glass" __wid="7L3WzfC7"></i> </div>
+        <input id="documentUrlInput" class="btn searchable-btn" __wid="ukrrDARq" type="text" placeholder="Enter URL"/>
+        <button id="loadBtn" class="icon-button" __wid="FypRC8PC" title="load a presentation">
+            <i class="fa-solid fa-arrows-rotate" __wid="TbxxKkur"></i>
         </button>
-        <button id="resetSlidesBtn" class="btn clickable-btn" __wid="ERZ3knt8">
-          Reset All Slides
+        <button id="resetSlidesBtn" class="icon-button" __wid="ERZ3knt8" title="reset all slides">
+          <i class="fa-solid fa-arrow-rotate-right" __wid="HHrxt68v"></i>
         </button>
-        <button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">
+        <!--button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">
           Reset All Drawings
+        </button-->
+        <button __wid="ZpGtFjKa" class="icon-button" id="addTextBoxBtn" title="Add text">
+          <i class="fa-solid fa-pen-clip" __wid="y2LN7Nem"></i>
         </button>
-        <button id="addTextBoxBtn" class="btn clickable-btn" __wid="ZpGtFjKa">
-          Add Text Box
+        <!--button __wid="Zc98bHUT" class="icon-button" id="addImageFromUrlBtn" title="upload image">
+          <i class="fa-regular fa-image" __wid="FwniaLpk"></i>
+        </button-->
+        <button class="icon-button" title="upload image" id="addImageIcon" __wid="TxKva2yy">
+          <i class="fa-regular fa-image" __wid="vaBJ2igj"></i>
+          <input type="file" id="imageInput" __wid="ia69yEyT" accept="image/*" name="imageInput" hidden/>
         </button>
-        <button __wid="Zc98bHUT" class="btn clickable-btn" id="addImageFromUrlBtn">
-          Add Image From URL
+        <input class="font-buttons" __wid="mwD3AFy4" id="fontSizeInput" type="number" value="16" min="8" max="72" placeholder="Font Size"/>
+        <button __wid="vi4EgTgS" class="icon-button" title="change brush color">
+          <i class="fa-solid fa-eye-dropper" id="brushColorIcon" __wid="LgGQkN6B"></i>
+          <input id="brushColorPicker" __wid="79tKfweA" class="font-buttons" type="color" value="#000000" style="display: none;"/>
         </button>
-        <label __wid="3hykm2ni" class="btn clickable-btn" for="imageInput">Add Image From Local</label>
-        <input type="file" id="imageInput" __wid="ia69yEyT" accept="image/*" name="imageInput" hidden/>
-        <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
-        <input id="brushColorPicker" class="font-buttons" __wid="79tKfweA" type="color" value="#000000"/>
-        <input id="brushThicknessSlider" __wid="pNT6WywR" class="font-buttons" type="range" min="1" max="100" value="2"/>
-        <button id="toggleDrawingModeBtn" __wid="fPfS6VMF" class="btn clickable-btn">
-          Toggle Drawing Mode
-        </button>
-        <div id="drawingModeIndicator" __wid="FtXbXAEA" style="visibility: hidden;" class="btn indicator-btn">
-          Drawing Mode Enabled
-        </div>
-        <button id="presentBtn" __wid="TpnLhakL" class="btn clickable-btn">Present</button>
+        <button class="icon-button" title="choose the brush thicker" __wid="mDUKg3tj"> <i class="fa-solid fa-pen-to-square" __wid="BWESJei8"></i> </button>
+        <input __wid="pNT6WywR" class="font-buttons" id="brushThicknessSlider" type="range" min="1" max="100" value="2"/>
+        
+        <label for="toggleDrawingModeBtn" __wid="U4YUzswV">Drawing Mode</label>
+        <label __wid="CVgU4Trb" class="switch">
+          <input type="checkbox" id="toggleDrawingModeBtn" __wid="qdM78sY9"/>
+          <span class="slider round" __wid="Dvj9KgqF"></span>
+        </label>
+        
       </div>
 
       <div class="flex-row" __wid="GayMuR8V" style>
@@ -50,7 +57,7 @@
               Table of Content
             </div>
           </div>
-          <transient class="flex-center-vertically flex-column" id="previewPane"></transient>
+          <transient id="previewPane" class="flex-center-vertically flex-column"></transient>
           <div id="tocPane" class="container-section some-padding wh" __wid="NsAJvA6b">
             <div class="bg-white container-section some-padding wh" contenteditable>
               A
@@ -68,6 +75,10 @@
                 transform: scale(0.8); /*! transform-origin: 0 0; */
               "></iframe>
           </div>
+
+          <div class="content-box ovscroll bg-white" __wid="ke5uz3KJ" contenteditable>
+              <p style="color: lightgray;" __wid="WrDF4xFi">Write any comment here</p>
+          </div>
         </div>
         <div class="vertical-sidebar bg-gray flex-column flex-center-vertically some-padding" __wid="iCjVqwRe">
           <div class="bg-white flex-row flex-center-horizontally switchbar" __wid="bXgg6vyT">
@@ -78,7 +89,7 @@
               Questions
             </div>
           </div>
-          <iframe __wid="FEzn7c5t" id="questionsIframe" src="/questionsIframe" class="flex-center-vertically"></iframe>
+          <iframe id="questionsIframe" src="/questionsIframe" __wid="FEzn7c5t" class="flex-center-vertically"></iframe>
           <div id="reviewsPane" class="container-section some-padding wh display-none" __wid="NsAJvA6b">
             <div class="bg-white container-section some-padding wh" contenteditable __wid="HXSUtXUh">
               AB</div>
@@ -90,5 +101,6 @@
 
 
 
-</body>
-</html>
+
+
+</body></html>
