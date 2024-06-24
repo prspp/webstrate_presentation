@@ -522,7 +522,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       draggableDiv.className = "draggable"
       draggableDiv.style.position = "absolute"
       draggableDiv.style.left = "0px"
-      draggableDiv.style.top = "0px"
+      draggableDiv.style.top = `${currentSlide.offsetTop}px`
+      alert("Here")
       draggableDiv.style.zIndex = currentZIndex++
 
       const image = document.createElement("img")
