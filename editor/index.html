@@ -10,34 +10,34 @@
   <body class __wid="SJmSnCLa">
     <div class="some-padding flex-column bg-white" __wid="GxRxKayE">
       <div class="toolbar bg-gray flex-row" __wid="p3ggBZf6">
-        <div class="icon-button" __wid="XRuSbMUV"> <i class="fa-solid fa-magnifying-glass" __wid="7L3WzfC7"></i> </div>
+        <button class="icon-button" __wid="FypRC8PC" id="loadBtn" title="load a presentation">
+          <i class="fa-solid fa-magnifying-glass" __wid="7L3WzfC7"></i>
+        </button>
         <input id="documentUrlInput" class="btn searchable-btn" __wid="ukrrDARq" type="text" placeholder="Enter URL"/>
-        <button id="loadBtn" class="icon-button" __wid="FypRC8PC" title="load a presentation">
+        
+        <button id="resetSlidesBtn" class="icon-button" __wid="FypRC8PC" title="reset all slides and all drawing">
             <i class="fa-solid fa-arrows-rotate" __wid="TbxxKkur"></i>
         </button>
-        <button id="resetSlidesBtn" class="icon-button" __wid="ERZ3knt8" title="reset all slides">
+        <button id="resetAllDrawingsBtn" class="icon-button" __wid="ERZ3knt8" title="reset all drawings">
           <i class="fa-solid fa-arrow-rotate-right" __wid="HHrxt68v"></i>
         </button>
-        <!--button id="resetAllDrawingsBtn" class="btn clickable-btn" __wid="ERZ3knt8">
-          Reset All Drawings
-        </button-->
         <button __wid="ZpGtFjKa" class="icon-button" id="addTextBoxBtn" title="Add text">
           <i class="fa-solid fa-pen-clip" __wid="y2LN7Nem"></i>
         </button>
-        <!--button __wid="Zc98bHUT" class="icon-button" id="addImageFromUrlBtn" title="upload image">
-          <i class="fa-regular fa-image" __wid="FwniaLpk"></i>
-        </button-->
+        <button __wid="Zc98bHUT" class="icon-button" id="addImageFromUrlBtn" title="upload image from url">
+          <i class="fa-solid fa-globe" __wid="FwniaLpk"></i>
+        </button>
         <button id="addImageIcon" __wid="TxKva2yy" class="icon-button" title="upload image">
           <i class="fa-regular fa-image" __wid="vaBJ2igj"></i>
           <input type="file" id="imageInput" __wid="ia69yEyT" accept="image/*" name="imageInput" hidden/>
         </button>
-        <input type="number" id="fontSizeInput" value="16" class="font-buttons" __wid="mwD3AFy4" min="8" max="72" placeholder="Font Size"/>
+        <input id="fontSizeInput" __wid="mwD3AFy4" class="font-buttons" type="number" value="16" min="8" max="72" placeholder="Font Size"/>
         <button class="icon-button" __wid="vi4EgTgS" title="change brush color">
           <i class="fa-solid fa-eye-dropper" id="brushColorIcon" __wid="LgGQkN6B"></i>
           <input id="brushColorPicker" __wid="79tKfweA" class="font-buttons" type="color" value="#000000" style="display: none;"/>
         </button>
-        <button __wid="mDUKg3tj" class="icon-button" title="choose the brush thicker"> <i class="fa-solid fa-pen-to-square" __wid="BWESJei8"></i> </button>
-        <input id="brushThicknessSlider" __wid="pNT6WywR" class="font-buttons" type="range" min="1" max="100" value="2"/>
+        <button class="icon-button" __wid="mDUKg3tj" title="choose the brush thicker"> <i class="fa-solid fa-pen-to-square" __wid="BWESJei8"></i> </button>
+        <input __wid="pNT6WywR" class="font-buttons" id="brushThicknessSlider" type="range" min="1" max="100" value="2"/>
         
         <label __wid="U4YUzswV" for="toggleDrawingModeBtn">Drawing Mode</label>
         <label __wid="CVgU4Trb" class="switch">
@@ -58,7 +58,7 @@
             </div>
           </div>
           <transient class="flex-center-vertically flex-column" id="previewPane"></transient>
-          <div id="tocPane" class="container-section some-padding wh" __wid="NsAJvA6b">
+          <div id="tocPane" class="container-section wh" __wid="NsAJvA6b">
             <div class="bg-white container-section some-padding wh" contenteditable>
               A
             </div>
@@ -70,7 +70,7 @@
 
         <div class="container-section bg-white flex-column" __wid="5a8Pvvvh">
           <div class="flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="KkJFYrV4">
-            <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpag" scrolling="no" __wid="ezYDf2iW" style="
+            <iframe id="contentIframe" class="content-box bg-white slide-main-view" src="/frontpage" scrolling="no" __wid="ezYDf2iW" style="
                 /*! zoom: 0.8; */
                 transform: scale(0.8); /*! transform-origin: 0 0; */
               "></iframe>
@@ -80,15 +80,15 @@
         </div>
         <div class="vertical-sidebar bg-gray flex-column flex-center-vertically some-padding" __wid="iCjVqwRe">
           <div class="bg-white flex-row flex-center-horizontally switchbar" __wid="bXgg6vyT">
-            <div class="bg-gray btn alternative-btn btn-active" __wid="QsyNbHvv" id="reviewsPaneBtn">
+            <div class="bg-gray btn alternative-btn" __wid="QsyNbHvv" id="reviewsPaneBtn">
               Review Notes
             </div>
-            <div class="bg-gray btn alternative-btn" __wid="iKHtE3c9" id="questionsPaneBtn">
+            <div class="bg-gray btn alternative-btn btn-active" __wid="iKHtE3c9" id="questionsPaneBtn">
               Questions
             </div>
           </div>
-          <iframe __wid="FEzn7c5t" id="questionsIframe" src="/questionsIframe" class="flex-center-vertically display-none"></iframe>
-          <iframe id="reviewsIframe" class="flex-center-vertically" __wid="WWp4z7ki" src="/reviewsIframe"></iframe>
+          <iframe __wid="FEzn7c5t" id="questionsIframe" src="/questionsIframe" class="some-padding flex-center-vertically"></iframe>
+          <iframe id="reviewsIframe" class="some-padding flex-center-vertically display-none" __wid="WWp4z7ki" src="/reviewsIframe"></iframe>
         </div>
       </div>
     </div>

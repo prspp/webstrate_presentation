@@ -408,8 +408,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       })
   }
 
-  /*const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
-  resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)*/
+  const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
+  resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
 
   const getComputedProp = (e, prop) => {
