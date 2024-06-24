@@ -8,6 +8,7 @@
   height: 100%;
   display: flex;
   overflow: hidden;
+  justify-content: space-around;
 }
 
 .frame {
@@ -16,19 +17,11 @@
 
 /* *** Slides part *** */
 #slides {
-  width: 80vw;
+  width: 70vw;
   height: 73vh;
   border: 1px solid #e8e8e8;
   border-radius: 10px;
   margin-top: 10px;
-}
-
-iframe {
-  height: 90%;
-  width: 90%;
-  margin-left: 60px;
-  margin-top: 20px;
-  background-color: white;
 }
 
 /* *** Questions part *** */
@@ -72,8 +65,13 @@ div#questions button {
   margin-right: 20px;
 }
 
+.container-section,
 .vertical-sidebar {
   border-radius: 10px;
+}
+
+.bg-white {
+  background-color: #fefefe;
 }
 
 .bg-gray {
@@ -83,12 +81,29 @@ div#questions button {
 .flex-column {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
-.flex-center-vertically {
+.flex-center-horizontally {
   display: flex;
-  align-items: center;
+  justify-content: center;
+}
+
+.content-box {
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: calc(
+    100% - 20px
+  ); /* calc is required to prevent the margin overflowing the parent */
+  height: calc(100% - 20px);
+  box-sizing: border-box;
+}
+
+.slide-main-view {
+  padding: 0px;
+  width: 1000px;
+  height: 600px;
 }
 
 .some-padding {
@@ -106,4 +121,15 @@ div#questions button {
 
 .display-none {
   display: none;
+}
+
+#review {
+  width: 25vw;
+  height: 97vh;
+  margin-top: 10px;
+  border: none;
+}
+
+#reviewsIframe {
+  height: 90%;
 }
