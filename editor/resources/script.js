@@ -15,7 +15,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
-  const resetStratesBtn = document.getElementById("resetStratesBtn")
+  // const resetStratesBtn = document.getElementById("resetStratesBtn")
   const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
   const brushColorPicker = document.getElementById("brushColorPicker")
   const brushThicknessSlider = document.getElementById("brushThicknessSlider")
@@ -30,13 +30,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const previewPaneBtn = document.getElementById("previewPaneBtn")
   const tocIframeBtn = document.getElementById("tocIframeBtn")
   const previewPane = document.getElementById("previewPane")
+  const tocPane = document.getElementById("tocPane")
 
-  const reviewsPaneBtn = document.getElementById("reviewsPaneBtn")
+  const reviewsIframeBtn = document.getElementById("reviewsIframeBtn")
   const questionsPaneBtn = document.getElementById("questionsPaneBtn")
   const questionsIframe = document.getElementById("questionsIframe")
   const reviewsIframe = document.getElementById("reviewsIframe")
-  const tocIframe = document.getElementById("tocIframe")
   const presentationIframe = document.getElementById("presentationIframe")
+  const tocIframe = document.getElementById("tocIframe")
 
   // ### VALUES OF THE APPLICATION ###
   let defaultWebstrateUrl,
@@ -87,23 +88,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     documentUrlInput.value = defaultWebstrateUrl
   }
 
-  function debounce(callback, wait) {
-    let timeout
-    return (...args) => {
-      console.log("wait", wait)
-      clearTimeout(timeout)
-      timeout = setTimeout(function () {
-        callback.apply(this, args)
-      }, wait)
-    }
-  }
-
-  // documentUrlInput.addEventListener("keyup", debounce( (event) => {
-  //   mainIframe.src = event.target.value || defaultWebstrateUrl;
-  //   // getIframeDocument(mainIframe).location.reload();
-  //   console.log("reload asked")
-  // }), 1000);
-
   function resizeAllPreviews() {
     ;[...document.getElementsByClassName("slide-preview")].forEach(
       (previewIframe) => {
@@ -135,15 +119,15 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   previewPaneBtn.click()
 
-  reviewsPaneBtn.addEventListener("click", (event) => {
-    reviewsPaneBtn.classList.add("btn-active")
+  reviewsIframeBtn.addEventListener("click", (event) => {
+    reviewsIframeBtn.classList.add("btn-active")
     reviewsIframe.classList.remove("display-none")
     questionsPaneBtn.classList.remove("btn-active")
     questionsIframe.classList.add("display-none")
   })
 
   questionsPaneBtn.addEventListener("click", (event) => {
-    reviewsPaneBtn.classList.remove("btn-active")
+    reviewsIframeBtn.classList.remove("btn-active")
     reviewsIframe.classList.add("display-none")
     questionsPaneBtn.classList.add("btn-active")
     questionsIframe.classList.remove("display-none")
@@ -155,17 +139,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   // const initBinaryBoard = (btn1, btn2, pane1, pane2) => {
   //   console.log("btn1")
   //     btn1.addEventListener("click", (event) => {
-  //       btn1.classList.add("btn-active")
+  //       btn1.classList.add("btn-clicked")
   //       pane1.classList.remove("display-none")
-  //       btn2.classList.remove("btn-active")
+  //       btn2.classList.remove("btn-clicked")
   //       pane2.classList.add("display-none")
   //     })
 
   //     console.log("btn2")
   //     btn2.addEventListener("click", (event) => {
-  //       btn1.classList.remove("btn-active")
+  //       btn1.classList.remove("btn-clicked")
   //       pane1.classList.add("display-none")
-  //       btn2.classList.add("btn-active")
+  //       btn2.classList.add("btn-clicked")
   //       pane2.classList.remove("display-none")
   //     })
 
@@ -186,19 +170,25 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     window.open("http://localhost:7007/presentationView/", "_blank")
   })*/
 
-  resetStratesBtn.addEventListener("click", async () => {
-    ["frontpage",
-"questionsIframe",
-"reviewsIframe"].forEach(async e => {
-      try {
-        const url = `http://localhost:7007/${e}/?delete`
-        const response = await fetch(url);
-        console.log("Download complete", response);
-      } catch (error) {
-        console.error(`Download error: ${error.message}`);
-      }
-    });
-  });
+//   resetStratesBtn.addEventListener("click", async () => {
+//     const associatedWebstrates = ["frontpage",
+// "questionsIframe",
+// "reviewsIframe"]
+
+//     associatedWebstrates.forEach(async e => {
+//       try {
+//         const url1 = `http://localhost:7007/${e}/?delete`
+//         const response1 = await fetch(url1);
+//         const url2 = `http://localhost:7007/${e}/`
+//         const response2 = await fetch(url2);
+//         console.log(`Ok: Webstrate ${e} reset: ${response1}; ${response2}`);
+//       } catch (error) {
+//         console.log(`Error: Webstrate ${e} reset: ${error.message}`);
+//       }
+//     });
+
+//     location.reload();
+//   });
 
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
@@ -267,7 +257,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     draggableDiv.className = "draggable"
     draggableDiv.style.position = "absolute"
     draggableDiv.style.left = "0px"
-    draggableDiv.style.top = `${currentSlide.offsetTop}px`
+    draggableDiv.style.top = "0px"
     draggableDiv.style.zIndex = currentZIndex++
 
     // Create and append the image
@@ -423,7 +413,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   // resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
-
   const getComputedProp = (e, prop) => {
     const s = document.defaultView.getComputedStyle(e)[prop]
     const ss = Number(s.substring(0, s.length - 2))
@@ -495,7 +484,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     draggableDiv.className = "draggable"
     draggableDiv.style.position = "absolute"
     draggableDiv.style.left = "0px"
-    draggableDiv.style.top = `${currentSlide.offsetTop}px`
+    draggableDiv.style.top = "0px"
     draggableDiv.style.zIndex = currentZIndex++
 
     const textBox = document.createElement("div")
@@ -522,7 +511,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       draggableDiv.className = "draggable"
       draggableDiv.style.position = "absolute"
       draggableDiv.style.left = "0px"
-      draggableDiv.style.top = `${currentSlide.offsetTop}px`
+      draggableDiv.style.top = "0px"
       draggableDiv.style.zIndex = currentZIndex++
 
       const image = document.createElement("img")
@@ -578,7 +567,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         if (currentLeft < 0 || currentLeft > doc_width || currentTop < 0 || currentTop > doc_height)
           return
         newLeftStr = currentLeft + "px"
-        newTopStr = currentSlide.offsetTop + currentTop + "px"
+        newTopStr = currentTop + "px"
         // contentElement.style.left = newLeftStr
         // contentElement.style.top = newTopStr
         element.style.left = newLeftStr
@@ -653,7 +642,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         element.style.height = newHeightStr
 
         if (newLeft !== undefined) element.style.left = newLeft + "px"
-        if (newTop !== undefined) element.style.top = currentSlide.offsetTop + newTop + "px"
+        if (newTop !== undefined) element.style.top = newTop + "px"
       }
 
       const handleMouseUp = () => {
@@ -853,7 +842,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   mainIframe.webstrate.on(
     "transcluded",
     function (webstrateId, clientId, user) {
-      console.log("mainIframe load event")
+      console.log("mainIframe transcluded")
       initIframe()
     }
   )
@@ -864,17 +853,19 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
     var questionDiv = iframeDocument.createElement("div")
     questionDiv.id = "questionDiv"
+    questionDiv.classList.add("flex-row")
 
     var question = iframeDocument.createElement("input")
     question.type = "text"
     question.placeholder = "Reformulate a question"
     question.id = "questionInput"
+    question.classList.add("searchable-btn", "btn")
 
     var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
-    sendQuestionsToReviewBtn.innerText = "Upload"
-    sendQuestionsToReviewBtn.title = "upload to review"
+    sendQuestionsToReviewBtn.innerText = "Review"
+    sendQuestionsToReviewBtn.title = "Curate to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
-    sendQuestionsToReviewBtn.className = "clickable-btn"
+    sendQuestionsToReviewBtn.classList.add("solo-btn", "btn")
 
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
@@ -1038,7 +1029,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       var buttonShare = reviewsIframe.createElement("button")
       buttonShare.innerText = "Share"
       buttonShare.id = "shareToAudience"
-      buttonShare.className = "clickable-btn"
+      buttonShare.classList.add("solo-btn", "btn")
       transient.appendChild(buttonShare)
       container.appendChild(divWriter)
       container.appendChild(transient)
@@ -1056,6 +1047,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   function initReviewsIframe(reviewsIframeDocument) {
       var container = reviewsIframeDocument.querySelector("#reviewsPane")
       if (container !== null) return 
+      console.log("share")
       initReviewsIframeCSS()
       createContainerInReviewsIframe(reviewsIframeDocument)
   }
@@ -1066,7 +1058,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       console.log("reviewsIframe transcluded")
       var reviewsIframeDocument = getIframeDocument(reviewsIframe)
       initReviewsIframe(reviewsIframeDocument)
-      initReviewsIframeEvents(reviewsIframeDocument)
+      // initReviewsIframeEvents(reviewsIframeDocument)
     }
   )
 

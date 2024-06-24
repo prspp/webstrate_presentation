@@ -29,7 +29,7 @@ webstrate.on("loaded", function (webstrateId) {
   })
 
   nextBtn.addEventListener("click", () => {
-    // if (currentSlideIndex === 0) return
+    if (currentSlideIndex === document.getElementById("contentIframe").contentDocument.body.scrollHeight / 600 - 1) return
     currentSlideIndex++;
     scrollToSlide(document.getElementById("contentIframe"), currentSlideIndex)
   })
@@ -50,16 +50,16 @@ webstrate.on("loaded", function (webstrateId) {
   }
 
   reviewsIframeBtn.addEventListener("click", (event) => {
-    reviewsIframeBtn.classList.add("btn-active")
+    reviewsIframeBtn.classList.add("btn-clicked")
     reviewsIframe.classList.remove("display-none")
-    tocIframeBtn.classList.remove("btn-active")
+    tocIframeBtn.classList.remove("btn-clicked")
     tocIframe.classList.add("display-none")
   })
 
   tocIframeBtn.addEventListener("click", (event) => {
-    reviewsIframeBtn.classList.remove("btn-active")
+    reviewsIframeBtn.classList.remove("btn-clicked")
     reviewsIframe.classList.add("display-none")
-    tocIframeBtn.classList.add("btn-active")
+    tocIframeBtn.classList.add("btn-clicked")
     tocIframe.classList.remove("display-none")
   })
 
