@@ -51,23 +51,17 @@ input {
 .btn:hover {
   border: none;
   padding: 10px 20px;
-  color: white;
   cursor: pointer;
   margin-right: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .clickable-btn:hover {
-  background-color: #DB8400;
-  box-shadow: 0 0 10px rgba(23, 76, 189, 0.1);
-}
-
-.clickable-btn:active {
   filter: brightness(85%);
 }
 
-.clickable-btn {
-  background-color: #db8400;
+
+.btn-clicked {
+  filter: brightness(90%);
 }
 
 .searchable-btn {
@@ -79,6 +73,12 @@ input {
   background-color: mediumvioletred;
 }
 
+/* Use .solo-btn if the button is alone in its group */
+.solo-btn {
+  background-color: #db8400;
+}
+
+/* Use .solo-btn if there is two buttons in its group */
 .alternative-btn {
   color: black;
 }
@@ -90,9 +90,6 @@ input {
   cursor: pointer;
 }
 
-.btn-active {
-  filter: brightness(90%);
-}
 
 .flex-column {
   display: flex;
@@ -270,6 +267,7 @@ p {
   justify-content: center;
   z-index: 0;
 }
+
 .icon-button i {
     font-size: 20px;
 }

@@ -118,17 +118,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   })
 
   previewPaneBtn.addEventListener("click", (event) => {
-    previewPaneBtn.classList.add("btn-active")
+    previewPaneBtn.classList.add("btn-clicked")
     previewPane.classList.remove("display-none")
-    tocPaneBtn.classList.remove("btn-active")
+    tocPaneBtn.classList.remove("btn-clicked")
     tocPane.classList.add("display-none")
     resizeAllPreviews()
   })
 
   tocPaneBtn.addEventListener("click", (event) => {
-    previewPaneBtn.classList.remove("btn-active")
+    previewPaneBtn.classList.remove("btn-clicked")
     previewPane.classList.add("display-none")
-    tocPaneBtn.classList.add("btn-active")
+    tocPaneBtn.classList.add("btn-clicked")
     tocPane.classList.remove("display-none")
     resizeAllPreviews()
   })
@@ -136,16 +136,16 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   previewPaneBtn.click()
 
   reviewsPaneBtn.addEventListener("click", (event) => {
-    reviewsPaneBtn.classList.add("btn-active")
+    reviewsPaneBtn.classList.add("btn-clicked")
     reviewsIframe.classList.remove("display-none")
-    questionsPaneBtn.classList.remove("btn-active")
+    questionsPaneBtn.classList.remove("btn-clicked")
     questionsIframe.classList.add("display-none")
   })
 
   questionsPaneBtn.addEventListener("click", (event) => {
-    reviewsPaneBtn.classList.remove("btn-active")
+    reviewsPaneBtn.classList.remove("btn-clicked")
     reviewsIframe.classList.add("display-none")
-    questionsPaneBtn.classList.add("btn-active")
+    questionsPaneBtn.classList.add("btn-clicked")
     questionsIframe.classList.remove("display-none")
   })
 
@@ -155,17 +155,17 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   // const initBinaryBoard = (btn1, btn2, pane1, pane2) => {
   //   console.log("btn1")
   //     btn1.addEventListener("click", (event) => {
-  //       btn1.classList.add("btn-active")
+  //       btn1.classList.add("btn-clicked")
   //       pane1.classList.remove("display-none")
-  //       btn2.classList.remove("btn-active")
+  //       btn2.classList.remove("btn-clicked")
   //       pane2.classList.add("display-none")
   //     })
 
   //     console.log("btn2")
   //     btn2.addEventListener("click", (event) => {
-  //       btn1.classList.remove("btn-active")
+  //       btn1.classList.remove("btn-clicked")
   //       pane1.classList.add("display-none")
-  //       btn2.classList.add("btn-active")
+  //       btn2.classList.add("btn-clicked")
   //       pane2.classList.remove("display-none")
   //     })
 
@@ -874,7 +874,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     sendQuestionsToReviewBtn.innerText = "Upload"
     sendQuestionsToReviewBtn.title = "upload to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
-    sendQuestionsToReviewBtn.className = "clickable-btn"
+    sendQuestionsToReviewBtn.className = "solo-btn"
 
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
@@ -1038,7 +1038,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       var buttonShare = reviewsIframe.createElement("button")
       buttonShare.innerText = "Share"
       buttonShare.id = "shareToAudience"
-      buttonShare.className = "clickable-btn"
+      buttonShare.className = "solo-btn"
       transient.appendChild(buttonShare)
       container.appendChild(divWriter)
       container.appendChild(transient)
