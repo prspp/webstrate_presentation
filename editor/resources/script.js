@@ -2,6 +2,9 @@
 webstrate.on("loaded", function (webstrateId, clientId, user) {
   console.log("Script loaded.")
 
+  // ### CONSTANTS OF THE EDITOR
+  const containerClasses = ["bg-white", "container-section", "some-padding", "wh"]
+
   // ### REFERENCES TO DOM ELEMENTS ##
   const mainIframe = document.getElementById("contentIframe")
   const getIframeDocument = (i) => i.contentDocument || i.contentWindow.document
@@ -560,7 +563,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         const doc_width = getComputedProp(mainIframe, "width")
         const currentLeft = event.clientX - startX + startLeft
         const currentTop = event.clientY - startY + startTop
-        console.log(doc_width, doc_height, currentLeft, currentTop)
         if (currentLeft < 0 || currentLeft > doc_width || currentTop < 0 || currentTop > doc_height)
           return
         newLeftStr = currentLeft + "px"
@@ -729,7 +731,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingMode = () => {
     if (!currentSlide) return
     isDrawingMode = !isDrawingMode
-    alert(isDrawingMode)
+    // alert(isDrawingMode)
     setupDrawEvents(isDrawingMode, currentSlide)
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
   }
@@ -853,27 +855,30 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       initIframe()
     }
   )
-
   function createContainerInQuestionsIframe(iframeDocument) {
     var container = iframeDocument.createElement("div")
     container.id = "container"
-    container.classList.add("some-padding")
-    container.classList.add("container-section")
+    container.classList.add(...containerClasses)
+
     var questionDiv = iframeDocument.createElement("div")
     questionDiv.id = "questionDiv"
+
     var question = iframeDocument.createElement("input")
     question.type = "text"
     question.placeholder = "Reformulate a question"
     question.id = "questionInput"
+
     var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
     sendQuestionsToReviewBtn.innerText = "Upload"
     sendQuestionsToReviewBtn.title = "upload to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
     sendQuestionsToReviewBtn.className = "clickable-btn"
+
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
     img.alt = "bin"
     img.id = "bin"
+
     questionDiv.appendChild(question)
     questionDiv.appendChild(sendQuestionsToReviewBtn)
     container.appendChild(questionDiv)
@@ -1020,19 +1025,16 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   function createContainerInReviewsIframe(reviewsIframe) {
-      var container = reviewsIframe.createElement("div")
-      container.id = "reviewsPane"
-      container.classList.add("container-section")
-      container.classList.add("some-padding")
-      container.classList.add("wh")
+      // var container = reviewsIframe.createElement("div")
+      // container.id = "reviewsPane"
+      // container.classList.add("container-section", "some-padding", "wh")
+      // reviewsIframe.body.appendChild(container)
+
       var divWriter = reviewsIframe.createElement("div")
-      divWriter.classList.add("bg-white")
-      divWriter.classList.add("container-section")
-      divWriter.classList.add("some-padding")
-      divWriter.classList.add("wh")
+      divWriter.classList.add(...containerClasses)
       divWriter.setAttribute("contenteditable", "")
-      container.appendChild(divWriter)
-      reviewsIframe.body.appendChild(container)
+      divWriter.id = "reviewsPane"
+      reviewsIframe.body.appendChild(divWriter)
   }
 
   function initReviewsIframe(reviewsIframeDocument) {

@@ -112,8 +112,8 @@ input {
 }
 
 .wh {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
+  width: calc(100%);
+  height: calc(100%);
 }
 
 .horizontal-sidebar {
@@ -335,11 +335,6 @@ input:checked + .slider:before {
   display: none;
 }
 
-#container {
-  height: 100vh;
-  background-color: #fff;
-  margin-top: 0px;
-}
 
 #container p {
   background-color: #e0e0e0;
