@@ -1027,11 +1027,10 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   function createContainerInReviewsIframe(reviewsIframe) {
-      // var container = reviewsIframe.createElement("div")
-      // container.id = "reviewsPane"
-      // container.classList.add("container-section", "some-padding", "wh")
-      // reviewsIframe.body.appendChild(container)
-
+      var container = reviewsIframe.createElement("div")
+      container.id = "reviewsPane"
+      container.classList.add("container-section", "some-padding", "wh")
+      reviewsIframe.body.appendChild(container)
       var divWriter = reviewsIframe.createElement("div")
       divWriter.classList.add(...containerClasses)
       divWriter.setAttribute("contenteditable", "")
