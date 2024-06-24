@@ -52,17 +52,30 @@ div#questions input {
   border-radius: 5px;
 }
 
-div#questions button {
-  width: 60px;
-  height: 30px;
-  color: #fff;
-  display: block;
-  background-color: orange;
-  border: 1px solid orange;
+
+.btn {
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+
+button {
   border-radius: 10px;
   box-sizing: border-box;
   float: right;
   margin-right: 20px;
+}
+
+.solo-btn {
+  background-color: #db8400;
 }
 
 .container-section,

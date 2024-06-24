@@ -45,14 +45,12 @@ input {
   padding: 10px 20px;
   color: white;
   cursor: pointer;
-  margin-right: 10px;
 }
 
 .btn:hover {
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  margin-right: 10px;
 }
 
 .clickable-btn:hover {
@@ -64,7 +62,7 @@ input {
 }
 
 .searchable-btn {
-  background-color: royalblue;
+  background-color: cornflowerblue;
 }
 
 .indicator-btn {
@@ -222,15 +220,6 @@ p {
   /*  box-sizing: border-box;*/
 }
 
-#container input {
-  height: 30px;
-  width: 300px;
-  word-wrap: break-word;
-  padding: 5px;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-}
-
 .text-box {
   /*  position: absolute;*/
   padding: 10px;
@@ -349,7 +338,6 @@ input:checked + .slider:before {
   display: none;
 }
 
-
 #container p {
   background-color: #e0e0e0;
   border: 1px solid #e0e0e0;
@@ -378,15 +366,8 @@ input:checked + .slider:before {
   right: 10px;
 }
 
-#questionDiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  position: absolute;
-  top: 10px;
-}
 
-#questionDiv button {
+/*#questionDiv button {
   border: none;
   margin-left: 30px;
   color: white;
@@ -401,7 +382,11 @@ input:checked + .slider:before {
    color: white;
    cursor: pointer;
    border-radius: 10px;
-}
+}*/
+
+
+
+
 
 .draggable {
   position: absolute;

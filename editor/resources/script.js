@@ -859,7 +859,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   mainIframe.webstrate.on(
     "transcluded",
     function (webstrateId, clientId, user) {
-      console.log("mainIframe load event")
+      console.log("mainIframe transcluded")
       initIframe()
     }
   )
@@ -870,17 +870,19 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
     var questionDiv = iframeDocument.createElement("div")
     questionDiv.id = "questionDiv"
+    questionDiv.classList.add("flex-row")
 
     var question = iframeDocument.createElement("input")
     question.type = "text"
     question.placeholder = "Reformulate a question"
     question.id = "questionInput"
+    question.classList.add("searchable-btn", "btn")
 
     var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
     sendQuestionsToReviewBtn.innerText = "Upload"
     sendQuestionsToReviewBtn.title = "upload to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
-    sendQuestionsToReviewBtn.className = "solo-btn"
+    sendQuestionsToReviewBtn.classList.add("solo-btn", "btn")
 
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
@@ -1044,7 +1046,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       var buttonShare = reviewsIframe.createElement("button")
       buttonShare.innerText = "Share"
       buttonShare.id = "shareToAudience"
-      buttonShare.className = "solo-btn"
+      buttonShare.classList.add("solo-btn", "btn")
       transient.appendChild(buttonShare)
       container.appendChild(divWriter)
       container.appendChild(transient)
@@ -1062,6 +1064,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   function initReviewsIframe(reviewsIframeDocument) {
       var container = reviewsIframeDocument.querySelector("#reviewsPane")
       if (container !== null) return 
+      console.log("share")
       initReviewsIframeCSS()
       createContainerInReviewsIframe(reviewsIframeDocument)
   }
