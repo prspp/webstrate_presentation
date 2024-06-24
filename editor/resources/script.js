@@ -429,7 +429,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   // resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
-
   const getComputedProp = (e, prop) => {
     const s = document.defaultView.getComputedStyle(e)[prop]
     const ss = Number(s.substring(0, s.length - 2))
