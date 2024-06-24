@@ -38,7 +38,7 @@ webstratesfs --id=presentationView --host=localhost:7007 --insecure
 ### Reset
 
 ```bash
-for i in frontpage editor audience presentationView questionsIframe; do
+for i in frontpage editor reviewsIframe presentationView questionsIframe; do
 	echo $i; curl http://localhost:7007/$i/?delete; echo;
 done
 ```

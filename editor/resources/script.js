@@ -273,7 +273,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     draggableDiv.className = "draggable"
     draggableDiv.style.position = "absolute"
     draggableDiv.style.left = "0px"
-    draggableDiv.style.top = `${currentSlide.offsetTop}px`
+    draggableDiv.style.top = "0px"
     draggableDiv.style.zIndex = currentZIndex++
 
     // Create and append the image
@@ -501,7 +501,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     draggableDiv.className = "draggable"
     draggableDiv.style.position = "absolute"
     draggableDiv.style.left = "0px"
-    draggableDiv.style.top = `${currentSlide.offsetTop}px`
+    draggableDiv.style.top = "0px"
     draggableDiv.style.zIndex = currentZIndex++
 
     const textBox = document.createElement("div")
@@ -584,7 +584,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         if (currentLeft < 0 || currentLeft > doc_width || currentTop < 0 || currentTop > doc_height)
           return
         newLeftStr = currentLeft + "px"
-        newTopStr = currentSlide.offsetTop + currentTop + "px"
+        newTopStr = currentTop + "px"
         // contentElement.style.left = newLeftStr
         // contentElement.style.top = newTopStr
         element.style.left = newLeftStr
@@ -659,7 +659,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         element.style.height = newHeightStr
 
         if (newLeft !== undefined) element.style.left = newLeft + "px"
-        if (newTop !== undefined) element.style.top = currentSlide.offsetTop + newTop + "px"
+        if (newTop !== undefined) element.style.top = newTop + "px"
       }
 
       const handleMouseUp = () => {
