@@ -11,7 +11,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const addSlideBtn = document.getElementById("addSlideBtn")
   const addTextBoxBtn = document.getElementById("addTextBoxBtn")
-  //const addImageFromUrlBtn = document.getElementById("addImageFromUrlBtn")
+  const addImageFromUrlBtn = document.getElementById("addImageFromUrlBtn")
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
@@ -822,7 +822,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   addSlideBtn.addEventListener("click", addSlide)
   addTextBoxBtn.addEventListener("click", addTextBox)
-  //addImageFromUrlBtn.addEventListener("click", addImageFromUrl)
+  addImageFromUrlBtn.addEventListener("click", addImageFromUrl)
   toggleDrawingModeBtn.addEventListener("change", toggleDrawingMode)
 
   const initIframe = () => {
