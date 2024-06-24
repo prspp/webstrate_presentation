@@ -1,35 +1,36 @@
 webstrate.on("loaded", function (webstrateId) {
 
-  const addQuestion = (document) => {
+  const addQuestion = (questionDocument) => {
     const question = document.querySelector('input[type="text"]').value
     document.querySelector("input[type='text']").value = ""
     if (question.trim() === "" || question == null) return
-    var questionDiv = document.querySelector("#questionDiv")
+    var questionDiv = questionDocument.querySelector("#questionDiv")
     if (questionDiv == null) return
-    questionDiv.insertAdjacentHTML(
-      "afterend",
-      `<p contenteditable class="selected">${question}</p>`
-    )
+    var questionParagraph = questionDocument.createElement("p")
+    questionParagraph.setAttribute("contenteditable", "")
+    questionParagraph.className = "selected"
+    questionParagraph.innerText = question
+    questionDiv.insertAdjacentElement("afterend", questionParagraph)
   }
 
-  const enterEventListener = (document) => {
+  const enterEventListener = (questionDocument) => {
     document
       .getElementById("questionInput")
       .addEventListener("keypress", (e) => {
         if (e.key == "Enter") {
-          addQuestion(document)
+          addQuestion(questionDocument)
         }
       })
   }
 
   const frame = document.getElementById("questionsFrame")
   frame.webstrate.on("transcluded", () => {
+    console.log("Question transluded")
     var questionsDocument = frame.contentWindow.document
-    var container = questionsDocument.getElementById("questionDiv")
     document.getElementById("sendBtn").addEventListener("click", () => {
-      addQuestion(document)
+      addQuestion(questionsDocument)
     })
-    enterEventListener(document)
+    enterEventListener(questionsDocument)
   })
 
   const slidesFrame = document.getElementById("contentIframe")
