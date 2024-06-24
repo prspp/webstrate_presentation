@@ -300,9 +300,9 @@ p {
 .slider:before {
   position: absolute;
   content: "";
-  height: 21px;
-  width: 21px;
-  left: 2px;
+  height: 90%;
+  width: 45%;
+  left: 10%;
   bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
