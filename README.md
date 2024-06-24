@@ -32,7 +32,7 @@ webstratesfs --id=editor --host=localhost:7007 --insecure
 4. Again, in another terminal:
 
 ```
-webstratesfs --id=audience --host=localhost:7007 --insecure
+webstratesfs --id=presentationView --host=localhost:7007 --insecure
 ```
 
 ### Reset
