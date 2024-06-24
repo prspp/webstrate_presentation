@@ -24,6 +24,18 @@ body {
   border-radius: 10px;
 }
 
+.little-gap {
+  width: 3%;
+}
+
+.gap-5 {
+  width: 5%;
+}
+
+.gap-10 {
+  width: 10%;
+}
+
 input {
   box-sizing: border-box;
 }
@@ -112,8 +124,8 @@ input {
 }
 
 .wh {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
+  width: calc(100%);
+  height: calc(100%);
 }
 
 .horizontal-sidebar {
@@ -300,9 +312,9 @@ p {
 .slider:before {
   position: absolute;
   content: "";
-  height: 21px;
-  width: 21px;
-  left: 2px;
+  height: 90%;
+  width: 45%;
+  left: 10%;
   bottom: 2px;
   background-color: white;
   -webkit-transition: .4s;
@@ -335,11 +347,6 @@ input:checked + .slider:before {
   display: none;
 }
 
-#container {
-  height: 100vh;
-  background-color: #fff;
-  margin-top: 0px;
-}
 
 #container p {
   background-color: #e0e0e0;

@@ -2,6 +2,9 @@
 webstrate.on("loaded", function (webstrateId, clientId, user) {
   console.log("Script loaded.")
 
+  // ### CONSTANTS OF THE EDITOR
+  const containerClasses = ["bg-white", "container-section", "some-padding", "wh"]
+
   // ### REFERENCES TO DOM ELEMENTS ##
   const mainIframe = document.getElementById("contentIframe")
   const getIframeDocument = (i) => i.contentDocument || i.contentWindow.document
@@ -12,6 +15,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
+  const resetStratesBtn = document.getElementById("resetStratesBtn")
+  const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
   const brushColorPicker = document.getElementById("brushColorPicker")
   const brushThicknessSlider = document.getElementById("brushThicknessSlider")
   const fontSizeInput = document.getElementById("fontSizeInput")
@@ -180,6 +185,20 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   /*presentBtn.addEventListener("click", () => {
     window.open("http://localhost:7007/presentationView/", "_blank")
   })*/
+
+  resetStratesBtn.addEventListener("click", async () => {
+    ["frontpage",
+"questionsIframe",
+"reviewsIframe"].forEach(async e => {
+      try {
+        const url = `http://localhost:7007/${e}/?delete`
+        const response = await fetch(url);
+        console.log("Download complete", response);
+      } catch (error) {
+        console.error(`Download error: ${error.message}`);
+      }
+    });
+  });
 
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
@@ -402,8 +421,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       })
   }
 
-  /*const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
-  resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)*/
+  // resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
 
   const getComputedProp = (e, prop) => {
@@ -556,7 +574,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         const doc_height = getComputedProp(mainIframe, "height")
         const doc_width = getComputedProp(mainIframe, "width")
         const currentLeft = event.clientX - startX + startLeft
-        const currentTop =  event.clientY - startY + startTop
+        const currentTop = event.clientY - startY + startTop
         if (currentLeft < 0 || currentLeft > doc_width || currentTop < 0 || currentTop > doc_height)
           return
         newLeftStr = currentLeft + "px"
@@ -839,27 +857,30 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       initIframe()
     }
   )
-
   function createContainerInQuestionsIframe(iframeDocument) {
     var container = iframeDocument.createElement("div")
     container.id = "container"
-    container.classList.add("some-padding")
-    container.classList.add("container-section")
+    container.classList.add(...containerClasses)
+
     var questionDiv = iframeDocument.createElement("div")
     questionDiv.id = "questionDiv"
+
     var question = iframeDocument.createElement("input")
     question.type = "text"
     question.placeholder = "Reformulate a question"
     question.id = "questionInput"
+
     var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
     sendQuestionsToReviewBtn.innerText = "Upload"
     sendQuestionsToReviewBtn.title = "upload to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
     sendQuestionsToReviewBtn.className = "clickable-btn"
+
     var img = iframeDocument.createElement("img")
     img.src = `${window.location.pathname}delete.png`
     img.alt = "bin"
     img.id = "bin"
+
     questionDiv.appendChild(question)
     questionDiv.appendChild(sendQuestionsToReviewBtn)
     container.appendChild(questionDiv)
@@ -1006,16 +1027,13 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   function createContainerInReviewsIframe(reviewsIframe) {
-      var container = reviewsIframe.createElement("div")
-      container.id = "reviewsPane"
-      container.classList.add("container-section")
-      container.classList.add("some-padding")
-      container.classList.add("wh")
+      // var container = reviewsIframe.createElement("div")
+      // container.id = "reviewsPane"
+      // container.classList.add("container-section", "some-padding", "wh")
+      // reviewsIframe.body.appendChild(container)
+
       var divWriter = reviewsIframe.createElement("div")
-      divWriter.classList.add("bg-white")
-      divWriter.classList.add("container-section")
-      divWriter.classList.add("some-padding")
-      divWriter.classList.add("wh")
+      divWriter.classList.add(...containerClasses)
       divWriter.setAttribute("contenteditable", "")
       var transient = reviewsIframe.createElement("transient")
       var buttonShare = reviewsIframe.createElement("button")
