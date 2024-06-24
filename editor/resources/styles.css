@@ -59,7 +59,6 @@ input {
   filter: brightness(85%);
 }
 
-
 .btn-clicked {
   filter: brightness(90%);
 }
@@ -271,6 +270,11 @@ p {
 .icon-button i {
     font-size: 20px;
 }
+
+i:hover {
+  filter: opacity(50%);
+}
+
 
 .icon-button {
     outline: none;

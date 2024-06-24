@@ -15,7 +15,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
-  const resetStratesBtn = document.getElementById("resetStratesBtn")
+  // const resetStratesBtn = document.getElementById("resetStratesBtn")
   const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
   const brushColorPicker = document.getElementById("brushColorPicker")
   const brushThicknessSlider = document.getElementById("brushThicknessSlider")
@@ -186,19 +186,25 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     window.open("http://localhost:7007/presentationView/", "_blank")
   })*/
 
-  resetStratesBtn.addEventListener("click", async () => {
-    ["frontpage",
-"questionsIframe",
-"reviewsIframe"].forEach(async e => {
-      try {
-        const url = `http://localhost:7007/${e}/?delete`
-        const response = await fetch(url);
-        console.log("Download complete", response);
-      } catch (error) {
-        console.error(`Download error: ${error.message}`);
-      }
-    });
-  });
+//   resetStratesBtn.addEventListener("click", async () => {
+//     const associatedWebstrates = ["frontpage",
+// "questionsIframe",
+// "reviewsIframe"]
+
+//     associatedWebstrates.forEach(async e => {
+//       try {
+//         const url1 = `http://localhost:7007/${e}/?delete`
+//         const response1 = await fetch(url1);
+//         const url2 = `http://localhost:7007/${e}/`
+//         const response2 = await fetch(url2);
+//         console.log(`Ok: Webstrate ${e} reset: ${response1}; ${response2}`);
+//       } catch (error) {
+//         console.log(`Error: Webstrate ${e} reset: ${error.message}`);
+//       }
+//     });
+
+//     location.reload();
+//   });
 
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
