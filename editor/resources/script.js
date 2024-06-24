@@ -28,14 +28,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   //const presentBtn = document.getElementById("presentBtn")
 
   const previewPaneBtn = document.getElementById("previewPaneBtn")
-  const tocPaneBtn = document.getElementById("tocPaneBtn")
+  const tocIframeBtn = document.getElementById("tocIframeBtn")
   const previewPane = document.getElementById("previewPane")
-  const tocPane = document.getElementById("tocPane")
 
   const reviewsPaneBtn = document.getElementById("reviewsPaneBtn")
   const questionsPaneBtn = document.getElementById("questionsPaneBtn")
   const questionsIframe = document.getElementById("questionsIframe")
   const reviewsIframe = document.getElementById("reviewsIframe")
+  const tocIframe = document.getElementById("tocIframe")
   const presentationIframe = document.getElementById("presentationIframe")
 
   // ### VALUES OF THE APPLICATION ###
@@ -120,16 +120,16 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   previewPaneBtn.addEventListener("click", (event) => {
     previewPaneBtn.classList.add("btn-active")
     previewPane.classList.remove("display-none")
-    tocPaneBtn.classList.remove("btn-active")
-    tocPane.classList.add("display-none")
+    tocIframeBtn.classList.remove("btn-active")
+    tocIframe.classList.add("display-none")
     resizeAllPreviews()
   })
 
-  tocPaneBtn.addEventListener("click", (event) => {
+  tocIframeBtn.addEventListener("click", (event) => {
     previewPaneBtn.classList.remove("btn-active")
     previewPane.classList.add("display-none")
-    tocPaneBtn.classList.add("btn-active")
-    tocPane.classList.remove("display-none")
+    tocIframeBtn.classList.add("btn-active")
+    tocIframe.classList.remove("display-none")
     resizeAllPreviews()
   })
 
@@ -523,7 +523,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       draggableDiv.style.position = "absolute"
       draggableDiv.style.left = "0px"
       draggableDiv.style.top = `${currentSlide.offsetTop}px`
-      alert("Here")
       draggableDiv.style.zIndex = currentZIndex++
 
       const image = document.createElement("img")
@@ -1077,4 +1076,50 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       console.log("Presentation transcluded")
     }
   )
+
+  function createContainerInTocIframe(tocIframe) {
+    var container = tocIframe.createElement("div")
+    container.id = "tocPane"
+    container.classList.add("container-section", "wh")
+    tocIframe.body.appendChild(container)
+    var divWriter = tocIframe.createElement("div")
+    divWriter.classList.add(...containerClasses)
+    divWriter.classList.add("bg-white", "some-padding")
+    divWriter.setAttribute("contenteditable", "")
+    container.appendChild(divWriter)
+    tocIframe.body.appendChild(container)
+}
+
+function initTocIframeCSS() {
+  var doc = getIframeDocument(tocIframe)
+  var cssFile = doc.querySelector("#mainCSSFile")
+  if(cssFile !== null) return
+  var fileref = doc.createElement("style")
+  fileref.id = "mainCSSFile"
+  fileref.textContent = document.getElementById("styles.css").textContent
+  doc.getElementsByTagName("head")[0].appendChild(fileref)
+}
+
+function initTocIframe(tocIframeDocument) {
+    var container = tocIframeDocument.querySelector("#tocPane")
+    if (container !== null) return 
+    initTocIframeCSS()
+    createContainerInTocIframe(tocIframeDocument)
+}
+
+tocIframe.webstrate.on(
+  "transcluded",
+  function (webstrateId, clientId, user) {
+    console.log("tocIframe transcluded")
+    var tocIframeDocument = getIframeDocument(tocIframe)
+    initTocIframe(tocIframeDocument)
+  }
+)
+
+presentationIframe.webstrate.on(
+  "transcluded",
+  function(webstrateId, clientId, user) {
+    console.log("Presentation transcluded")
+  }
+)
 })
