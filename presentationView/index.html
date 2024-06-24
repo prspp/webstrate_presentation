@@ -7,13 +7,24 @@
   <!-- prettier-ignore -->
   <body __wid="AYAtF3cw">
     <div id="container" __wid="cC4pvGvr">
-      <div id="review" class="frame vertical-sidebar bg-gray flex-column flex-center-vertically some-padding" __wid="s6jRpHgC">
-        <iframe id="reviewsIframe" class="flex-center-vertically display-none" src="/reviewsIframe" __wid="jErsDW2k"></iframe>
+      <div class="vertical-sidebar bg-gray flex-column flex-center-vertically some-padding" __wid="B3fUJe46">
+        <div class="bg-white flex-row flex-center-horizontally switchbar" __wid="UUMAncuG">
+          <div class="bg-gray btn alternative-btn" id="tocIframeBtn" __wid="zRy65mZn">
+            Table of content
+          </div>
+          <div class="bg-gray btn alternative-btn btn-active" id="reviewsIframeBtn" __wid="mV99Azh7">
+            Review notes
+          </div>
+        </div>
+        <iframe id="tocIframe" src="/tocIframe" class="flex-center-vertically display-none" __wid="PRW7aU2L"></iframe>
+        <iframe id="reviewsIframe" class="flex-center-vertically" src="/reviewsIframe" __wid="T3UPXEXr"></iframe>
       </div>
+      <!--div id="review" __wid="s6jRpHgC" class="frame vertical-sidebar bg-gray flex-column flex-center-vertically some-padding">
+        <iframe id="reviewsIframe" class="flex-center-vertically display-none" __wid="jErsDW2k" src="/reviewsIframe"></iframe>
+      </div-->
       <div id="middleWindow" class="container-section bg-white flex-column" __wid="dnsvCmCK">
         <div id="slides" class="frame flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="xXYwXWun">
-          <iframe __wid="EtfsmvkK" src="/frontpage" id="contentIframe" class="content-box bg-white slide-main-view" 
-            scrolling="no" style="transform: scale(0.8);"></iframe>
+          <iframe __wid="EtfsmvkK" src="/frontpage" id="contentIframe" class="content-box bg-white slide-main-view" scrolling="no" style="transform: scale(0.8);"></iframe>
         </div>
         <div id="questions" __wid="8d4uripD">
           <iframe id="questionsFrame" src="/questionsIframe/" hidden __wid="YrbdxTa4"></iframe>
