@@ -15,6 +15,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingModeBtn = document.getElementById("toggleDrawingModeBtn")
   const drawingModeIndicator = document.getElementById("drawingModeIndicator")
   const resetSlidesBtn = document.getElementById("resetSlidesBtn")
+  const resetStratesBtn = document.getElementById("resetStratesBtn")
+  const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
   const brushColorPicker = document.getElementById("brushColorPicker")
   const brushThicknessSlider = document.getElementById("brushThicknessSlider")
   const fontSizeInput = document.getElementById("fontSizeInput")
@@ -183,6 +185,20 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   /*presentBtn.addEventListener("click", () => {
     window.open("http://localhost:7007/presentationView/", "_blank")
   })*/
+
+  resetStratesBtn.addEventListener("click", async () => {
+    ["frontpage",
+"questionsIframe",
+"reviewsIframe"].forEach(async e => {
+      try {
+        const url = `http://localhost:7007/${e}/?delete`
+        const response = await fetch(url);
+        console.log("Download complete", response);
+      } catch (error) {
+        console.error(`Download error: ${error.message}`);
+      }
+    });
+  });
 
   const getContainer = () => {
     return getIframeDocument(mainIframe).body
@@ -408,8 +424,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       })
   }
 
-  const resetAllDrawingsBtn = document.getElementById("resetAllDrawingsBtn")
-  resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
+  // resetAllDrawingsBtn.addEventListener("click", resetAllDrawings)
 
 
   const getComputedProp = (e, prop) => {
