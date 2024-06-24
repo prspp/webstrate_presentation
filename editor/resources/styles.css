@@ -24,6 +24,18 @@ body {
   border-radius: 10px;
 }
 
+.little-gap {
+  width: 3%;
+}
+
+.gap-5 {
+  width: 5%;
+}
+
+.gap-10 {
+  width: 10%;
+}
+
 input {
   box-sizing: border-box;
 }
