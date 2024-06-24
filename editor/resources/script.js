@@ -29,9 +29,9 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
 
   const reviewsPaneBtn = document.getElementById("reviewsPaneBtn")
   const questionsPaneBtn = document.getElementById("questionsPaneBtn")
-  const reviewsPane = document.getElementById("reviewsPane")
   const questionsIframe = document.getElementById("questionsIframe")
   const reviewsIframe = document.getElementById("reviewsIframe")
+  const presentationIframe = document.getElementById("presentationIframe")
 
   // ### VALUES OF THE APPLICATION ###
   let defaultWebstrateUrl,
@@ -192,12 +192,10 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       formData.append("file", file, file.name)
 
       const request = new XMLHttpRequest()
-      console.log("Location : ", window.location.pathname)
       request.open("POST", window.location.pathname)
       request.send(formData)
       request.addEventListener("load", (e) => {
         const asset = JSON.parse(request.responseText)
-        console.log("Response : ", request.responseText)
         resolve(asset)
       })
     })
@@ -250,7 +248,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     draggableDiv.className = "draggable"
     draggableDiv.style.position = "absolute"
     draggableDiv.style.left = "0px"
-    draggableDiv.style.top = "0px"
+    draggableDiv.style.top = `${currentSlide.offsetTop}px`
     draggableDiv.style.zIndex = currentZIndex++
 
     // Create and append the image
@@ -271,7 +269,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   }
 
   addImageIcon.addEventListener("click", () => {
-    console.log("Here")
     addImageInput.click()
   })
 
@@ -480,7 +477,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     draggableDiv.className = "draggable"
     draggableDiv.style.position = "absolute"
     draggableDiv.style.left = "0px"
-    draggableDiv.style.top = "0px"
+    draggableDiv.style.top = `${currentSlide.offsetTop}px`
     draggableDiv.style.zIndex = currentZIndex++
 
     const textBox = document.createElement("div")
@@ -559,12 +556,11 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
         const doc_height = getComputedProp(mainIframe, "height")
         const doc_width = getComputedProp(mainIframe, "width")
         const currentLeft = event.clientX - startX + startLeft
-        const currentTop = event.clientY - startY + startTop
-        console.log(doc_width, doc_height, currentLeft, currentTop)
+        const currentTop =  event.clientY - startY + startTop
         if (currentLeft < 0 || currentLeft > doc_width || currentTop < 0 || currentTop > doc_height)
           return
         newLeftStr = currentLeft + "px"
-        newTopStr = currentTop + "px"
+        newTopStr = currentSlide.offsetTop + currentTop + "px"
         // contentElement.style.left = newLeftStr
         // contentElement.style.top = newTopStr
         element.style.left = newLeftStr
@@ -631,15 +627,15 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
           newTop = startTop
         }
 
-        newWidthStr = newWidth + "px"
-        newHeightStr = newHeight + "px"
+        let newWidthStr = newWidth + "px"
+        let newHeightStr = newHeight + "px"
         contentElement.style.width = newWidthStr
         contentElement.style.height = newHeightStr
         element.style.width = newWidthStr
         element.style.height = newHeightStr
 
         if (newLeft !== undefined) element.style.left = newLeft + "px"
-        if (newTop !== undefined) element.style.top = newTop + "px"
+        if (newTop !== undefined) element.style.top = currentSlide.offsetTop + newTop + "px"
       }
 
       const handleMouseUp = () => {
@@ -667,30 +663,23 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     }
 
     const handleMouseDown = (event) => {
-      console.log("down", event.target, currentElement)
       if (currentElement !== event.target.parentElement) {
-        console.log("hide")
         hideHandle(currentElement)
       }
       currentElement = element
       showHandles(element)
       if (event.target.classList.contains("resize-handle")) {
-        console.log("resize")
         startResize(event, event.target)
       } else if (
         isOnBorder(event, contentElement) ||
         event.target.nodeName.toUpperCase() == "IMG"
       ) {
-        console.log("drag")
         startDrag(event)
       } else if (
         event.target.classList.contains("text-box") &&
         event.target.nodeName.toUpperCase() == "DIV"
       ) {
-        console.log("focus")
         event.target.focus()
-      } else {
-        console.log(event.target)
       }
     }
 
@@ -729,7 +718,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
   const toggleDrawingMode = () => {
     if (!currentSlide) return
     isDrawingMode = !isDrawingMode
-    alert(isDrawingMode)
     setupDrawEvents(isDrawingMode, currentSlide)
     currentDrawing = currentSlide.querySelector(".drawing-canvas")
   }
@@ -842,8 +830,6 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     document.getElementById("brushColorIcon").addEventListener("click", () => {
       document.getElementById("brushColorPicker").click()
     })
-    console.log(getIframeDocument(mainIframe))
-    console.log(getIframeDocument(mainIframe).location)
   }
 
   mainIframe.webstrate.on(
@@ -1031,8 +1017,23 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       divWriter.classList.add("some-padding")
       divWriter.classList.add("wh")
       divWriter.setAttribute("contenteditable", "")
+      var transient = reviewsIframe.createElement("transient")
+      var buttonShare = reviewsIframe.createElement("button")
+      buttonShare.innerText = "Share"
+      buttonShare.id = "shareToAudience"
+      buttonShare.className = "clickable-btn"
+      transient.appendChild(buttonShare)
       container.appendChild(divWriter)
+      container.appendChild(transient)
       reviewsIframe.body.appendChild(container)
+  }
+
+  function initReviewsIframeEvents(reviewsIframeDocument) {
+    reviewsIframeDocument.getElementById("shareToAudience").addEventListener("click", () => {
+      let presentationFrame = document.getElementById("presentationIframe")
+      let presentationDoc = getIframeDocument(presentationFrame)
+      presentationDoc.getElementById("reviewsIframe").classList.remove("display-none")
+    })
   }
 
   function initReviewsIframe(reviewsIframeDocument) {
@@ -1048,6 +1049,14 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       console.log("reviewsIframe transcluded")
       var reviewsIframeDocument = getIframeDocument(reviewsIframe)
       initReviewsIframe(reviewsIframeDocument)
+      initReviewsIframeEvents(reviewsIframeDocument)
+    }
+  )
+
+  presentationIframe.webstrate.on(
+    "transcluded",
+    function(webstrateId, clientId, user) {
+      console.log("Presentation transcluded")
     }
   )
 })

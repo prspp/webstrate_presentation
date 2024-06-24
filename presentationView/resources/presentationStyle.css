@@ -14,15 +14,6 @@
   background-color: #e8e8e8;
 }
 
-/* *** Outline *** */
-#outline {
-  height: 97vh;
-  width: 15vw;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  margin: 10px;
-}
-
 /* *** Slides part *** */
 #slides {
   width: 80vw;
@@ -79,4 +70,40 @@ div#questions button {
   box-sizing: border-box;
   float: right;
   margin-right: 20px;
+}
+
+.vertical-sidebar {
+  border-radius: 10px;
+}
+
+.bg-gray {
+  background-color: #e8e8e8;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flex-center-vertically {
+  display: flex;
+  align-items: center;
+}
+
+.some-padding {
+  padding: 10px;
+}
+
+.container-section {
+  box-sizing: border-box;
+}
+
+.wh {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+}
+
+.display-none {
+  display: none;
 }

@@ -32,4 +32,14 @@ webstrate.on("loaded", function (webstrateId) {
     enterEventListener(document)
   })
 
+  const slidesFrame = document.getElementById("contentIframe")
+  slidesFrame.webstrate.on("transcluded", () => {
+    console.log("Presentation transcluded")
+  })
+
+  const reviewsFrame = document.getElementById("reviewsIframe")
+  reviewsFrame.webstrate.on("transcluded", () => {
+    console.log("Presentation transcluded")
+  })
+
 })
