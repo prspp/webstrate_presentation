@@ -1,38 +1,9 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
-#container {
-  background-color: #fff;
-  height: 100%;
-  display: flex;
-  overflow: hidden;
-  justify-content: space-around;
-}
-
-.frame {
-  background-color: #e8e8e8;
-}
-
-/* *** Slides part *** */
-#slides {
-  width: 70vw;
-  height: 73vh;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-
 /* *** Questions part *** */
-#questions {
-  height: 23vh;
-  background-color: #fff;
-  border: 10px solid #e8e8e8;
-  border-radius: 20px;
-  margin-top: 10px;
-  padding: 10px;
-  box-sizing: border-box;
+
+#controllerRow {
+  position:absolute;
+  top: 20px;
+  right: 10px;
 }
 
 div#questions p:first-child {
@@ -52,6 +23,63 @@ div#questions input {
   border-radius: 5px;
 }
 
+#sendBtn {
+  border-radius: 10px;
+  box-sizing: border-box;
+  float: right;
+  margin-right: 20px;
+}
+
+#reviewsIframe {
+  height: 90%;
+}
+
+
+
+
+/* ### EDITOR STYLES ### */
+
+html,
+body {
+  font-family: Arial, sans-serif;
+  /* Setting margin, padding, height is mandatory for html and body elements to fit the whole screen */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+.bg-gray {
+  background-color: #e8e8e8;
+}
+
+.bg-white {
+  background-color: #fefefe;
+}
+
+.container-section,
+.font-btn,
+.toolbar,
+.btn,
+.vertical-sidebar,
+.horizontal-sidebar,
+.switchbar {
+  border-radius: 10px;
+}
+
+.little-gap {
+  width: 3%;
+}
+
+.gap-5 {
+  width: 5%;
+}
+
+.gap-10 {
+  width: 10%;
+}
+
+input {
+  box-sizing: border-box;
+}
 
 .btn {
   border: none;
@@ -66,39 +94,101 @@ div#questions input {
   cursor: pointer;
 }
 
-
-button {
-  border-radius: 10px;
-  box-sizing: border-box;
-  float: right;
-  margin-right: 20px;
+.clickable-btn:hover {
+  filter: brightness(85%);
 }
 
+.btn-clicked {
+  filter: brightness(90%);
+}
+
+.searchable-btn {
+  background-color: cornflowerblue;
+}
+
+.indicator-btn {
+  color: white;
+  background-color: mediumvioletred;
+}
+
+/* Use .solo-btn if the button is alone in its group */
 .solo-btn {
   background-color: #db8400;
 }
 
-.container-section,
-.vertical-sidebar {
-  border-radius: 10px;
+/* Use .solo-btn if there is two buttons in its group */
+.alternative-btn {
+  color: black;
 }
 
-.bg-white {
-  background-color: #fefefe;
+.font-btn {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
 }
 
-.bg-gray {
-  background-color: #e8e8e8;
-}
 
 .flex-column {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .flex-center-horizontally {
   display: flex;
   justify-content: center;
+}
+.flex-center-vertically {
+  display: flex;
+  align-items: center;
+}
+
+.container-section {
+  box-sizing: border-box;
+}
+
+.some-padding {
+  padding: 10px;
+}
+
+.wh {
+  width: calc(100%);
+  height: calc(100%);
+}
+
+.horizontal-sidebar {
+  height: 25%;
+}
+
+.vertical-sidebar {
+  width: 25%;
+  min-width: 420px;
+}
+
+.switchbar {
+  padding: 7px;
+}
+
+.ovscroll {
+  overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .content-box {
@@ -119,30 +209,240 @@ button {
   height: 600px;
 }
 
-.some-padding {
-  padding: 10px;
+.slide-preview-container {
+  width: 400px; /* = 0.4*1000 */
+  height: 240px; /* = 0.4*600 */
+  /*  overflow: hidden;*/
+}
+.slide-preview {
+  /*    zoom: 0.3;*/
+  transform: scale(0.4);
+  transform-origin: 0 0;
+  padding: 0px;
+  width: 1000px;
+  height: 600px;
 }
 
-.container-section {
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+h3 {
+  margin-top: 0;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+p {
+  margin: 10px 0;
+}
+
+.slide {
+  border: 2px solid #ccc;
+  width: 100%;
+  height: 100%;
+  /*  margin: 20px auto;*/
+  /*      padding: 20px;*/
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.selected {
+  border: 4px solid red;
+  /*  box-sizing: border-box;*/
+}
+
+.text-box {
+  /*  position: absolute;*/
+  padding: 10px;
+  background-color: #fff;
+  left: 10px;
+  top: 10px;
+  cursor: text;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+/*
+[contenteditable] {
+  outline: 0px solid transparent;
+}
+*/
+.image-box {
+  /*  position: absolute;*/
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
 }
 
-.wh {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
+.drawing-canvas {
+  display: flex;
+  justify-content: center;
+  z-index: 0;
 }
 
+.drawing-canvas {
+  display: flex;
+  justify-content: center;
+  z-index: 0;
+}
+
+.icon-button i {
+    font-size: 20px;
+}
+
+i:hover {
+  filter: opacity(50%);
+}
+
+
+.icon-button {
+    outline: none;
+    border: none;
+    padding: 10px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+/*the slider*/
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 90%;
+  width: 45%;
+  left: 10%;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #4F46E5;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4F46E5;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 25px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 .display-none {
   display: none;
 }
 
-#review {
-  width: 25vw;
-  height: 97vh;
+#container p {
+  background-color: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  height: 70px;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 10px;
-  border: none;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-#reviewsIframe {
-  height: 90%;
+#container p:first-of-type {
+  margin-top: 40px;
+}
+
+#container p.selected {
+  border: 2px solid #6366f1;
+}
+
+#container img, #reviewsPane button  {
+  float: right;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.draggable {
+  position: absolute;
+  border: 1px solid transparent;
+}
+
+.resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+}
+
+.top-left {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.top-right {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.bottom-left {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+.draggable-border {
+  cursor: move;
 }

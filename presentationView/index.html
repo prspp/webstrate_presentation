@@ -1,32 +1,32 @@
 <html __wid="JGKubuD8" lang="en" data-protected="all"><!-- prettier-ignore --><head __wid="nfg2k2GD">
-    <meta charset="UTF-8" __wid="Yq4SxF5d"/>
+    <meta __wid="Yq4SxF5d" charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" __wid="Jv8PDfH6"/>
     <style id="presentationStyle.css" __wid="tgrtgS6n"></style>
-    <title __wid="fDL2mCcJ">View a Presentation</title>
+    <script __wid="wMizZMDd" id="script.js"></script>
+    <title __wid="fDL2mCcJ">Presentation View</title>
   </head>
   <!-- prettier-ignore -->
   <body __wid="AYAtF3cw">
-    <div id="container" __wid="cC4pvGvr">
+    <div __wid="cC4pvGvr" class="flex-row some-padding" style="overflow: hidden; justify-content: space-around;">
       <div id="review" class="frame vertical-sidebar bg-gray flex-column flex-center-vertically some-padding" __wid="s6jRpHgC">
         <iframe id="reviewsIframe" class="flex-center-vertically display-none" src="/reviewsIframe" __wid="jErsDW2k"></iframe>
       </div>
-      <div id="middleWindow" class="container-section bg-white flex-column" __wid="dnsvCmCK">
+      <div id="middleWindow" class="container-section bg-white flex-column wh" __wid="dnsvCmCK">
         <div id="slides" class="frame flex-center-horizontally flex-center-vertically container-section bg-gray" __wid="xXYwXWun">
-          <iframe __wid="EtfsmvkK" src="/frontpage" id="contentIframe" class="content-box bg-white slide-main-view" 
-            scrolling="no" style="transform: scale(0.8);"></iframe>
-          <button id="previousBtn" class="btn solo-btn" __wid="AVptiD2s">Previous</button>
-          <button id="nextBtn" class="btn solo-btn" __wid="AVptiD2s">Next</button>
-          
+          <iframe __wid="EtfsmvkK" src="/frontpage" id="contentIframe" class="content-box bg-white slide-main-view" scrolling="no" style="transform: scale(0.8);"></iframe>
+          <div class="flex-row" __wid="dkWXqDFC" id="controllerRow">
+            <button id="previousBtn" class="btn solo-btn" __wid="AVptiD2s">Previous</button>
+            <button id="nextBtn" class="btn solo-btn" __wid="AVptiD2s">Next</button>
+          </div>
         </div>
-        <div id="questions" __wid="8d4uripD">
-          <iframe id="questionsFrame" src="/questionsIframe/" hidden __wid="YrbdxTa4"></iframe>
-          <p __wid="uRDDNx8h">Questions</p>
-          <input type="text" name="question" placeholder="Ask your question..." __wid="mM2nj4c9" id="questionInput"/>
-          <button id="sendBtn" class="btn solo-btn" __wid="AVptiD2s">Send</button>
+        <div __wid="8d4uripD" class="container-section bg-gray some-padding" id="questions">
+            <iframe id="questionsFrame" src="/questionsIframe/" hidden __wid="YrbdxTa4"></iframe>
+            <p __wid="uRDDNx8h">Questions</p>
+            <input type="text" name="question" placeholder="Ask your question..." __wid="mM2nj4c9" id="questionInput"/>
+          <button __wid="AVptiD2s" id="sendBtn" class="btn solo-btn">Send</button>
         </div>
       </div>
     </div>
-    <script id="script.js" __wid="wMizZMDd"></script>
   
 
 </body></html>

@@ -879,8 +879,8 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
     question.classList.add("searchable-btn", "btn")
 
     var sendQuestionsToReviewBtn = iframeDocument.createElement("button")
-    sendQuestionsToReviewBtn.innerText = "Upload"
-    sendQuestionsToReviewBtn.title = "upload to review"
+    sendQuestionsToReviewBtn.innerText = "Review"
+    sendQuestionsToReviewBtn.title = "Curate to review"
     sendQuestionsToReviewBtn.id = "sendToReview"
     sendQuestionsToReviewBtn.classList.add("solo-btn", "btn")
 
