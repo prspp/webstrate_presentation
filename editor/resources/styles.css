@@ -22,6 +22,7 @@ body {
 .btn,
 .vertical-sidebar,
 .horizontal-sidebar,
+.wrap-box,
 .switchbar {
   border-radius: 10px;
 }

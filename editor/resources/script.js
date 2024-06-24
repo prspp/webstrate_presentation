@@ -1075,7 +1075,7 @@ webstrate.on("loaded", function (webstrateId, clientId, user) {
       console.log("reviewsIframe transcluded")
       var reviewsIframeDocument = getIframeDocument(reviewsIframe)
       initReviewsIframe(reviewsIframeDocument)
-      initReviewsIframeEvents(reviewsIframeDocument)
+      // initReviewsIframeEvents(reviewsIframeDocument)
     }
   )
 
