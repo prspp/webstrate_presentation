@@ -43,8 +43,23 @@ for i in frontpage editor reviewsIframe presentationView questionsIframe; do
 done
 ```
 
-### **Options possible in the editor**
-
+###
+**Options possible in the editor**
+- add new slides
 - add a text, title
-- perform drag and drop on text and drawing
+- add image from local or url
+- resize images, or text boxes
+- hand-drawing mode
+- choose the brush thickness and color for the drawing mode
+- perform drag and drop on text, images, drawing
+- writ an outline / table of contents
 - add notes, audience review
+- curate the questions from the audience
+
+**Options possible in the presentation view**
+- ask questions
+- see the slides
+- go to previous/slides
+- see the reviewed questions and the table of contents of the presentation
+
+Video preview in ![](assets/output.mp4)
