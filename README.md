@@ -62,4 +62,4 @@ done
 - go to previous/slides
 - see the reviewed questions and the table of contents of the presentation
 
-Video preview in ![](assets/output.mp4)
+Video preview in ![assets/output.mp4](assets/output.mp4)
